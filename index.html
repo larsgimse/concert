@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine Konsertopplevelser - Vektet Ordsky</title>
+    <title>Mine Konsertopplevelser - Klikkbar Ordsky</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
         :root {
             --bg-color: #0b0c10;
             --text-main: #ffffff;
-            --text-muted: #4e4f54;
+            --text-muted: #71717a;
             --accent: #66fcf1;
             --tooltip-bg: #1f2833;
             --badge-bg: #0b0c10;
@@ -45,7 +45,7 @@
         }
 
         header p {
-            color: #71717a;
+            color: var(--text-muted);
             margin-top: 0.5rem;
             font-size: 1rem;
             font-weight: 300;
@@ -57,7 +57,7 @@
             width: 85%;
             margin-bottom: 5rem;
             text-align: center;
-            line-height: 2.6; /* Litt mer luft mellom linjene så boksene ikke overlapper */
+            line-height: 2.8;
         }
 
         /* Artist-navnene */
@@ -68,13 +68,18 @@
             cursor: pointer;
             transition: color 0.2s ease, transform 0.2s ease;
             color: #d4d4d8;
-            padding: 5px 0; /* Gjør treffpunktet for musa litt større */
+            padding: 5px 0;
+            user-select: none; /* Hindrer blå tekstmarkering ved dobbeltklikk */
         }
 
         .cloud-item:hover {
             color: var(--accent);
-            transform: scale(1.03);
-            z-index: 10;
+        }
+
+        /* Aktiv tilstand når artisten er klikket på */
+        .cloud-item.active {
+            color: var(--accent);
+            z-index: 100;
         }
 
         /* Skriftstørrelser basert på rating */
@@ -84,36 +89,34 @@
         .size-7  { font-size: 1.4rem; font-weight: 400; color: #a1a1aa; }
         .size-6  { font-size: 1.1rem; font-weight: 300; color: #71717a; }
 
-        /* POP-UP / TOOLTIP BOKS */
+        /* POP-UP BOKS (Styres nå via .active klassen istedenfor :hover) */
         .tooltip {
-            visibility: hidden;
-            opacity: 0;
+            display: none; /* Skjult som standard */
             position: absolute;
-            bottom: 105%; /* Flyttet helt ned på kanten av teksten */
+            bottom: 110%;
             left: 50%;
-            transform: translateX(-50%) translateY(5px);
+            transform: translateX(-50%);
             background-color: var(--tooltip-bg);
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             white-space: nowrap;
-            transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
-            z-index: 99;
-            
-            /* SIKKERHETSBRO: Denne tykke bunn-paddingen fungerer som en usynlig */
-            /* bro mellom pop-upen og teksten under, så den ikke lukker seg. */
-            padding-bottom: 20px; 
+            z-index: 999;
+            text-align: left;
         }
 
-        /* Den lille pilen i bunnen av pop-upen */
+        /* Viser pop-up kun når artisten har klassen .active */
+        .cloud-item.active .tooltip {
+            display: flex;
+        }
+
         .tooltip::after {
             content: "";
             position: absolute;
-            top: calc(100% - 10px); /* Justert for å passe med den nye paddingen */
+            top: 100%;
             left: 50%;
             transform: translateX(-50%);
             border-width: 6px;
@@ -121,22 +124,49 @@
             border-color: var(--tooltip-bg) transparent transparent transparent;
         }
 
-        /* Viser pop-up ved hover */
-        .cloud-item:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        /* ARTIST INFO SEKSJON I TOPPEN AV POP-UP */
+        .artist-info-section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+            margin-bottom: 4px;
         }
 
-        /* Radene inni pop-upen */
+        .info-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .info-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .info-btn {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .info-btn:hover {
+            color: #ffffff;
+        }
+
+        /* Konsertlistene inni pop-up */
         .tooltip-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
+            gap: 20px;
         }
 
-        /* Ovale badges */
         .oval-badge {
             background-color: var(--badge-bg);
             color: #e4e4e7;
@@ -151,7 +181,6 @@
             font-family: monospace;
         }
 
-        /* Vis mer info-knappen (Google-lenken) */
         .search-link {
             color: var(--accent);
             text-decoration: none;
@@ -172,7 +201,7 @@
         .status-msg {
             text-align: center;
             font-style: italic;
-            color: var(--text-muted);
+            color: #4e4f54;
         }
     </style>
 </head>
@@ -180,7 +209,7 @@
 
     <header>
         <h1>Konsertskyen</h1>
-        <p>Dine beste og mest sette opplevelser preger toppen av skyen</p>
+        <p>Klikk på en artist for å åpne info og konsertdetaljer</p>
     </header>
 
     <main class="cloud-container" id="cloud">
@@ -209,7 +238,16 @@
             return 'size-6';
         }
 
-        async function genererAvansertOrdsky() {
+        // Lukker alle pop-ups hvis man klikker på bakgrunnen
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.cloud-item')) {
+                document.querySelectorAll('.cloud-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+
+        async function genererKlikkSky() {
             const cloud = document.getElementById('cloud');
             
             try {
@@ -219,7 +257,7 @@
                 ]);
 
                 if (!konsertRes.ok || !referanseRes.ok) {
-                    throw new Error('Kunne ikke laste filene. Sjekk mappen.');
+                    throw new Error('Kunne ikke laste filene.');
                 }
 
                 const konsertTekst = await konsertRes.text();
@@ -282,9 +320,7 @@
                 });
 
                 artistArray.sort((a, b) => {
-                    if (b.toppScore !== a.toppScore) {
-                        return b.toppScore - a.toppScore;
-                    }
+                    if (b.toppScore !== a.toppScore) return b.toppScore - a.toppScore;
                     return b.totaltSett - a.totaltSett;
                 });
 
@@ -292,7 +328,25 @@
                 artistArray.forEach(artist => {
                     const størrelseKlasse = hentStørrelseKlasse(artist.toppScore);
                     
-                    let raderHTML = '';
+                    // URL-formateringer for eksterne artistinfo-sider
+                    const artistSøk = encodeURIComponent(artist.navn);
+                    const spotifyUrl = `https://open.spotify.com/search/${artistSøk}`;
+                    const wikiUrl = `https://no.wikipedia.org/w/index.php?search=${artistSøk}`;
+
+                    // Topp-seksjonen i pop-upen med generelle artistlenker
+                    let infoSeksjonHTML = `
+                        <div class="artist-info-section">
+                            <div class="info-title">Artist Info</div>
+                            <div class="info-links">
+                                <a class="info-btn" href="${spotifyUrl}" target="_blank" rel="noopener">🎵 Spotify</a>
+                                <a class="info-btn" href="${wikiUrl}" target="_blank" rel="noopener">📖 Wikipedia</a>
+                            </div>
+                        </div>
+                        <div class="info-title" style="margin-top: 5px;">Dine Konserter</div>
+                    `;
+                    
+                    let raderHTML = infoSeksjonHTML;
+                    
                     artist.konserter.forEach(c => {
                         const søkeTekst = encodeURIComponent(`${artist.navn} ${c.land} ${c.dato} concert`);
                         const googleSøkUrl = `https://www.google.com/search?q=${søkeTekst}`;
@@ -310,15 +364,30 @@
                         `;
                     });
 
-                    const itemHTML = `
-                        <div class="cloud-item ${størrelseKlasse}">
-                            ${artist.navn}
-                            <div class="tooltip">
-                                ${raderHTML}
-                            </div>
-                        </div>
-                    `;
-                    cloud.innerHTML += itemHTML;
+                    // Lager selve sky-elementet
+                    const item = document.createElement('div');
+                    item.className = `cloud-item ${størrelseKlasse}`;
+                    item.innerHTML = `${artist.navn} <div class="tooltip">${raderHTML}</div>`;
+                    
+                    // KLIKK-LOGIKK: Skrur av og på pop-up
+                    item.addEventListener('click', function(e) {
+                        // Hvis man klikker på en lenke inni pop-upen, skal vi ikke lukke den
+                        if (e.target.closest('.tooltip')) return;
+
+                        e.stopPropagation(); // Hindrer bakgrunns-klikke-eventen
+                        
+                        const varAktiv = this.classList.contains('active');
+                        
+                        // Lukker alle andre åpne pop-ups først
+                        document.querySelectorAll('.cloud-item').forEach(i => i.classList.remove('active'));
+                        
+                        // Hvis den ikke var aktiv, åpner vi den nå
+                        if (!varAktiv) {
+                            this.classList.add('active');
+                        }
+                    });
+
+                    cloud.appendChild(item);
                 });
 
             } catch (error) {
@@ -326,7 +395,7 @@
             }
         }
 
-        window.onload = genererAvansertOrdsky;
+        window.onload = genererKlikkSky;
     </script>
 
 </body>
