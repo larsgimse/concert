@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine Konserter</title>
+    <title>Mine Konsertopplevelser - Visuell Dashboard</title>
     <style>
-        /* Mørkt og stilig konsert-tema */
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --accent: #66fcf1;
+            --text-main: #ffffff;
+            --text-sub: #a9b7c6;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0c10;
-            color: #c5c6c7;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-sub);
             margin: 0;
             padding: 0;
             display: flex;
@@ -20,163 +27,280 @@
 
         header {
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 4rem 1rem 2rem 1rem;
             width: 100%;
-            background: linear-gradient(180deg, #1f2833 0%, #0b0c10 100%);
+            background: linear-gradient(180deg, #141a22 0%, var(--bg-color) 100%);
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.5rem;
-            color: #66fcf1;
+            font-size: 3rem;
+            color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
         }
 
         header p {
             color: #45f3ff;
-            margin-top: 0.5rem;
-            font-style: italic;
+            margin-top: 0.7rem;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
         }
 
-        /* Container for konsertene */
-        .concert-container {
-            max-width: 800px;
+        /* Grid-system som gjør siden visuell */
+        .concert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-auto-rows: minmax(140px, auto);
+            gap: 20px;
+            max-width: 1200px;
             width: 90%;
             margin: 2rem 0;
         }
 
-        /* Styling for hvert konsert-kort */
+        /* Standard kort (1 konsert) */
         .concert-card {
-            background-color: #1f2833;
-            border-left: 5px solid #66fcf1;
-            border-radius: 4px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 1rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            flex-direction: column;
+            justify-content: flex-end; /* Navnet legger seg i bunn av kortet */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+        }
+
+        /* DYNAMISKE STØRRELSER BASERT PÅ ANTLALL GANGER SETT */
+        /* Medium størrelse (Sett 2 ganger) */
+        .concert-card.tier-2 {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #243342 0%, #1f2833 100%);
+            border-left: 4px solid var(--accent);
+        }
+        
+        /* Stor størrelse (Sett 3 eller flere ganger) - Headlinere! */
+        .concert-card.tier-3 {
+            grid-column: span 2;
+            grid-row: span 2;
+            background: linear-gradient(135deg, #2e3c4d 0%, #1f2833 100%);
+            border: 2px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(102, 252, 241, 0.1);
         }
 
         .concert-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 252, 241, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(102, 252, 241, 0.2);
+            border-color: var(--accent);
         }
 
-        .concert-info h2 {
-            margin: 0 0 0.3rem 0;
-            color: #ffffff;
-            font-size: 1.3rem;
+        /* Artistnavn */
+        .artist-name {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.2;
+            z-index: 2;
         }
 
-        .concert-details {
-            font-size: 0.9rem;
-            color: #a9b7c6;
+        /* Gjør teksten enda større på favorittbandene */
+        .tier-3 .artist-name {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+        }
+        .tier-2 .artist-name {
+            font-size: 1.7rem;
         }
 
-        .concert-details .location {
-            color: #45f3ff;
-            font-weight: 500;
+        /* Container for små badges øverst i hjørnet */
+        .badge-container {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-end;
+            z-index: 2;
         }
 
-        /* Dato-merkelapp */
-        .concert-date {
-            background-color: #0b0c10;
-            color: #66fcf1;
-            padding: 0.4rem 0.8rem;
+        /* Små stilige dato-badges */
+        .date-badge {
+            background-color: rgba(11, 12, 16, 0.85);
+            color: #fff;
+            padding: 4px 8px;
             border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: bold;
-            font-size: 0.9rem;
-            border: 1px solid #66fcf1;
-            white-space: nowrap;
-            font-family: monospace; /* Gjør at datoer rykker likt */
+            font-family: monospace;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(3px);
+        }
+
+        /* LANDSVISUALISERING via subtile farger på kanten av badgen */
+        .date-badge[data-country="NO"] { border-color: #ef4444; color: #fecaca; } /* Rødlig tone for Norge */
+        .date-badge[data-country="SE"] { border-color: #eab308; color: #fef08a; } /* Gul tone for Sverige */
+        .date-badge[data-country="UK"] { border-color: #3b82f6; color: #bfdbfe; } /* Blå tone for Storbritannia */
+        .date-badge[data-country="US"] { border-color: #a855f7; color: #e9d5ff; } /* Lilla tone for USA */
+
+        /* Visuell statistikk i bakgrunnen for gøy */
+        .concert-count {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            user-select: none;
+            z-index: 1;
+        }
+        
+        .tier-3 .concert-count {
+            color: rgba(102, 252, 241, 0.05);
+            font-size: 5rem;
         }
 
         .status-msg {
+            grid-column: 1 / -1;
             text-align: center;
             font-style: italic;
-            color: #a9b7c6;
-            margin-top: 2rem;
+            padding: 3rem;
+        }
+
+        /* Responsivitet for mindre skjermer */
+        @media (max-width: 768px) {
+            .concert-grid {
+                grid-template-columns: 1fr;
+            }
+            .concert-card.tier-2, .concert-card.tier-3 {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Mine Konsertopplevelser</h1>
-        <p>Generert automatisk fra konsertliste.txt</p>
+        <h1>Konsertveggen</h1>
+        <p>Størrelsen viser hvem som har spilt mest live</p>
     </header>
 
-    <main class="concert-container" id="concert-list">
-        <p class="status-msg">Laster inn konsertene dine...</p>
+    <main class="concert-grid" id="concert-grid">
+        <p class="status-msg">Konstruerer det visuelle galleriet...</p>
     </main>
 
     <script>
-        async function lastInnKonserter() {
-            const container = document.getElementById('concert-list');
+        // En enkel ordbok for å gjøre landekoder om til fargerike flagg
+        const flaggKart = {
+            'NO': '🇳🇴',
+            'SE': '🇸🇪',
+            'DK': '🇩🇰',
+            'UK': '🇬🇧',
+            'US': '🇺🇸',
+            'DE': '🇩🇪',
+            'NL': '🇳🇱',
+            'FR': '🇫🇷',
+            'FI': '🇫🇮'
+        };
+
+        function hentFlagg(landekode) {
+            return flaggKart[landekode.toUpperCase()] || '🌍';
+        }
+
+        async function genererVisuellSide() {
+            const grid = document.getElementById('concert-grid');
             
             try {
                 const response = await fetch('konsertliste.txt');
-                if (!response.ok) throw new Error('Kunne ikke laste konsertliste.txt');
+                if (!response.ok) throw new Error('Fant ikke konsertliste.txt');
                 
-                const tekstData = await response.text();
-                const linjer = tekstData.split('\n');
+                const tekst = await response.text();
+                const linjer = tekst.split('\n');
                 
-                container.innerHTML = '';
-                let totaltAntall = 0;
+                grid.innerHTML = '';
+                let totaltKort = 0;
 
                 linjer.forEach(linje => {
                     if (linje.trim() === '') return;
 
-                    // Splitter artisten fra konsertene (håndterer både vanlig bindestrek - og tankestrek –)
                     const separator = linje.includes('–') ? '–' : '-';
                     const deler = linje.split(separator);
                     
                     if (deler.length >= 2) {
                         const artist = deler[0].trim();
-                        // Resten av linjen inneholder konsertene (f.eks: "NO (11-09-1989), NO (11-09-1989)")
                         const konsertDel = deler.slice(1).join(separator).trim();
 
-                        // Bruker RegEx (regulært uttrykk) til å finne alle mønstre som matcher "LAND (DATO)"
-                        // Eksempel: NO (11-09-1989)
-                        const regex = /([A-Z]{2,3})\s*\(([^)]+)\)/g;
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
                         let match;
+                        
+                        let midlertidigeDatoer = [];
 
+                        // Samler alle datoer og land for denne artisten først
                         while ((match = regex.exec(konsertDel)) !== null) {
-                            const land = match[1];  // F.eks. NO
-                            const dato = match[2];  // F.eks. 11-09-1989
-                            totaltAntall++;
+                            midlertidigeDatoer.push({
+                                land: match[1].toUpperCase(),
+                                dato: match[2]
+                            });
+                        }
 
-                            // Lager kortet for denne spesifikke konserten
+                        const antallGangerSett = midlertidigeDatoer.length;
+
+                        if (antallGangerSett > 0) {
+                            totaltKort++;
+                            
+                            // Bestemmer visuell klasse basert på antall konserter
+                            let tierKlasse = '';
+                            if (antallGangerSett === 2) {
+                                tierKlasse = 'tier-2'; // Medium størrelse
+                            } else if (antallGangerSett >= 3) {
+                                tierKlasse = 'tier-3'; // Stor størrelse!
+                            }
+
+                            // Genererer badges for hjørnet
+                            let badgesHTML = '';
+                            midlertidigeDatoer.forEach(c => {
+                                const flagg = hentFlagg(c.land);
+                                badgesHTML += `
+                                    <div class="date-badge" data-country="${c.land}">
+                                        <span>${flagg}</span> ${c.dato}
+                                    </div>
+                                `;
+                            });
+
+                            // Bygger det visuelle kortet
                             const kortHTML = `
-                                <div class="concert-card">
-                                    <div class="concert-info">
-                                        <h2>${artist}</h2>
-                                        <div class="concert-details">
-                                            <span class="location">🌍 ${land}</span>
-                                        </div>
+                                <div class="concert-card ${tierKlasse}">
+                                    <div class="concert-count">${antallGangerSett}x</div>
+                                    <div class="badge-container">
+                                        ${badgesHTML}
                                     </div>
-                                    <div class="concert-date">
-                                        📅 ${dato}
-                                    </div>
+                                    <h2 class="artist-name">${artist}</h2>
                                 </div>
                             `;
-                            container.innerHTML += kortHTML;
+                            
+                            grid.innerHTML += kortHTML;
                         }
                     }
                 });
 
-                if (totaltAntall === 0) {
-                    container.innerHTML = '<p class="status-msg">Fant ingen konserter. Sjekk at formatet matcher "Artist – NO (DD-MM-YYYY)".</p>';
+                if (totaltKort === 0) {
+                    grid.innerHTML = '<p class="status-msg">Kunne ikke tolke dataene. Sjekk filformatet.</p>';
                 }
 
             } catch (error) {
-                container.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}<br>Husk at filene må ligge i samme mappe, og husk nettleser-regelen (bruk f.eks. Firefox lokalt).</p>`;
+                grid.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil ved lasting: ${error.message}</p>`;
             }
         }
 
-        window.onload = lastInnKonserter;
+        window.onload = genererVisuellSide;
     </script>
 
 </body>
