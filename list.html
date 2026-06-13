@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Konserter</title>
+    <style>
+        /* Mørkt og stilig konsert-tema */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            width: 100%;
+            background: linear-gradient(180deg, #1f2833 0%, #0b0c10 100%);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #66fcf1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            color: #45f3ff;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Container for konsertene */
+        .concert-container {
+            max-width: 800px;
+            width: 90%;
+            margin: 2rem 0;
+        }
+
+        /* Styling for artist-kortet */
+        .concert-card {
+            background-color: #1f2833;
+            border-left: 5px solid #66fcf1;
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column; /* Endret til column for å stable datoer under ved behov */
+            gap: 0.8rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .concert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 252, 241, 0.15);
+        }
+
+        /* Toppdelen av kortet (Artistnavn) */
+        .concert-header h2 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Container for alle datoene til denne artisten */
+        .dates-container {
+            display: flex;
+            flex-wrap: wrap; /* Gjør at datoene hopper ned på neste linje hvis det blir for mange */
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Selve datotaggen */
+        .date-tag {
+            background-color: #0b0c10;
+            color: #66fcf1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            border: 1px solid #45f3ff;
+            white-space: nowrap;
+            font-family: monospace;
+        }
+
+        /* Landskode-merke inni datotaggen */
+        .country-badge {
+            color: #a9b7c6;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            text-transform: uppercase;
+        }
+
+        .status-msg {
+            text-align: center;
+            font-style: italic;
+            color: #a9b7c6;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mine Konsertopplevelser</h1>
+        <p>Generert automatisk fra konsertliste.txt</p>
+    </header>
+
+    <main class="concert-container" id="concert-list">
+        <p class="status-msg">Laster inn konsertene dine...</p>
+    </main>
+
+    <script>
+        async function lastInnKonserter() {
+            const container = document.getElementById('concert-list');
+            
+            try {
+                const response = await fetch('konsertliste.txt');
+                if (!response.ok) throw new Error('Kunne ikke laste konsertliste.txt');
+                
+                const tekstData = await response.text();
+                const linjer = tekstData.split('\n');
+                
+                container.innerHTML = '';
+                let antallArtister = 0;
+
+                linjer.forEach(linje => {
+                    if (linje.trim() === '') return;
+
+                    // Håndterer både vanlig bindestrek - og tankestrek –
+                    const separator = linje.includes('–') ? '–' : '-';
+                    const deler = linje.split(separator);
+                    
+                    if (deler.length >= 2) {
+                        const artist = deler[0].trim();
+                        const konsertDel = deler.slice(1).join(separator).trim();
+
+                        // RegEx for å hente ut alle konserter på linjen: LAND (DATO)
+                        const regex = /([A-Z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        let datoerHTML = '';
+
+                        // Går igjennom alle datoene som finnes på denne linjen
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            const land = match[1];
+                            const dato = match[2];
+                            
+                            // Bygger en "tag" for hver dato
+                            datoerHTML += `
+                                <div class="date-tag">
+                                    <span class="country-badge">🌍 ${land}</span>${dato}
+                                </div>
+                            `;
+                        }
+
+                        // Hvis vi fant minst én dato, lager vi kortet for artisten
+                        if (datoerHTML !== '') {
+                            antallArtister++;
+                            const kortHTML = `
+                                <div class="concert-card">
+                                    <div class="concert-header">
+                                        <h2>${artist}</h2>
+                                    </div>
+                                    <div class="dates-container">
+                                        ${datoerHTML}
+                                    </div>
+                                </div>
+                            `;
+                            container.innerHTML += kortHTML;
+                        }
+                    }
+                });
+
+                if (antallArtister === 0) {
+                    container.innerHTML = '<p class="status-msg">Fant ingen konserter. Sjekk at formatet matcher "Artist – NO (DD-MM-YYYY)".</p>';
+                }
+
+            } catch (error) {
+                container.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}<br>Husk at filene må ligge i samme mappe, og test gjerne i Firefox lokalt.</p>`;
+            }
+        }
+
+        window.onload = lastInnKonserter;
+    </script>
+
+</body>
+</html>
