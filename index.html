@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Konsertopplevelser - Interaktiv Ordsky</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --text-main: #ffffff;
+            --text-muted: #71717a;
+            --accent: #66fcf1;
+            --tooltip-bg: #1f2833;
+            --badge-bg: #0b0c10;
+            --input-bg: #141519;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            text-align: center;
+            padding: 5rem 1rem 2rem 1rem;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Kontrollpanel for søk og sortering */
+        .controls {
+            display: flex;
+            gap: 12px;
+            width: 85%;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .search-input {
+            flex: 1;
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+
+        .sort-btn {
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 0 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .sort-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .sort-btn.active-mode {
+            background-color: rgba(102, 252, 241, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Ordskyen */
+        .cloud-container {
+            max-width: 950px;
+            width: 85%;
+            margin-bottom: 7rem;
+            text-align: center;
+            line-height: 3;
+        }
+
+        .cloud-item {
+            display: inline-block;
+            position: relative;
+            margin: 0 14px;
+            cursor: pointer;
+            transition: color 0.2s ease, opacity 0.2s ease;
+            color: #d4d4d8;
+            padding: 5px 0;
+            user-select: none;
+        }
+
+        /* Klasse for å skjule elementer som ikke matcher søket */
+        .cloud-item.hidden {
+            display: none !important;
+        }
+
+        .cloud-item:hover {
+            color: var(--accent);
+        }
+
+        .cloud-item.active {
+            color: var(--accent);
+            z-index: 999;
+        }
+
+        /* Skriftstørrelser basert på rating */
+        .size-10 { font-size: 2.8rem; font-weight: 700; color: #ffffff; }
+        .size-9  { font-size: 2.3rem; font-weight: 600; color: #f4f4f5; }
+        .size-8  { font-size: 1.8rem; font-weight: 500; color: #e4e4e7; }
+        .size-7  { font-size: 1.4rem; font-weight: 400; color: #a1a1aa; }
+        .size-6  { font-size: 1.1rem; font-weight: 300; color: #71717a; }
+
+        /* Pop-up / Tooltip boks */
+        .tooltip {
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--tooltip-bg);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            flex-direction: column;
+            gap: 10px;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        .cloud-item.active .tooltip {
+            display: flex;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+        }
+
+        /* Spretter OPP */
+        .cloud-item.active .tooltip.pop-up { bottom: 120%; }
+        .cloud-item.active .tooltip.pop-up::after {
+            top: 100%;
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+        }
+
+        /* Spretter NED */
+        .cloud-item.active .tooltip.pop-down { top: 120%; }
+        .cloud-item.active .tooltip.pop-down::after {
+            bottom: 100%;
+            border-color: transparent transparent var(--tooltip-bg) transparent;
+        }
+
+        /* Innhold i pop-up */
+        .artist-info-section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+            margin-bottom: 4px;
+        }
+
+        .info-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .info-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .info-btn {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .info-btn:hover {
+            color: #ffffff;
+        }
+
+        .tooltip-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .oval-badge {
+            background-color: var(--badge-bg);
+            color: #e4e4e7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: monospace;
+        }
+
+        .search-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.03);
+            transition: background-color 0.2s, color 0.2s;
+            border: 1px solid rgba(102, 252, 241, 0.2);
+        }
+
+        .search-link:hover {
+            background-color: var(--accent);
+            color: #0b0c10;
+        }
+
+        .status-msg {
+            text-align: center;
+            font-style: italic;
+            color: #4e4f54;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Konsertskyen</h1>
+        <p>Klikk på en artist for detaljer og info</p>
+    </header>
+
+    <!-- Det nye kontrollpanelet -->
+    <div class="controls">
+        <input type="text" id="search" class="search-input" placeholder="Søk på artist/band...">
+        <button id="sort-toggle" class="sort-btn">Sorter: Favoritter</button>
+    </div>
+
+    <main class="cloud-container" id="cloud">
+        <p class="status-msg">Konstruerer skyen...</p>
+    </main>
+
+    <script>
+        const flaggKart = { 
+            'NO': '🇳🇴', 'SE': '🇸🇪', 'DK': '🇩🇰', 'UK': '🇬🇧', 'GB': '🇬🇧', 
+            'US': '🇺🇸', 'DE': '🇩🇪', 'NL': '🇳🇱', 'FR': '🇫🇷', 'FI': '🇫🇮', 
+            'PL': '🇵🇱', 'IE': '🇮🇪' 
+        };
+        function hentFlagg(landekode) { return flaggKart[landekode.toUpperCase()] || '🌍'; }
+
+        function parseScore(ratingStr) {
+            if (!ratingStr) return 0;
+            const tall = parseFloat(ratingStr.split('/')[0]);
+            return isNaN(tall) ? 0 : tall;
+        }
+
+        function hentStørrelseKlasse(score) {
+            if (score === 10) return 'size-10';
+            if (score === 9) return 'size-9';
+            if (score === 8) return 'size-8';
+            if (score === 7) return 'size-7';
+            return 'size-6';
+        }
+
+        // Globale variable for å holde på dataene og nåværende tilstand
+        let globaleArtister = [];
+        let sorteringModus = 'favoritter'; // Kan være 'favoritter' eller 'alfabetisk'
+
+        // Lukker åpne pop-ups ved klikk på bakgrunnen
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.cloud-item')) {
+                document.querySelectorAll('.cloud-item').forEach(item => item.classList.remove('active'));
+            }
+        });
+
+        // Funksjon som tegner opp (eller tegner om) skyen basert på valgt sortering
+        function renderSky() {
+            const cloud = document.getElementById('cloud');
+            cloud.innerHTML = '';
+
+            // Sorter kopi av arrayet basert på modus
+            const sortertListe = [...globaleArtister];
+            if (sorteringModus === 'favoritter') {
+                sortertListe.sort((a, b) => {
+                    if (b.toppScore !== a.toppScore) return b.toppScore - a.toppScore;
+                    return b.totaltSett - a.totaltSett;
+                });
+            } else {
+                // Sorterer fra A til Å på artistnavn
+                sortertListe.sort((a, b) => a.navn.localeCompare(b.navn, 'no'));
+            }
+
+            sortertListe.forEach(artist => {
+                const størrelseKlasse = hentStørrelseKlasse(artist.toppScore);
+                const artistSøk = encodeURIComponent(artist.navn);
+                const spotifyUrl = `https://open.spotify.com/search/${artistSøk}`;
+                const wikiUrl = `https://no.wikipedia.org/w/index.php?search=${artistSøk}`;
+
+                let raderHTML = `
+                    <div class="artist-info-section">
+                        <div class="info-title">Artist Info</div>
+                        <div class="info-links">
+                            <a class="info-btn" href="${spotifyUrl}" target="_blank" rel="noopener">🎵 Spotify</a>
+                            <a class="info-btn" href="${wikiUrl}" target="_blank" rel="noopener">📖 Wikipedia</a>
+                        </div>
+                    </div>
+                    <div class="info-title" style="margin-top: 5px;">Dine Konserter</div>
+                `;
+                
+                artist.konserter.forEach(c => {
+                    const søkeTekst = encodeURIComponent(`${artist.navn} ${c.land} ${c.dato} concert`);
+                    const googleSøkUrl = `https://www.google.com/search?q=${søkeTekst}`;
+
+                    raderHTML += `
+                        <div class="tooltip-row">
+                            <div class="oval-badge">
+                                <span>${hentFlagg(c.land)}</span>
+                                <span>${c.dato}</span>
+                            </div>
+                            <a class="search-link" href="${googleSøkUrl}" target="_blank" rel="noopener noreferrer">
+                                Vis info 🔗
+                            </a>
+                        </div>
+                    `;
+                });
+
+                const item = document.createElement('div');
+                item.className = `cloud-item ${størrelseKlasse}`;
+                // Lagrer artistnavnet i en HTML-attributt for superrask filtrering under søk
+                item.setAttribute('data-name', artist.navn.toLowerCase());
+                item.innerHTML = `${artist.navn} <div class="tooltip">${raderHTML}</div>`;
+                
+                item.addEventListener('click', function(e) {
+                    if (e.target.closest('.tooltip')) return;
+                    e.stopPropagation();
+                    
+                    const tooltipElement = this.querySelector('.tooltip');
+                    const varAktiv = this.classList.contains('active');
+                    
+                    document.querySelectorAll('.cloud-item').forEach(i => i.classList.remove('active'));
+                    
+                    if (!varAktiv) {
+                        const koordinater = this.getBoundingClientRect();
+                        const vinduHøyde = window.innerHeight;
+                        
+                        if (koordinater.top < vinduHøyde / 2) {
+                            tooltipElement.classList.remove('pop-up');
+                            tooltipElement.classList.add('pop-down');
+                        } else {
+                            tooltipElement.classList.remove('pop-down');
+                            tooltipElement.classList.add('pop-up');
+                        }
+                        this.classList.add('active');
+                    }
+                });
+
+                cloud.appendChild(item);
+            });
+
+            // Kjør søkefiltrering rett etter rendring i tilfelle det står tekst i søkefeltet allerede
+            utførSøk();
+        }
+
+        // Søke-logikk som kjører i sanntid
+        function utførSøk() {
+            const søkeTekst = document.getElementById('search').value.toLowerCase().trim();
+            const elementer = document.querySelectorAll('.cloud-item');
+
+            elementer.forEach(item => {
+                const artistNavn = item.getAttribute('data-name');
+                
+                // Sjekker om navnet inneholder søkestrengen
+                if (artistNavn.includes(søkeTekst)) {
+                    item.classList.remove('hidden'); // Vis elementet
+                } else {
+                    item.classList.add('hidden');    // Skjul elementet
+                    item.classList.remove('active'); // Lukk pop-up hvis den tilfeldigvis var åpen
+                }
+            });
+        }
+
+        async function initierApp() {
+            try {
+                const [konsertRes, referanseRes] = await Promise.all([
+                    fetch('konsertliste.txt'),
+                    fetch('referanseliste.txt')
+                ]);
+
+                if (!konsertRes.ok || !referanseRes.ok) throw new Error('Kunne ikke laste filene.');
+
+                const konsertTekst = await konsertRes.text();
+                const referanseTekst = await referanseRes.text();
+
+                const ratingOrdbok = {};
+                referanseTekst.split('\n').forEach(linje => {
+                    if (linje.trim() === '') return;
+                    const ratingMatch = linje.match(/^\[([^\]]+)\]/);
+                    if (!ratingMatch) return;
+                    
+                    const rating = ratingMatch[1].trim();
+                    const resten = linje.replace(/^\[[^\]]+\]/, '').trim();
+                    const sep = resten.includes('–') ? '–' : '-';
+                    const deler = resten.split(sep);
+                    
+                    if (deler.length >= 2) {
+                        const art = deler[0].trim().toLowerCase();
+                        const konsertDel = deler.slice(1).join(sep).trim();
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            ratingOrdbok[`${art}_${match[2].trim()}`] = rating;
+                        }
+                    }
+                });
+
+                // Fyller det globale artist-arrayet
+                konsertTekst.split('\n').forEach(linje => {
+                    if (linje.trim() === '') return;
+                    const sep = linje.includes('–') ? '–' : '-';
+                    const deler = linje.split(sep);
+                    
+                    if (deler.length >= 2) {
+                        const artistNavn = deler[0].trim();
+                        const konsertDel = deler.slice(1).join(sep).trim();
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        let konserter = [];
+                        let maksScore = 0;
+
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            const land = match[1].toUpperCase();
+                            const dato = match[2].trim();
+                            const scoreTall = parseScore(ratingOrdbok[`${artistNavn.toLowerCase()}_${dato}`]);
+
+                            if (scoreTall > maksScore) maksScore = scoreTall;
+                            konserter.push({ land, dato });
+                        }
+
+                        if (konserter.length > 0) {
+                            globaleArtister.push({ 
+                                navn: artistNavn, 
+                                konserter: konserter, 
+                                toppScore: maksScore,
+                                totaltSett: konserter.length
+                            });
+                        }
+                    }
+                });
+
+                // Tegn skyen for første gang
+                renderSky();
+
+                // EVENT LISTENERS FOR SØK OG KNAPP
+                document.getElementById('search').addEventListener('input', utførSøk);
+
+                const sortBtn = document.getElementById('sort-toggle');
+                sortBtn.addEventListener('click', function() {
+                    if (sorteringModus === 'favoritter') {
+                        sorteringModus = 'alfabetisk';
+                        this.textContent = 'Sorter: Alfabetisk';
+                        this.classList.add('active-mode');
+                    } else {
+                        sorteringModus = 'favoritter';
+                        this.textContent = 'Sorter: Favoritter';
+                        this.classList.remove('active-mode');
+                    }
+                    renderSky(); // Tegner om rekkefølgen på alt sammen
+                });
+
+            } catch (error) {
+                document.getElementById('cloud').innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}</p>`;
+            }
+        }
+
+        window.onload = initierApp;
+    </script>
+
+</body>
+</html>
