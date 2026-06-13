@@ -57,7 +57,7 @@
             width: 85%;
             margin-bottom: 5rem;
             text-align: center;
-            line-height: 2.4;
+            line-height: 2.6; /* Litt mer luft mellom linjene så boksene ikke overlapper */
         }
 
         /* Artist-navnene */
@@ -68,11 +68,12 @@
             cursor: pointer;
             transition: color 0.2s ease, transform 0.2s ease;
             color: #d4d4d8;
+            padding: 5px 0; /* Gjør treffpunktet for musa litt større */
         }
 
         .cloud-item:hover {
             color: var(--accent);
-            transform: scale(1.05);
+            transform: scale(1.03);
             z-index: 10;
         }
 
@@ -83,32 +84,36 @@
         .size-7  { font-size: 1.4rem; font-weight: 400; color: #a1a1aa; }
         .size-6  { font-size: 1.1rem; font-weight: 300; color: #71717a; }
 
-        /* Pop-up / Tooltip boks */
+        /* POP-UP / TOOLTIP BOKS */
         .tooltip {
             visibility: hidden;
             opacity: 0;
             position: absolute;
-            bottom: 135%;
+            bottom: 105%; /* Flyttet helt ned på kanten av teksten */
             left: 50%;
-            transform: translateX(-50%) translateY(10px);
+            transform: translateX(-50%) translateY(5px);
             background-color: var(--tooltip-bg);
             padding: 12px;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
-            flex-direction: column; /* Stable flere datoer vertikalt i pop-upen */
+            flex-direction: column;
             gap: 8px;
             white-space: nowrap;
-            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+            transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
             z-index: 99;
-            /* Fjernet pointer-events: none for at man skal kunne klikke på søkelenken */
+            
+            /* SIKKERHETSBRO: Denne tykke bunn-paddingen fungerer som en usynlig */
+            /* bro mellom pop-upen og teksten under, så den ikke lukker seg. */
+            padding-bottom: 20px; 
         }
 
+        /* Den lille pilen i bunnen av pop-upen */
         .tooltip::after {
             content: "";
             position: absolute;
-            top: 100%;
+            top: calc(100% - 10px); /* Justert for å passe med den nye paddingen */
             left: 50%;
             transform: translateX(-50%);
             border-width: 6px;
@@ -220,7 +225,6 @@
                 const konsertTekst = await konsertRes.text();
                 const referanseTekst = await referanseRes.text();
 
-                // 1. Bygg rating-ordbok
                 const ratingOrdbok = {};
                 referanseTekst.split('\n').forEach(linje => {
                     if (linje.trim() === '') return;
@@ -243,7 +247,6 @@
                     }
                 });
 
-                // 2. Samle artister og finn vekter (Toppscore og totalt antall konserter)
                 const artistArray = [];
                 konsertTekst.split('\n').forEach(linje => {
                     if (linje.trim() === '') return;
@@ -278,24 +281,19 @@
                     }
                 });
 
-                // 3. SORTERING LOGIKK: 
-                // Høyest rating kommer først. Ved lik rating, sorter på den du har sett flest ganger.
                 artistArray.sort((a, b) => {
                     if (b.toppScore !== a.toppScore) {
-                        return b.toppScore - a.toppScore; // Ranger etter poeng
+                        return b.toppScore - a.toppScore;
                     }
-                    return b.totaltSett - a.totaltSett; // Ved poenglikhet, ranger etter antall datoer
+                    return b.totaltSett - a.totaltSett;
                 });
 
-                // 4. Tegn ordskyen
                 cloud.innerHTML = '';
                 artistArray.forEach(artist => {
                     const størrelseKlasse = hentStørrelseKlasse(artist.toppScore);
                     
-                    // Bygger radene inni pop-upen med søkelenke
                     let raderHTML = '';
                     artist.konserter.forEach(c => {
-                        // Genererer en ren søkestreng for Google, f.eks: "Coldplay GB 09-12-2025 concert"
                         const søkeTekst = encodeURIComponent(`${artist.navn} ${c.land} ${c.dato} concert`);
                         const googleSøkUrl = `https://www.google.com/search?q=${søkeTekst}`;
 
@@ -328,7 +326,7 @@
             }
         }
 
-        window.onload = dev=genererAvansertOrdsky;
+        window.onload = genererAvansertOrdsky;
     </script>
 
 </body>
