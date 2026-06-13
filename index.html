@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Konsertopplevelser</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --text-main: #ffffff;
+            --text-sub: #71717a;
+            --accent: #45f3ff;
+            --badge-bg: #1e1e24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            text-align: center;
+            padding: 5rem 1rem 3rem 1rem;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-sub);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Containeren for hele listen */
+        .concert-list {
+            max-width: 650px;
+            width: 90%;
+            margin-bottom: 5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* God plass mellom hver artist */
+        }
+
+        /* Hver artist-rad */
+        .artist-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #1f2023; /* Tynn, diskret skillelinje */
+        }
+
+        /* Fjern linjen på det aller siste elementet */
+        .artist-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Artistnavnet - ren typografi */
+        .artist-name {
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            margin: 0;
+        }
+
+        /* Container for de ovale badgene */
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Små ovale badges */
+        .oval-badge {
+            background-color: var(--badge-bg);
+            color: #e4e4e7;
+            padding: 5px 14px;
+            border-radius: 20px; /* Gjør den oval */
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .oval-badge .flag {
+            font-size: 0.9rem;
+        }
+
+        .status-msg {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-sub);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Konsertloggen</h1>
+        <p>Kuratert liste med mine beste opplevelser øverst</p>
+    </header>
+
+    <main class="concert-list" id="main-list">
+        <p class="status-msg">Laster inn listen...</p>
+    </main>
+
+    <script>
+        const flaggKart = { 
+            'NO': '🇳🇴', 'SE': '🇸🇪', 'DK': '🇩🇰', 'UK': '🇬🇧', 'GB': '🇬🇧', 
+            'US': '🇺🇸', 'DE': '🇩🇪', 'NL': '🇳🇱', 'FR': '🇫🇷', 'FI': '🇫🇮', 
+            'PL': '🇵🇱', 'IE': '🇮🇪' 
+        };
+        function hentFlagg(landekode) { return flaggKart[landekode.toUpperCase()] || '🌍'; }
+
+        // Hjelpefunksjon for å gjøre f.eks "10/10" om til et reelt tall (10) for sortering
+        function parseScore(ratingStr) {
+            if (!ratingStr) return 0;
+            const tall = parseFloat(ratingStr.split('/')[0]);
+            return isNaN(tall) ? 0 : tall;
+        }
+
+        async function genererMinimalistiskSide() {
+            const mainList = document.getElementById('main-list');
+            
+            try {
+                const [konsertRes, referanseRes] = await Promise.all([
+                    fetch('konsertliste.txt'),
+                    fetch('referanseliste.txt')
+                ]);
+
+                if (!konsertRes.ok || !referanseRes.ok) {
+                    throw new Error('Kunne ikke laste tekstfilene. Sjekk at begge ligger i samme mappe.');
+                }
+
+                const konsertTekst = await konsertRes.text();
+                const referanseTekst = await referanseRes.text();
+
+                // 1. Bygg oppslagsverk for rating
+                const ratingOrdbok = {};
+                referanseTekst.split('\n').forEach(linje => {
+                    if (linje.trim() === '') return;
+                    const ratingMatch = linje.match(/^\[([^\]]+)\]/);
+                    if (!ratingMatch) return;
+                    
+                    const rating = ratingMatch[1].trim();
+                    const resten = linje.replace(/^\[[^\]]+\]/, '').trim();
+                    const sep = resten.includes('–') ? '–' : '-';
+                    const deler = resten.split(sep);
+                    
+                    if (deler.length >= 2) {
+                        const art = deler[0].trim().toLowerCase();
+                        const konsertDel = deler.slice(1).join(sep).trim();
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            const dat = match[2].trim();
+                            ratingOrdbok[`${art}_${dat}`] = rating;
+                        }
+                    }
+                });
+
+                // 2. Prosesser konsertlisten og samle alle artister i et array
+                const artistArray = [];
+                const linjer = konsertTekst.split('\n');
+
+                linjer.forEach(linje => {
+                    if (linje.trim() === '') return;
+                    const sep = linje.includes('–') ? '–' : '-';
+                    const deler = linje.split(sep);
+                    
+                    if (deler.length >= 2) {
+                        const artistNavn = deler[0].trim();
+                        const konsertDel = deler.slice(1).join(sep).trim();
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        let konserter = [];
+                        let maksScoreForArtist = 0;
+
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            const land = match[1].toUpperCase();
+                            const dato = match[2].trim();
+                            
+                            // Finn ratingen til denne spesifikke datoen
+                            const oppslagsNøkkel = `${artistNavn.toLowerCase()}_${dato}`;
+                            const ratingStr = ratingOrdbok[oppslagsNøkkel] || '';
+                            const scoreTall = parseScore(ratingStr);
+
+                            // Hold styr på den høyeste scoren denne artisten har fått totalt
+                            if (scoreTall > maksScoreForArtist) {
+                                maksScoreForArtist = scoreTall;
+                            }
+
+                            konserter.push({ land, dato });
+                        }
+
+                        if (konserter.length > 0) {
+                            artistArray.push({
+                                navn: artistNavn,
+                                konserter: konserter,
+                                toppScore: maksScoreForArtist
+                            });
+                        }
+                    }
+                });
+
+                // 3. SORTERING: De med høyest toppScore havner øverst. 
+                // Ved lik score sorteres de alfabetisk på artistnavn.
+                artistArray.sort((a, b) => {
+                    if (b.toppScore !== a.toppScore) {
+                        return b.toppScore - a.toppScore;
+                    }
+                    return a.navn.localeCompare(b.navn);
+                });
+
+                // 4. GENERER HTML (Uten å vise selve rangeringen)
+                mainList.innerHTML = '';
+                
+                artistArray.forEach(artist => {
+                    let badgesHTML = '';
+                    artist.konserter.forEach(c => {
+                        const flagg = hentFlagg(c.land);
+                        badgesHTML += `
+                            <div class="oval-badge">
+                                <span class="flag">${flagg}</span>
+                                <span>${c.dato}</span>
+                            </div>
+                        `;
+                    });
+
+                    const radHTML = `
+                        <div class="artist-row">
+                            <h2 class="artist-name">${artist.navn}</h2>
+                            <div class="badge-container">
+                                ${badgesHTML}
+                            </div>
+                        </div>
+                    `;
+                    mainList.innerHTML += radHTML;
+                });
+
+                if (artistArray.length === 0) {
+                    mainList.innerHTML = '<p class="status-msg">Ingen konserter funnet.</p>';
+                }
+
+            } catch (error) {
+                mainList.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}</p>`;
+            }
+        }
+
+        window.onload = genererMinimalistiskSide;
+    </script>
+
+</body>
+</html>
