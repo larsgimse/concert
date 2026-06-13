@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mine Konserter</title>
     <style>
-        /* Stilrent og moderne mørkt tema */
+        /* Mørkt og stilig konsert-tema */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0b0c10;
@@ -46,13 +46,13 @@
             margin: 2rem 0;
         }
 
-        /* Styling for hvert konsert-kort som genereres */
+        /* Styling for hvert konsert-kort */
         .concert-card {
             background-color: #1f2833;
             border-left: 5px solid #66fcf1;
             border-radius: 4px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,14 +60,14 @@
         }
 
         .concert-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 252, 241, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 252, 241, 0.15);
         }
 
         .concert-info h2 {
-            margin: 0 0 0.5rem 0;
+            margin: 0 0 0.3rem 0;
             color: #ffffff;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
         }
 
         .concert-details {
@@ -76,23 +76,23 @@
         }
 
         .concert-details .location {
-            margin-right: 15px;
             color: #45f3ff;
+            font-weight: 500;
         }
 
         /* Dato-merkelapp */
         .concert-date {
             background-color: #0b0c10;
             color: #66fcf1;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 4px;
             font-weight: bold;
             font-size: 0.9rem;
             border: 1px solid #66fcf1;
             white-space: nowrap;
+            font-family: monospace; /* Gjør at datoer rykker likt */
         }
 
-        /* Feilmelding/Laster-tekst */
         .status-msg {
             text-align: center;
             font-style: italic;
@@ -105,82 +105,77 @@
 
     <header>
         <h1>Mine Konsertopplevelser</h1>
-        <p>Automatisk synkronisert fra konsertliste.txt</p>
+        <p>Generert automatisk fra konsertliste.txt</p>
     </header>
 
     <main class="concert-container" id="concert-list">
-        <p class="status-msg">Laster inn konserter...</p>
+        <p class="status-msg">Laster inn konsertene dine...</p>
     </main>
 
     <script>
-        // Funksjon som henter og leser txt-filen
         async function lastInnKonserter() {
             const container = document.getElementById('concert-list');
             
             try {
-                // Henter filen (må ligge i samme mappe)
                 const response = await fetch('konsertliste.txt');
-                
-                if (!response.ok) {
-                    throw new Error('Kunne ikke laste konsertliste.txt');
-                }
+                if (!response.ok) throw new Error('Kunne ikke laste konsertliste.txt');
                 
                 const tekstData = await response.text();
-                
-                // Deler opp filen linje for linje
                 const linjer = tekstData.split('\n');
                 
-                // Tømmer "Laster inn..." teksten
                 container.innerHTML = '';
-                
-                let antallKonserter = 0;
+                let totaltAntall = 0;
 
                 linjer.forEach(linje => {
-                    // Hopper over tomme linjer
                     if (linje.trim() === '') return;
 
-                    // DELER LINJEN UT FRA TEGNET '|'. 
-                    // Hvis du bruker semikolon i filen din, endrer du '|' til ';' under.
-                    const deler = linje.split('|');
-
-                    // Sjekker at linjen faktisk har 3 deler (Artist, Land, Dato)
-                    if (deler.length >= 3) {
+                    // Splitter artisten fra konsertene (håndterer både vanlig bindestrek - og tankestrek –)
+                    const separator = linje.includes('–') ? '–' : '-';
+                    const deler = linje.split(separator);
+                    
+                    if (deler.length >= 2) {
                         const artist = deler[0].trim();
-                        const land = deler[1].trim();
-                        const dato = deler[2].trim();
-                        
-                        antallKonserter++;
+                        // Resten av linjen inneholder konsertene (f.eks: "NO (11-09-1989), NO (11-09-1989)")
+                        const konsertDel = deler.slice(1).join(separator).trim();
 
-                        // Lager HTML-strukturen for konserten
-                        const kort HTML = `
-                            <div class="concert-card">
-                                <div class="concert-info">
-                                    <h2>${artist}</h2>
-                                    <div class="concert-details">
-                                        <span class="location">🌍 ${land}</span>
+                        // Bruker RegEx (regulært uttrykk) til å finne alle mønstre som matcher "LAND (DATO)"
+                        // Eksempel: NO (11-09-1989)
+                        const regex = /([A-Z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            const land = match[1];  // F.eks. NO
+                            const dato = match[2];  // F.eks. 11-09-1989
+                            totaltAntall++;
+
+                            // Lager kortet for denne spesifikke konserten
+                            const kortHTML = `
+                                <div class="concert-card">
+                                    <div class="concert-info">
+                                        <h2>${artist}</h2>
+                                        <div class="concert-details">
+                                            <span class="location">🌍 ${land}</span>
+                                        </div>
+                                    </div>
+                                    <div class="concert-date">
+                                        📅 ${dato}
                                     </div>
                                 </div>
-                                <div class="concert-date">
-                                    ${dato}
-                                </div>
-                            </div>
-                        `;
-                        
-                        // Legger til kortet på siden
-                        container.innerHTML += kortHTML;
+                            `;
+                            container.innerHTML += kortHTML;
+                        }
                     }
                 });
 
-                if (antallKonserter === 0) {
-                    container.innerHTML = '<p class="status-msg">Fant ingen gyldige konserter i filen. Sjekk formatet.</p>';
+                if (totaltAntall === 0) {
+                    container.innerHTML = '<p class="status-msg">Fant ingen konserter. Sjekk at formatet matcher "Artist – NO (DD-MM-YYYY)".</p>';
                 }
 
             } catch (error) {
-                container.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}<br>Sørg for at index.html og konsertliste.txt ligger i samme mappe.</p>`;
+                container.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}<br>Husk at filene må ligge i samme mappe, og husk nettleser-regelen (bruk f.eks. Firefox lokalt).</p>`;
             }
         }
 
-        // Kjører funksjonen når siden lastes inn
         window.onload = lastInnKonserter;
     </script>
 
