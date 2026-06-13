@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Konsertopplevelser - Ordsky</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --text-main: #ffffff;
+            --text-muted: #4e4f54;
+            --accent: #66fcf1;
+            --tooltip-bg: #1f2833;
+            --badge-bg: #0b0c10;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            text-align: center;
+            padding: 5rem 1rem 3rem 1rem;
+            max-width: 600px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: #71717a;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Containeren som lager selve ordskyen */
+        .cloud-container {
+            max-width: 900px;
+            width: 85%;
+            margin-bottom: 5rem;
+            text-align: center;
+            line-height: 2.2; /* Gir luft vertikalt mellom ordene */
+        }
+
+        /* Hvert enkelt artist-ord i skyen */
+        .cloud-item {
+            display: inline-block;
+            position: relative;
+            margin: 0 12px; /* Luft horisontalt mellom navnene */
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+            color: #d4d4d8;
+            font-weight: 400;
+        }
+
+        /* Hover-effekt på selve artistnavnet */
+        .cloud-item:hover {
+            color: var(--accent);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        /* DYNAMISKE SKRIFTSTØRRELSER BASERT PÅ RATING (Settes via JS, men styles her) */
+        .size-10 { font-size: 2.6rem; font-weight: 700; color: #ffffff; }
+        .size-9  { font-size: 2.1rem; font-weight: 500; color: #f4f4f5; }
+        .size-8  { font-size: 1.7rem; font-weight: 400; color: #e4e4e7; }
+        .size-7  { font-size: 1.4rem; font-weight: 400; color: #a1a1aa; }
+        .size-6  { font-size: 1.1rem; font-weight: 300; color: #71717a; }
+
+        /* TOOLTIP (Detaljboksen som dukker opp ved hover) */
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 130%; /* Plasserer boksen rett over navnet */
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: var(--tooltip-bg);
+            padding: 10px 14px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 6px;
+            white-space: nowrap;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+            z-index: 99;
+            pointer-events: none; /* Gjør at den ikke forstyrrer musen */
+        }
+
+        /* Den lille pilen i bunnen av tooltip-boksen */
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+        }
+
+        /* Vis detaljer når man hovrer over artisten */
+        .cloud-item:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Ovale badges inni tooltipen */
+        .oval-badge {
+            background-color: var(--badge-bg);
+            color: #e4e4e7;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-msg {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Konsertskyen</h1>
+        <p>Hold musen over artistene for å se hvor og når</p>
+    </header>
+
+    <main class="cloud-container" id="cloud">
+        <p class="status-msg">Genererer ordsky...</p>
+    </main>
+
+    <script>
+        const flaggKart = { 
+            'NO': '🇳🇴', 'SE': '🇸🇪', 'DK': '🇩🇰', 'UK': '🇬🇧', 'GB': '🇬🇧', 
+            'US': '🇺🇸', 'DE': '🇩🇪', 'NL': '🇳🇱', 'FR': '🇫🇷', 'FI': '🇫🇮', 
+            'PL': '🇵🇱', 'IE': '🇮🇪' 
+        };
+        function hentFlagg(landekode) { return flaggKart[landekode.toUpperCase()] || '🌍'; }
+
+        function parseScore(ratingStr) {
+            if (!ratingStr) return 0;
+            const tall = parseFloat(ratingStr.split('/')[0]);
+            return isNaN(tall) ? 0 : tall;
+        }
+
+        // Bestemmer hvilken CSS-skriftstørrelse artisten skal få basert på score
+        function hentStørrelseKlasse(score) {
+            if (score === 10) return 'size-10';
+            if (score === 9) return 'size-9';
+            if (score === 8) return 'size-8';
+            if (score === 7) return 'size-7';
+            return 'size-6';
+        }
+
+        async function genererOrdsky() {
+            const cloud = document.getElementById('cloud');
+            
+            try {
+                const [konsertRes, referanseRes] = await Promise.all([
+                    fetch('konsertliste.txt'),
+                    fetch('referanseliste.txt')
+                ]);
+
+                if (!konsertRes.ok || !referanseRes.ok) {
+                    throw new Error('Kunne ikke laste filene.');
+                }
+
+                const konsertTekst = await konsertRes.text();
+                const referanseTekst = await referanseRes.text();
+
+                // 1. Bygg rating-ordbok
+                const ratingOrdbok = {};
+                referanseTekst.split('\n').forEach(linje => {
+                    if (linje.trim() === '') return;
+                    const ratingMatch = linje.match(/^\[([^\]]+)\]/);
+                    if (!ratingMatch) return;
+                    
+                    const rating = ratingMatch[1].trim();
+                    const resten = linje.replace(/^\[[^\]]+\]/, '').trim();
+                    const sep = resten.includes('–') ? '–' : '-';
+                    const deler = resten.split(sep);
+                    
+                    if (deler.length >= 2) {
+                        const art = deler[0].trim().toLowerCase();
+                        const konsertDel = deler.slice(1).join(sep).trim();
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            ratingOrdbok[`${art}_${match[2].trim()}`] = rating;
+                        }
+                    }
+                });
+
+                // 2. Samle artister og finn toppscore
+                const artistArray = [];
+                konsertTekst.split('\n').forEach(linje => {
+                    if (linje.trim() === '') return;
+                    const sep = linje.includes('–') ? '–' : '-';
+                    const deler = linje.split(sep);
+                    
+                    if (deler.length >= 2) {
+                        const artistNavn = deler[0].trim();
+                        const konsertDel = deler.slice(1).join(sep).trim();
+                        const regex = /([A-Za-z]{2,3})\s*\(([^)]+)\)/g;
+                        let match;
+                        let konserter = [];
+                        let maksScore = 0;
+
+                        while ((match = regex.exec(konsertDel)) !== null) {
+                            const land = match[1].toUpperCase();
+                            const dato = match[2].trim();
+                            const scoreTall = parseScore(ratingOrdbok[`${artistNavn.toLowerCase()}_${dato}`]);
+
+                            if (scoreTall > maksScore) maksScore = scoreTall;
+                            konserter.push({ land, dato });
+                        }
+
+                        if (konserter.length > 0) {
+                            artistArray.push({ navn: artistNavn, konserter, toppScore: maksScore });
+                        }
+                    }
+                });
+
+                // 3. Tilfeldig rekkefølge (shuffling) så ordskyen ser organisk ut (ikke bare sortert på rad)
+                artistArray.sort(() => Math.random() - 0.5);
+
+                // 4. Tegn ordskyen
+                cloud.innerHTML = '';
+                artistArray.forEach(artist => {
+                    const størrelseKlasse = hentStørrelseKlasse(artist.toppScore);
+                    
+                    // Bygger de ovale badgene som skal gjemmes inni tooltipen
+                    let badgesHTML = '';
+                    artist.konserter.forEach(c => {
+                        badgesHTML += `
+                            <div class="oval-badge">
+                                <span>${hentFlagg(c.land)}</span>
+                                <span>${c.dato}</span>
+                            </div>
+                        `;
+                    });
+
+                    // Setter sammen elementet
+                    const itemHTML = `
+                        <div class="cloud-item ${størrelseKlasse}">
+                            ${artist.navn}
+                            <div class="tooltip">
+                                ${badgesHTML}
+                            </div>
+                        </div>
+                    `;
+                    cloud.innerHTML += itemHTML;
+                });
+
+            } catch (error) {
+                cloud.innerHTML = `<p class="status-msg" style="color: #ff6b6b;">Feil: ${error.message}</p>`;
+            }
+        }
+
+        window.onload = genererOrdsky;
+    </script>
+
+</body>
+</html>
