@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine Konsertopplevelser - Klikkbar Ordsky</title>
+    <title>Mine Konsertopplevelser - Smart Ordsky</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -51,35 +51,32 @@
             font-weight: 300;
         }
 
-        /* Ordskyen */
         .cloud-container {
             max-width: 950px;
             width: 85%;
-            margin-bottom: 5rem;
+            margin-bottom: 7rem;
             text-align: center;
-            line-height: 2.8;
+            line-height: 3; /* Litt mer luft for å gi plass til pop-ups */
         }
 
-        /* Artist-navnene */
         .cloud-item {
             display: inline-block;
             position: relative;
             margin: 0 14px;
             cursor: pointer;
-            transition: color 0.2s ease, transform 0.2s ease;
+            transition: color 0.2s ease;
             color: #d4d4d8;
             padding: 5px 0;
-            user-select: none; /* Hindrer blå tekstmarkering ved dobbeltklikk */
+            user-select: none;
         }
 
         .cloud-item:hover {
             color: var(--accent);
         }
 
-        /* Aktiv tilstand når artisten er klikket på */
         .cloud-item.active {
             color: var(--accent);
-            z-index: 100;
+            z-index: 999; /* Sikrer at aktiv pop-up ligger helt øverst */
         }
 
         /* Skriftstørrelser basert på rating */
@@ -89,42 +86,56 @@
         .size-7  { font-size: 1.4rem; font-weight: 400; color: #a1a1aa; }
         .size-6  { font-size: 1.1rem; font-weight: 300; color: #71717a; }
 
-        /* POP-UP BOKS (Styres nå via .active klassen istedenfor :hover) */
+        /* POP-UP BOKS (Posisjonering styres nå dynamisk av JS via .pop-up og .pop-down) */
         .tooltip {
-            display: none; /* Skjult som standard */
+            display: none;
             position: absolute;
-            bottom: 110%;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--tooltip-bg);
             padding: 16px;
             border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.12);
             flex-direction: column;
             gap: 10px;
             white-space: nowrap;
-            z-index: 999;
             text-align: left;
         }
 
-        /* Viser pop-up kun når artisten har klassen .active */
         .cloud-item.active .tooltip {
             display: flex;
         }
 
+        /* Standard pil (peker ned, brukes når boks er over artisten) */
         .tooltip::after {
             content: "";
             position: absolute;
-            top: 100%;
             left: 50%;
             transform: translateX(-50%);
             border-width: 6px;
             border-style: solid;
+        }
+
+        /* DYNAMISK RETNING 1: For artister i bunnen (Boksen spretter OPP) */
+        .cloud-item.active .tooltip.pop-up {
+            bottom: 120%;
+        }
+        .cloud-item.active .tooltip.pop-up::after {
+            top: 100%;
             border-color: var(--tooltip-bg) transparent transparent transparent;
         }
 
-        /* ARTIST INFO SEKSJON I TOPPEN AV POP-UP */
+        /* DYNAMISK RETNING 2: For artister på toppen (Boksen spretter NED) */
+        .cloud-item.active .tooltip.pop-down {
+            top: 120%;
+        }
+        .cloud-item.active .tooltip.pop-down::after {
+            bottom: 100%;
+            border-color: transparent transparent var(--tooltip-bg) transparent;
+        }
+
+        /* Innhold i pop-up */
         .artist-info-section {
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 10px;
@@ -159,7 +170,6 @@
             color: #ffffff;
         }
 
-        /* Konsertlistene inni pop-up */
         .tooltip-row {
             display: flex;
             align-items: center;
@@ -238,7 +248,7 @@
             return 'size-6';
         }
 
-        // Lukker alle pop-ups hvis man klikker på bakgrunnen
+        // Lukker åpne pop-ups ved klikk på bakgrunnen
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.cloud-item')) {
                 document.querySelectorAll('.cloud-item').forEach(item => {
@@ -247,7 +257,7 @@
             }
         });
 
-        async function genererKlikkSky() {
+        async function genererSmartSky() {
             const cloud = document.getElementById('cloud');
             
             try {
@@ -328,12 +338,10 @@
                 artistArray.forEach(artist => {
                     const størrelseKlasse = hentStørrelseKlasse(artist.toppScore);
                     
-                    // URL-formateringer for eksterne artistinfo-sider
                     const artistSøk = encodeURIComponent(artist.navn);
                     const spotifyUrl = `https://open.spotify.com/search/${artistSøk}`;
                     const wikiUrl = `https://no.wikipedia.org/w/index.php?search=${artistSøk}`;
 
-                    // Topp-seksjonen i pop-upen med generelle artistlenker
                     let infoSeksjonHTML = `
                         <div class="artist-info-section">
                             <div class="info-title">Artist Info</div>
@@ -364,25 +372,35 @@
                         `;
                     });
 
-                    // Lager selve sky-elementet
                     const item = document.createElement('div');
                     item.className = `cloud-item ${størrelseKlasse}`;
                     item.innerHTML = `${artist.navn} <div class="tooltip">${raderHTML}</div>`;
                     
-                    // KLIKK-LOGIKK: Skrur av og på pop-up
+                    // KLIKK-LOGIKK MED SMART REKKEFØLGE/RETNING
                     item.addEventListener('click', function(e) {
-                        // Hvis man klikker på en lenke inni pop-upen, skal vi ikke lukke den
                         if (e.target.closest('.tooltip')) return;
-
-                        e.stopPropagation(); // Hindrer bakgrunns-klikke-eventen
+                        e.stopPropagation();
                         
+                        const tooltipElement = this.querySelector('.tooltip');
                         const varAktiv = this.classList.contains('active');
                         
-                        // Lukker alle andre åpne pop-ups først
+                        // Lukk alle andre
                         document.querySelectorAll('.cloud-item').forEach(i => i.classList.remove('active'));
                         
-                        // Hvis den ikke var aktiv, åpner vi den nå
                         if (!varAktiv) {
+                            // Finn ut hvor på skjermen elementet er akkurat nå
+                            const koordinater = this.getBoundingClientRect();
+                            const vinduHøyde = window.innerHeight;
+                            
+                            // Hvis elementet er på øverste halvdel av skjermen, sprett NED. Ellers OPP.
+                            if (koordinater.top < vinduHøyde / 2) {
+                                tooltipElement.classList.remove('pop-up');
+                                tooltipElement.classList.add('pop-down');
+                            } else {
+                                tooltipElement.classList.remove('pop-down');
+                                tooltipElement.classList.add('pop-up');
+                            }
+
                             this.classList.add('active');
                         }
                     });
@@ -395,7 +413,7 @@
             }
         }
 
-        window.onload = genererKlikkSky;
+        window.onload = genererSmartSky;
     </script>
 
 </body>
