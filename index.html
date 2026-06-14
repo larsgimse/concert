@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine Konsertopplevelser - Dynamisk Ordsky</title>
+    <title>Mine Konsertopplevelser - Fargerik Ordsky</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -18,9 +18,16 @@
             --badge-bg: #0b0c10;
             --input-bg: #141519;
             
-            /* Farger til de nye hover-badgene basert på bildet ditt */
+            /* Hover-badge farger basert på Skjermbilde 2026-06-14 kl. 01.58.25.png */
             --hover-badge-bg: #4a5568;
             --hover-badge-border: #ffffff;
+
+            /* Artist fargenyanser basert på score */
+            --color-10: #66fcf1; /* Turkis glød */
+            --color-9:  #60a5fa; /* Klar lyseblå */
+            --color-8:  #a78bfa; /* Lys lilla */
+            --color-7:  #cbd5e1; /* Myk gråhvit */
+            --color-6:  #64748b; /* Dempet blågrå */
         }
 
         body {
@@ -59,14 +66,24 @@
 
         .controls {
             display: flex;
-            gap: 12px;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             width: 85%;
             max-width: 600px;
             margin-bottom: 3rem;
         }
 
+        @media (min-width: 480px) {
+            .controls {
+                flex-direction: row;
+                gap: 24px;
+            }
+        }
+
         .search-input {
-            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
             background-color: var(--input-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
@@ -82,36 +99,68 @@
             border-color: var(--accent);
         }
 
-        .sort-btn {
-            background-color: var(--input-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--text-main);
-            padding: 0 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
+        /* NYTT: SKYVEBRYTER (TOGGLE SWITCH) STYLING */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
             cursor: pointer;
-            transition: all 0.2s;
             white-space: nowrap;
         }
 
-        .sort-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+        .toggle-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.2s;
         }
 
-        .sort-btn.active-mode {
-            background-color: rgba(102, 252, 241, 0.1);
-            border-color: var(--accent);
-            color: var(--accent);
+        .toggle-label.active {
+            color: var(--text-main);
         }
 
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: #27272a;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        /* Når bryteren skyves over til høyre (Alfabetisk) */
+        .toggle-container.checked .toggle-switch {
+            background-color: rgba(102, 252, 241, 0.3);
+            border-color: var(--accent);
+        }
+
+        .toggle-container.checked .toggle-switch::after {
+            transform: translateX(24px);
+            background-color: var(--accent);
+        }
+
+        /* ORDSKYEN */
         .cloud-container {
             max-width: 950px;
             width: 85%;
             margin-bottom: 7rem;
             text-align: center;
-            line-height: 2.2; /* Litt mer høyde for å gi plass til de nye hover-badgene */
+            line-height: 2.2;
         }
 
         .cloud-item {
@@ -119,7 +168,7 @@
             position: relative;
             margin: 0 10px;
             cursor: pointer;
-            transition: color 0.2s ease, opacity 0.2s ease, font-size 0.2s ease;
+            transition: color 0.2s ease, opacity 0.2s ease, font-size 0.2s ease, transform 0.2s ease;
             padding: 5px 0;
             user-select: none;
         }
@@ -128,22 +177,23 @@
             display: none !important;
         }
 
-        /* NYTT: Varierte fargenyanser basert på rating (Lettere å skille artistene) */
-        .size-10 { font-size: 2.8rem; font-weight: 700; color: #ffffff; }
-        .size-9  { font-size: 2.3rem; font-weight: 600; color: #e4e4e7; }
-        .size-8  { font-size: 1.8rem; font-weight: 500; color: #a1a1aa; }
-        .size-7  { font-size: 1.4rem; font-weight: 400; color: #71717a; }
-        .size-6  { font-size: 1.1rem; font-weight: 300; color: #52525b; }
+        /* STØRRELSER OG SPESIFIKKE FARGER PER SCORE */
+        .size-10 { font-size: 2.8rem; font-weight: 700; color: var(--color-10); text-shadow: 0 0 15px rgba(102,252,241,0.15); }
+        .size-9  { font-size: 2.3rem; font-weight: 600; color: var(--color-9); }
+        .size-8  { font-size: 1.8rem; font-weight: 500; color: var(--color-8); }
+        .size-7  { font-size: 1.4rem; font-weight: 400; color: var(--color-7); }
+        .size-6  { font-size: 1.1rem; font-weight: 300; color: var(--color-6); }
 
+        /* Alfabetisk standardisert stil */
         .size-alphabetical { 
             font-size: 1.4rem; 
             font-weight: 400; 
-            color: #e4e4e7; 
         }
 
-        /* Hover-effekt på artisten */
+        /* Hover-effekter */
         .cloud-item:hover {
-            color: var(--accent) !important;
+            color: #ffffff !important;
+            transform: scale(1.05);
         }
 
         .cloud-item.active {
@@ -151,8 +201,7 @@
             z-index: 999;
         }
 
-
-        /* NYTT: SMÅ SØTE BADGES VED HOVER (Inspirert av skjermbildet ditt) */
+        /* SMÅ HOVER BADGES (Fra Skjermbilde) */
         .hover-badge-container {
             display: flex;
             gap: 4px;
@@ -164,10 +213,9 @@
             visibility: hidden;
             transition: opacity 0.15s ease, transform 0.15s ease;
             z-index: 50;
-            pointer-events: none; /* Gjør at de ikke forstyrrer klikking */
+            pointer-events: none;
         }
 
-        /* Vises kun når man hovrer, og SÅ LENGE pop-upen ikke er aktiv */
         .cloud-item:hover .hover-badge-container {
             opacity: 1;
             visibility: visible;
@@ -175,7 +223,7 @@
         }
         
         .cloud-item.active .hover-badge-container {
-            display: none; /* Skjul hover-badgen når den store boksen er åpen */
+            display: none;
         }
 
         .mini-badge {
@@ -190,8 +238,7 @@
             white-space: nowrap;
         }
 
-
-        /* DEN STORE KLIKKBARE POP-UPEN */
+        /* STOR POP-UP */
         .tooltip {
             display: none;
             position: absolute;
@@ -206,6 +253,7 @@
             gap: 10px;
             white-space: nowrap;
             text-align: left;
+            color: #ffffff !important; /* Låser teksten til hvit inni pop-up */
         }
 
         .cloud-item.active .tooltip {
@@ -321,7 +369,13 @@
 
     <div class="controls">
         <input type="text" id="search" class="search-input" placeholder="Søk på artist/band...">
-        <button id="sort-toggle" class="sort-btn">Sorter: Favoritter</button>
+        
+        <!-- NYTT: SKYVEBRYTER ELEMTENT -->
+        <div class="toggle-container" id="sort-toggle-container">
+            <span class="toggle-label active" id="label-favoritter">Favoritter</span>
+            <div class="toggle-switch"></div>
+            <span class="toggle-label" id="label-alfabetisk">Alfabetisk</span>
+        </div>
     </div>
 
     <main class="cloud-container" id="cloud">
@@ -350,6 +404,15 @@
             return 'size-6';
         }
 
+        // Returnerer fargevariabelen basert på scoren slik at det blir lett å skille dem fra hverandre
+        function hentFargeForScore(score) {
+            if (score === 10) return 'var(--color-10)';
+            if (score === 9) return 'var(--color-9)';
+            if (score === 8) return 'var(--color-8)';
+            if (score === 7) return 'var(--color-7)';
+            return 'var(--color-6)';
+        }
+
         let globaleArtister = [];
         let sorteringModus = 'favoritter';
 
@@ -374,24 +437,30 @@
             }
 
             sortertListe.forEach(artist => {
-                const størrelseKlasse = (sorteringModus === 'favoritter') 
-                    ? hentStørrelseKlasse(artist.toppScore) 
-                    : 'size-alphabetical';
+                let klasseNavn = '';
+                let stilFarge = '';
+
+                if (sorteringModus === 'favoritter') {
+                    klasseNavn = `cloud-item ${hentStørrelseKlasse(artist.toppScore)}`;
+                } else {
+                    // Alfabetisk modus: Lik størrelse på alle, men beholder tildelt fargekodemiks for lesbarhet
+                    klasseNavn = 'cloud-item size-alphabetical';
+                    stilFarge = hentFargeForScore(artist.toppScore);
+                }
 
                 const artistSøk = encodeURIComponent(artist.navn);
                 const spotifyUrl = `https://open.spotify.com/search/${artistSøk}`;
                 const wikiUrl = `https://no.wikipedia.org/w/index.php?search=${artistSøk}`;
 
-                // 1. GENERER DE SMÅ SØTE BADGENE TIL HOVER-BRUK
+                // Hover-badges utregning
                 let hoverBadgesHTML = '<div class="hover-badge-container">';
                 artist.konserter.forEach(c => {
-                    // Tar kun de siste 4 tegnene av datoen i tilfelle det står full dato (f.eks "2025")
                     const aarstall = c.dato.slice(-4); 
                     hoverBadgesHTML += `<span class="mini-badge">${aarstall}</span>`;
                 });
                 hoverBadgesHTML += '</div>';
 
-                // 2. GENERER INNHOLD TIL DEN STORE POP-UPEN
+                // Pop-up innhold
                 let raderHTML = `<div class="info-title">Dine Konserter</div>`;
                 artist.konserter.forEach(c => {
                     const søkeTekst = encodeURIComponent(`${artist.navn} ${c.land} ${c.dato} concert`);
@@ -420,12 +489,12 @@
                     </div>
                 `;
 
-                // Sette sammen hele elementet
                 const item = document.createElement('div');
-                item.className = `cloud-item ${størrelseKlasse}`;
+                item.className = klasseNavn;
+                if (stilFarge) {
+                    item.style.color = stilFarge;
+                }
                 item.setAttribute('data-name', artist.navn.toLowerCase());
-                
-                // Legger inn både de små hover-badgene og den store tooltippen i HTML-strukturen
                 item.innerHTML = `${hoverBadgesHTML} ${artist.navn} <div class="tooltip">${raderHTML}</div>`;
                 
                 item.addEventListener('click', function(e) {
@@ -544,16 +613,22 @@
 
                 document.getElementById('search').addEventListener('input', utførSøk);
 
-                const sortBtn = document.getElementById('sort-toggle');
-                sortBtn.addEventListener('click', function() {
+                // LOGIKK FOR SKYVEBRYTEREN (TOGGLE SWITCH)
+                const toggleContainer = document.getElementById('sort-toggle-container');
+                const labelFavoritter = document.getElementById('label-favoritter');
+                const labelAlfabetisk = document.getElementById('label-alfabetisk');
+
+                toggleContainer.addEventListener('click', function() {
                     if (sorteringModus === 'favoritter') {
                         sorteringModus = 'alfabetisk';
-                        this.textContent = 'Sorter: Alfabetisk';
-                        this.classList.add('active-mode');
+                        toggleContainer.classList.add('checked');
+                        labelFavoritter.classList.remove('active');
+                        labelAlfabetisk.classList.add('active');
                     } else {
                         sorteringModus = 'favoritter';
-                        this.textContent = 'Sorter: Favoritter';
-                        this.classList.remove('active-mode');
+                        toggleContainer.classList.remove('checked');
+                        labelFavoritter.classList.add('active');
+                        labelAlfabetisk.classList.remove('active');
                     }
                     renderSky();
                 });
