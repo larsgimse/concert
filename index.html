@@ -22,7 +22,7 @@
             --hover-badge-bg: #4a5568;
             --hover-badge-border: #ffffff;
 
-            /* Artist fargenyanser basert på score */
+            /* Artist fargenyanser basert på score (brukes i favorittmodus) */
             --color-10: #66fcf1; /* Turkis glød */
             --color-9:  #60a5fa; /* Klar lyseblå */
             --color-8:  #a78bfa; /* Lys lilla */
@@ -99,7 +99,7 @@
             border-color: var(--accent);
         }
 
-        /* NYTT: SKYVEBRYTER (TOGGLE SWITCH) STYLING */
+        /* SKYVEBRYTER (TOGGLE SWITCH) STYLING */
         .toggle-container {
             display: flex;
             align-items: center;
@@ -143,7 +143,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
 
-        /* Når bryteren skyves over til høyre (Alfabetisk) */
         .toggle-container.checked .toggle-switch {
             background-color: rgba(102, 252, 241, 0.3);
             border-color: var(--accent);
@@ -177,22 +176,23 @@
             display: none !important;
         }
 
-        /* STØRRELSER OG SPESIFIKKE FARGER PER SCORE */
+        /* STØRRELSER OG SPESIFIKKE FARGER PER SCORE (FAVORITTMODUS) */
         .size-10 { font-size: 2.8rem; font-weight: 700; color: var(--color-10); text-shadow: 0 0 15px rgba(102,252,241,0.15); }
         .size-9  { font-size: 2.3rem; font-weight: 600; color: var(--color-9); }
         .size-8  { font-size: 1.8rem; font-weight: 500; color: var(--color-8); }
         .size-7  { font-size: 1.4rem; font-weight: 400; color: var(--color-7); }
         .size-6  { font-size: 1.1rem; font-weight: 300; color: var(--color-6); }
 
-        /* Alfabetisk standardisert stil */
+        /* ALFABETISK MODUS: Ren hvit farge og lik størrelse */
         .size-alphabetical { 
             font-size: 1.4rem; 
             font-weight: 400; 
+            color: #ffffff; /* Låst til ren hvit farge */
         }
 
         /* Hover-effekter */
         .cloud-item:hover {
-            color: #ffffff !important;
+            color: var(--accent) !important; /* Lyser opp i accent-farge ved hover */
             transform: scale(1.05);
         }
 
@@ -253,7 +253,7 @@
             gap: 10px;
             white-space: nowrap;
             text-align: left;
-            color: #ffffff !important; /* Låser teksten til hvit inni pop-up */
+            color: #ffffff !important;
         }
 
         .cloud-item.active .tooltip {
@@ -370,7 +370,6 @@
     <div class="controls">
         <input type="text" id="search" class="search-input" placeholder="Søk på artist/band...">
         
-        <!-- NYTT: SKYVEBRYTER ELEMTENT -->
         <div class="toggle-container" id="sort-toggle-container">
             <span class="toggle-label active" id="label-favoritter">Favoritter</span>
             <div class="toggle-switch"></div>
@@ -404,15 +403,6 @@
             return 'size-6';
         }
 
-        // Returnerer fargevariabelen basert på scoren slik at det blir lett å skille dem fra hverandre
-        function hentFargeForScore(score) {
-            if (score === 10) return 'var(--color-10)';
-            if (score === 9) return 'var(--color-9)';
-            if (score === 8) return 'var(--color-8)';
-            if (score === 7) return 'var(--color-7)';
-            return 'var(--color-6)';
-        }
-
         let globaleArtister = [];
         let sorteringModus = 'favoritter';
 
@@ -438,21 +428,19 @@
 
             sortertListe.forEach(artist => {
                 let klasseNavn = '';
-                let stilFarge = '';
 
                 if (sorteringModus === 'favoritter') {
                     klasseNavn = `cloud-item ${hentStørrelseKlasse(artist.toppScore)}`;
                 } else {
-                    // Alfabetisk modus: Lik størrelse på alle, men beholder tildelt fargekodemiks for lesbarhet
+                    // Alfabetisk modus: Bruker kun den felles hvite klassen (ingen inline style-farger her nå)
                     klasseNavn = 'cloud-item size-alphabetical';
-                    stilFarge = hentFargeForScore(artist.toppScore);
                 }
 
                 const artistSøk = encodeURIComponent(artist.navn);
                 const spotifyUrl = `https://open.spotify.com/search/${artistSøk}`;
                 const wikiUrl = `https://no.wikipedia.org/w/index.php?search=${artistSøk}`;
 
-                // Hover-badges utregning
+                // Hover-badges
                 let hoverBadgesHTML = '<div class="hover-badge-container">';
                 artist.konserter.forEach(c => {
                     const aarstall = c.dato.slice(-4); 
@@ -491,9 +479,6 @@
 
                 const item = document.createElement('div');
                 item.className = klasseNavn;
-                if (stilFarge) {
-                    item.style.color = stilFarge;
-                }
                 item.setAttribute('data-name', artist.navn.toLowerCase());
                 item.innerHTML = `${hoverBadgesHTML} ${artist.navn} <div class="tooltip">${raderHTML}</div>`;
                 
@@ -613,7 +598,6 @@
 
                 document.getElementById('search').addEventListener('input', utførSøk);
 
-                // LOGIKK FOR SKYVEBRYTEREN (TOGGLE SWITCH)
                 const toggleContainer = document.getElementById('sort-toggle-container');
                 const labelFavoritter = document.getElementById('label-favoritter');
                 const labelAlfabetisk = document.getElementById('label-alfabetisk');
