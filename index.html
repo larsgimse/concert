@@ -18,6 +18,7 @@ button{cursor:pointer;text-transform:uppercase;font-size:10px;letter-spacing:.15
 label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter-spacing:.2em;margin:4px 0 3px}
 #drop.over{background:#fff;color:#000}
 #stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:12px 0;text-align:center}#stats b{display:block;font-size:17px;font-weight:200}#stats span{color:var(--d);font-size:8px;text-transform:uppercase}
+#help[hidden]{display:none}#help{color:var(--d);font-size:10px;line-height:1.5;margin:2px 0 10px}#help b{color:#fff;font-weight:400}
 #msg{color:var(--d);font-size:10px;min-height:14px;margin-bottom:8px}
 #bar{height:1px;background:var(--f);width:0;transition:width .3s;margin-bottom:6px}
 #year{position:absolute;z-index:400;right:24px;top:8px;font-weight:100;font-size:min(14vw,120px);line-height:1;letter-spacing:-.02em;pointer-events:none;text-align:right;text-shadow:0 0 30px #000}
@@ -38,6 +39,12 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 .leaflet-tooltip.tt{background:#000;color:#fff;border:1px solid var(--l);border-radius:0;box-shadow:none;padding:8px 10px;font-size:11px;letter-spacing:.04em}.tt:before{display:none}.tv+.tv{margin-top:6px}.tv b{font-weight:400;text-transform:uppercase;letter-spacing:.1em}.ta{color:var(--d);font-size:10px;white-space:normal;max-width:260px}
 .m em{line-height:1.3}
 #list{position:absolute;z-index:450;right:16px;top:170px;bottom:130px;width:280px;overflow:auto;background:rgba(0,0,0,.82);border:1px solid var(--l);padding:12px 14px}.lh{display:flex;justify-content:space-between;font-weight:200;font-size:13px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:8px}.lh a{cursor:pointer;color:var(--d)}.lh a:hover{color:#fff}.li{border-top:1px solid var(--l);padding:7px 0;cursor:pointer}.li:hover{background:rgba(255,255,255,.1)}.li .pd{font-size:10px}
+#imod{position:fixed;inset:0;z-index:2100;background:#000;display:flex}#imod[hidden]{display:none}#io{width:240px;flex:none;padding:20px;border-right:1px solid var(--l);overflow:auto}#io h2{font-weight:200;font-size:14px;letter-spacing:.3em;text-transform:uppercase;margin:0 0 12px}.hint{color:var(--d);font-size:10px;line-height:1.5;margin:0 0 16px}.ck{display:flex;align-items:center;gap:8px;color:#fff;font-size:11px;letter-spacing:.08em;text-transform:none;margin:0 0 9px;cursor:pointer}.ck input{accent-color:#fff;margin:0}#io .r{display:flex;gap:8px;margin-top:18px}#io button{margin:0}
+#ipw{flex:1;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;padding:20px}#pv{position:relative;outline:1px solid var(--l);overflow:hidden;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}#pc{display:block;width:100%;height:100%}
+.blk{position:absolute;cursor:move;white-space:pre;user-select:none;touch-action:none;text-shadow:0 0 calc(var(--u)*8) #000,0 0 calc(var(--u)*8) #000}.blk:hover{outline:1px dashed rgba(255,255,255,.5);outline-offset:2px}.bx{position:absolute;right:-10px;top:-10px;width:18px;height:18px;border-radius:50%;background:#fff;color:#000;font:10px/18px Arial;text-align:center;display:none;cursor:pointer;text-shadow:none}.blk:hover .bx{display:block}
+#io .ck{margin:0 0 9px;justify-content:space-between;gap:8px}.cl{display:flex;align-items:center;gap:8px;color:#fff;font-size:11px;letter-spacing:.08em;text-transform:none;margin:0;cursor:pointer}#io .pl{width:auto;padding:3px 8px;font-size:9px;margin:0}#io .pl.on{background:#fff;color:#000}
+.ms{margin:0 0 8px;border:1px solid var(--l)}.mh{display:flex;justify-content:space-between;padding:7px 8px;cursor:pointer;user-select:none}.mh:hover{background:rgba(255,255,255,.1)}.mq{margin:0!important;border:0!important;border-top:1px solid var(--l)!important}.ml{max-height:150px;overflow:auto;border-top:1px solid var(--l);padding:4px 0}.mo{display:flex;align-items:center;gap:8px;margin:0;padding:3px 8px;color:#fff;font-size:11px;letter-spacing:.04em;text-transform:none;cursor:pointer}.mo[hidden]{display:none}.mo:hover{background:rgba(255,255,255,.1)}.mo input{accent-color:#fff;margin:0;flex:none}
+@media(max-width:700px){#imod{flex-direction:column}#io{width:auto;max-height:230px;border-right:0;border-bottom:1px solid var(--l)}#io p{display:none}#ichk{display:flex;flex-wrap:wrap;gap:4px 14px}}
 @media(max-width:700px){#list{top:auto;bottom:110px;left:16px;width:auto;max-height:35%}}
 @media(max-width:700px){#panel{width:200px}#tl{padding-left:0;height:60px}}
 </style></head><body>
@@ -47,17 +54,19 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 <div id="ph"><h1>Konsertkart</h1><span id="pt" title="Lukk/åpne meny">−</span></div>
 <div id="up">
 <button id="drop">Last opp CSV</button><input id="file" type="file" accept=".csv" hidden>
+<div id="help"><b>Slik henter du CSV:</b> Logg inn på concertarchives.org, klikk på profilbildet øverst til høyre og velg <b>Export to Spreadsheet</b>. Last opp filen her.<br>Kun CSV eksportert fra Concert Archives fungerer. Egne CSV-filer støttes ikke, siden siden leser Concert Archives sine kolonner.</div>
 </div>
 <div id="msg">Last opp CSV-eksport fra Concert Archives.</div><div id="bar"></div>
 <div id="flt" hidden>
 <input type="text" id="q" placeholder="Søk …">
-<label>År</label><select id="fy"></select>
-<label>Land</label><select id="fc"></select>
-<label>Sted</label><select id="fs"></select>
-<label>Lokasjon</label><select id="fv"></select>
-<label>Artist</label><select id="fa"></select>
+<label>År</label><div class="ms" id="fy"></div>
+<label>Land</label><div class="ms" id="fc"></div>
+<label>Sted</label><div class="ms" id="fs"></div>
+<label>Lokasjon</label><div class="ms" id="fv"></div>
+<label>Artist</label><div class="ms" id="fa"></div>
 <button id="reset">Nullstill</button>
 <div id="stats"></div>
+<button id="img">Last ned bilde (PNG)</button>
 <button id="dl">Last ned nettside</button>
 </div></div>
 <div id="modal" hidden><div id="mb">
@@ -77,6 +86,7 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 <p style="margin-top:8px;color:var(--d)">Nettleseren kan spørre om tillatelse til å laste ned flere filer.</p>
 <div class="r"><button id="mgo">Last ned</button><button id="mx">Avbryt</button></div>
 </div></div>
+<div id="imod" hidden><div id="io"><h2>Last ned bilde</h2><p class="hint">Bildet bruker dagens kartutsnitt og filtrering. Velg hva som skal med. Hvert valg kan vises som en bolk du drar rundt (Bolk), eller som tekst ved hver lokasjon på kartet (Sted) – bytt med knappen til høyre. Trykk ✕ på en bolk for å fjerne den.</p><div id="ichk"></div><div class="r"><button id="igo">Last ned PNG</button><button id="icl">Lukk</button></div></div><div id="ipw"><div id="pv"><canvas id="pc"></canvas></div></div></div>
 <div id="list" hidden></div>
 <div id="tl"></div>
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -84,7 +94,7 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 <script>
 const $=id=>document.getElementById(id),STATIC=document.querySelector('meta[name=mode]').content==='static';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let all=[],F={q:'',y:'',c:'',s:'',v:'',a:''};
+let worldLines=[],all=[],F={q:'',y:[],c:[],s:[],v:[],a:[]};
 const map=L.map('map',{minZoom:2,maxZoom:18,zoomSnap:.5,worldCopyJump:false,maxBounds:[[-85,-190],[85,190]],maxBoundsViscosity:1,zoomControl:false,attributionControl:true}).setView([30,10],2);
 L.control.zoom({position:'bottomright'}).addTo(map);
 map.attributionControl.setPrefix(false).addAttribution('Natural Earth · Leaflet · Nominatim/OSM');
@@ -93,7 +103,8 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json').then(
  const fc=topojson.feature(t,t.objects.countries).features.filter(f=>f.id!=='010'&&f.id!==10);
  const lines=[];const ring=r=>{let cur=[r[0]];for(let i=1;i<r.length;i++){if(Math.abs(r[i][0]-r[i-1][0])>180){lines.push(cur);cur=[]}cur.push(r[i])}lines.push(cur)};
  fc.forEach(f=>{const g=f.geometry;(g.type=='Polygon'?[g.coordinates]:g.coordinates).forEach(p=>p.forEach(ring))});
- L.geoJSON({type:'MultiLineString',coordinates:lines.filter(l=>l.length>1)},{style:{color:'#fff',weight:.5,opacity:.9},interactive:false}).addTo(map).bringToBack()});
+ worldLines=lines.filter(l=>l.length>1);
+ L.geoJSON({type:'MultiLineString',coordinates:worldLines},{style:{color:'#fff',weight:.5,opacity:.9},interactive:false}).addTo(map).bringToBack()});
 
 // CSV
 function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
@@ -122,39 +133,42 @@ async function geocode(cs){const keys=[...new Set(cs.map(c=>c.venue+'|'+c.locati
 
 // Filter
 const val=(c,k)=>k=='y'?c.date.slice(0,4):k=='c'?c.country:k=='s'?c.city:k=='v'?c.venue:'';
-function match(c,skip){return(skip=='y'||!F.y||c.date.slice(0,4)==F.y)&&(skip=='c'||!F.c||c.country==F.c)&&(skip=='s'||!F.s||c.city==F.s)&&(skip=='v'||!F.v||c.venue==F.v)&&(skip=='a'||!F.a||c.artists.includes(F.a))&&
+const inF=(k,v)=>!F[k].length||F[k].includes(v);
+function match(c,skip){return(skip=='y'||inF('y',c.date.slice(0,4)))&&(skip=='c'||inF('c',c.country))&&(skip=='s'||inF('s',c.city))&&(skip=='v'||inF('v',c.venue))&&(skip=='a'||!F.a.length||c.artists.some(a=>F.a.includes(a)))&&
  (!F.q||[c.name,c.venue,c.location,c.date,...c.artists,...c.notSeen].join(' ').toLowerCase().includes(F.q))}
-function fillSel(id,k,label,opts){const s=$(id),cur=F[k];s.innerHTML=`<option value="">${label}</option>`+opts.map(o=>`<option${o==cur?' selected':''}>${esc(o)}</option>`).join('')}
+const OPEN={},QS={};
+function fillMs(k,all0,title){const box=$('f'+k),old=box.querySelector('.ml'),st=old?old.scrollTop:0,sel=F[k],opts=uniq([...all0,...sel]);if(k=='y')opts.reverse();
+ box.innerHTML=`<div class="mh">${sel.length?(sel.length==1?esc(sel[0]):sel.length+' valgt'):'Alle'}<span>${OPEN[k]?'−':'+'}</span></div>`+(OPEN[k]?`<input type="text" class="mq" placeholder="Søk …" value="${esc(QS[k]||'')}"><div class="ml">${opts.map(v=>`<label class="mo"><input type="checkbox" value="${esc(v)}"${sel.includes(v)?' checked':''}> ${esc(v)}</label>`).join('')}</div>`:'');
+ box.querySelector('.mh').onclick=()=>{OPEN[k]=!OPEN[k];fillMs(k,all0)};
+ if(!OPEN[k])return;const ml=box.querySelector('.ml'),mq=box.querySelector('.mq');ml.scrollTop=st;
+ const flt=()=>{const q=mq.value.toLowerCase();QS[k]=mq.value;ml.querySelectorAll('.mo').forEach(l=>l.hidden=!!q&&!l.textContent.toLowerCase().includes(q))};flt();mq.oninput=flt;
+ ml.querySelectorAll('input').forEach(i=>i.onchange=()=>{F[k]=i.checked?[...F[k],i.value]:F[k].filter(v=>v!=i.value);OPEN[k]=true;refresh()})}
 function uniq(a){return[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'no'))}
 function buildFilters(){const pool=k=>all.filter(c=>match(c,k));
- fillSel('fy','y','Alle år',uniq(pool('y').map(c=>c.date.slice(0,4))).reverse());
- fillSel('fc','c','Alle land',uniq(pool('c').map(c=>c.country)));
- fillSel('fs','s','Alle steder',uniq(pool('s').map(c=>c.city)));
- fillSel('fv','v','Alle lokasjoner',uniq(pool('v').map(c=>c.venue)));
- fillSel('fa','a','Alle artister',uniq(pool('a').flatMap(c=>c.artists)))}
-['y:fy','c:fc','s:fs','v:fv','a:fa'].forEach(p=>{const[k,id]=p.split(':');$(id).onchange=e=>{F[k]=e.target.value;refresh()}});
+ fillMs('y',pool('y').map(c=>c.date.slice(0,4)));fillMs('c',pool('c').map(c=>c.country));fillMs('s',pool('s').map(c=>c.city));fillMs('v',pool('v').map(c=>c.venue));fillMs('a',pool('a').flatMap(c=>c.artists))}
 $('q').oninput=e=>{F.q=e.target.value.toLowerCase();refresh()};
 $('ph').onclick=()=>{const m=$('panel').classList.toggle('min');$('pt').textContent=m?'+':'−'};
-$('reset').onclick=()=>{F={q:'',y:'',c:'',s:'',v:'',a:''};$('q').value='';refresh()};
+$('reset').onclick=()=>{F={q:'',y:[],c:[],s:[],v:[],a:[]};$('q').value='';refresh()};
 
 let shown=[],venues=[],fitNext=false;
 function refresh(fit=true){buildFilters();shown=all.filter(c=>match(c));const m={};
  shown.filter(c=>c.lat!=null).forEach(c=>{const k=c.venue+'|'+c.location;(m[k]=m[k]||{venue:c.venue,location:c.location,city:c.city,country:c.country,ll:[c.lat,c.lng],cs:[]}).cs.push(c)});
  venues=Object.values(m);stats();timeline();renderList();if(fit&&venues.length)fitAll();draw()}
 function fitAll(){const b=L.latLngBounds(venues.map(v=>v.ll));map.fitBounds(b,{paddingTopLeft:[innerWidth>700?290:40,90],paddingBottomRight:[70,innerWidth>700?140:100],maxZoom:13})}
+function yearLabel(){const u=uniq(shown.map(c=>c.date.slice(0,4))),a=u[0],b=u.at(-1);return !u.length?'':u.length==1?a:(u.length==2&&b-a>1)?a+' · '+b:a+'–'+b.slice(2)}
 function stats(){const s=(a)=>new Set(a).size;
  $('stats').innerHTML=[[shown.length,'konserter'],[s(shown.flatMap(c=>c.artists)),'artister'],[s(shown.map(c=>c.venue)),'steder'],[s(shown.map(c=>c.country)),'land']].map(x=>`<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
  const ys=shown.map(c=>c.date.slice(0,4)).filter(Boolean).sort();
- $('year').innerHTML=(F.y||(ys.length?(ys[0]==ys.at(-1)?ys[0]:ys[0]+'–'+ys.at(-1).slice(2)):''))+`<small>${shown.length} konserter</small>`}
-function renderList(){const el=$('list');if(!F.y){el.hidden=true;return}el.hidden=false;
- el.innerHTML=`<div class="lh"><span>${F.y} · ${shown.length}</span><a id="lx">✕</a></div>`+shown.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(c=>`<div class="li" data-i="${all.indexOf(c)}"><div class="pd">${fmt(c.date)}</div><div>${esc(c.artists.join(' / ')||c.name)}</div><div class="pd">${esc(c.venue)}${c.city?', '+esc(c.city):''}</div></div>`).join('');
- $('lx').onclick=()=>{F.y='';refresh()};
+ $('year').innerHTML=yearLabel()+`<small>${shown.length} konserter</small>`}
+function renderList(){const el=$('list');if(!F.y.length){el.hidden=true;return}el.hidden=false;
+ el.innerHTML=`<div class="lh"><span>${F.y.length>3?F.y.length+' år':[...F.y].sort().join(', ')} · ${shown.length}</span><a id="lx">✕</a></div>`+shown.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(c=>`<div class="li" data-i="${all.indexOf(c)}"><div class="pd">${fmt(c.date)}</div><div>${esc(c.artists.join(' / ')||c.name)}</div><div class="pd">${esc(c.venue)}${c.city?', '+esc(c.city):''}</div></div>`).join('');
+ $('lx').onclick=()=>{F.y=[];refresh()};
  el.querySelectorAll('.li').forEach(d=>d.onclick=()=>{const c=all[d.dataset.i],v=venues.find(v=>v.venue==c.venue&&v.location==c.location);if(!v)return;
   map.setView(v.ll,14,{animate:false});L.popup({offset:[0,-4]}).setLatLng(v.ll).setContent(popup([v])).openOn(map)})}
 function timeline(){const pool=all.filter(c=>match(c,'y')),n={};pool.forEach(c=>{const y=c.date.slice(0,4);n[y]=(n[y]||0)+1});
  const ys=Object.keys(n).sort(),mx=Math.max(...Object.values(n),1);
- $('tl').innerHTML=ys.map(y=>`<div class="${F.y==y?'on':''}" data-y="${y}" title="${n[y]}"><i style="height:${Math.max(2,n[y]/mx*60)}px"></i><span>${y}</span></div>`).join('');
- $('tl').querySelectorAll('div').forEach(d=>d.onclick=()=>{F.y=F.y==d.dataset.y?'':d.dataset.y;refresh()})}
+ $('tl').innerHTML=ys.map(y=>`<div class="${F.y.includes(y)?'on':''}" data-y="${y}" title="${n[y]}"><i style="height:${Math.max(2,n[y]/mx*60)}px"></i><span>${y}</span></div>`).join('');
+ $('tl').querySelectorAll('div').forEach(d=>d.onclick=()=>{const y=d.dataset.y;F.y=F.y.includes(y)?F.y.filter(v=>v!=y):[...F.y,y];refresh()})}
 
 // Klynger
 const fmt=d=>d?new Date(d+'T12:00').toLocaleDateString('no',{day:'numeric',month:'short',year:'numeric'}):'';
@@ -164,13 +178,15 @@ function popup(vs){const cs=vs.flatMap(v=>v.cs).sort((a,b)=>b.date.localeCompare
  cs.map(c=>`<div class="pc"><div class="pd">${fmt(c.date)}${vs.length>1?' · '+esc(c.venue):''}</div>${c.artists.map(a=>`<a href="${sp(a)}" target="_blank" rel="noopener">${esc(a)}</a>`).join(' / ')}${c.name?`<div class="pn">${esc(c.name)}</div>`:''}${c.notSeen.length?`<div class="pd">+ ${esc(c.notSeen.join(', '))}</div>`:''}</div>`).join('')}
 function tip(vs){const A=cs=>[...new Set(cs.flatMap(c=>c.artists))];
  return vs.slice().sort((a,b)=>b.cs.length-a.cs.length).slice(0,8).map(v=>{const a=A(v.cs);return `<div class="tv"><b>${esc(v.venue)}</b> · ${v.cs.length}<div class="ta">${esc(a.slice(0,6).join(', '))}${a.length>6?' +'+(a.length-6):''}</div></div>`}).join('')+(vs.length>8?`<div class="ta">+ ${vs.length-8} lokasjoner til</div>`:'')}
-function draw(){layer.clearLayers();const z=map.getZoom(),R=z>=12?20:46,pts=venues.map(v=>({v,p:map.latLngToContainerPoint(v.ll),n:v.cs.length})).sort((a,b)=>b.n-a.n),used=new Set();
+function groups(){const out=[];const z=map.getZoom(),R=z>=12?20:46,pts=venues.map(v=>({v,p:map.latLngToContainerPoint(v.ll),n:v.cs.length})).sort((a,b)=>b.n-a.n),used=new Set();
  pts.forEach(a=>{if(used.has(a))return;used.add(a);const g=[a];pts.forEach(b=>{if(!used.has(b)&&a.p.distanceTo(b.p)<R){used.add(b);g.push(b)}});
   const n=g.reduce((s,x)=>s+x.n,0),vs=g.map(x=>x.v),single=vs.length==1;
   const ll=single?vs[0].ll:[g.reduce((s,x)=>s+x.v.ll[0]*x.n,0)/n,g.reduce((s,x)=>s+x.v.ll[1]*x.n,0)/n];
   const sz=single&&n==1?9:Math.round(20+Math.min(26,Math.log2(n)*7));
   const cities=new Set(vs.map(v=>v.city)),ctr=new Set(vs.map(v=>v.country));
   let lab=single?(z>=8?vs[0].venue:(z>=5?vs[0].city:'')):(cities.size==1&&z>=4?vs[0].city:(ctr.size==1&&z>=3?vs[0].country:''));
+  out.push({ll,n,vs,single,sz,lab})});return out}
+function draw(){layer.clearLayers();groups().forEach(({ll,n,vs,single,sz,lab})=>{
   const mk=L.marker(ll,{icon:L.divIcon({className:'',iconSize:[sz,sz],html:`<div class="m${single&&n==1?' one':''}" style="width:${sz}px;height:${sz}px">${single&&n==1?'':n}${lab?`<em>${esc(lab)}</em>`:''}</div>`})}).addTo(layer);
   mk.bindTooltip(tip(vs),{direction:'top',className:'tt',offset:[0,-sz/2],opacity:1});
   mk.on('click',()=>{const fit=()=>map.fitBounds(L.latLngBounds(vs.map(v=>v.ll)),{padding:[100,100],maxZoom:16});
@@ -178,11 +194,80 @@ function draw(){layer.clearLayers();const z=map.getZoom(),R=z>=12?20:46,pts=venu
 map.on('zoomend moveend',draw);
 
 // Last inn
-async function load(cs,geocoded){all=cs.sort((a,b)=>b.date.localeCompare(a.date));$('flt').hidden=false;refresh();
+async function load(cs,geocoded){all=cs.sort((a,b)=>b.date.localeCompare(a.date));const h=$('help');if(h)h.hidden=true;$('flt').hidden=false;refresh();
  if(!geocoded){await geocode(all);refresh();}}
 function onCSV(f){const r=new FileReader();r.onload=()=>load(toConcerts(parseCSV(r.result)),false);r.readAsText(f)}
 $('drop').onclick=()=>$('file').click();$('file').onchange=e=>e.target.files[0]&&onCSV(e.target.files[0]);
 ['dragover','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();if(ev=='drop'&&e.dataTransfer.files[0]&&!STATIC)onCSV(e.dataTransfer.files[0])}));
+
+// Bilde: forhåndsvisning med flyttbare infoblokker
+const FF='"Helvetica Neue",Helvetica,Arial,sans-serif',DIM='rgba(255,255,255,.55)',ORDER=['year','count','artist','city','venue','country','list'];
+function renderMap(W){const sz=map.getSize(),k=W/sz.x,cv=document.createElement('canvas');cv.width=Math.round(W);cv.height=Math.round(sz.y*k);
+ const x=cv.getContext('2d'),P=(la,lo)=>{const p=map.latLngToContainerPoint([la,lo]);return[p.x*k,p.y*k]};
+ x.fillStyle='#000';x.fillRect(0,0,cv.width,cv.height);x.strokeStyle='#fff';x.lineWidth=.6*k;x.lineJoin='round';x.globalAlpha=.9;
+ worldLines.forEach(l=>{x.beginPath();l.forEach((c,i)=>{const p=P(c[1],c[0]);i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])});x.stroke()});x.globalAlpha=1;x.textBaseline='middle';const rects=[];
+ groups().forEach(g=>{const[px,py]=P(g.ll[0],g.ll[1]);if(px<-200||py<-50||px>cv.width+400||py>cv.height+50)return;const r=g.sz/2*k,one=g.single&&g.n==1;
+  x.beginPath();x.arc(px,py,one?4.5*k:r,0,7);
+  if(one){x.fillStyle='#fff';x.fill()}else{x.fillStyle='rgba(0,0,0,.75)';x.fill();x.strokeStyle='#fff';x.lineWidth=k;x.stroke();x.fillStyle='#fff';x.textAlign='center';x.font=`300 ${10*k}px ${FF}`;x.fillText(g.n,px,py+k*.5)}
+  const pl=placeLines(g),ls=pl||(g.lab?[g.lab]:[]);
+  if(ls.length){const fs=10*k,lh=fs*1.3,lx=px+(one?4.5*k:r)+6*k;x.textAlign='left';x.font=`300 ${fs}px ${FF}`;
+   const w=Math.max(...ls.map(t=>x.measureText(t).width)),h=ls.length*lh,ly=py-h/2;
+   if(!rects.some(q=>lx<q[0]+q[2]&&lx+w>q[0]&&ly<q[1]+q[3]&&ly+h>q[1])){rects.push([lx,ly,w,h]);
+    ls.forEach((t,i)=>{const ty=ly+lh*(i+.5);x.lineWidth=3*k;x.strokeStyle='#000';x.strokeText(t,lx,ty);x.fillStyle=i?'rgba(255,255,255,.55)':(pl?'rgba(255,255,255,.9)':'rgba(255,255,255,.6)');x.fillText(t,lx,ty)})}}});
+ return cv}
+const PLACEABLE=['city','venue','country','artist','list'];let PL={},PWv=0;
+function placeLines(g){if(!ON)return null;const ids=ORDER.filter(id=>ON[id]&&PL[id]=='s'&&PLACEABLE.includes(id));if(!ids.length)return null;
+ const cs=g.vs.flatMap(v=>v.cs),o=[],Lm=(a,n)=>{const t=topN(a,999);return t.length>n?[...t.slice(0,n),'+'+(t.length-n)]:t};
+ ids.forEach(id=>{if(id=='city')o.push(Lm(cs.map(c=>c.city),2).join(' · '));
+  if(id=='venue')o.push(Lm(cs.map(c=>c.venue),2).join(' · '));
+  if(id=='country')o.push(Lm(cs.map(c=>c.country),2).join(' · '));
+  if(id=='artist')o.push(...Lm(cs.flatMap(c=>c.artists),g.single?5:3));
+  if(id=='list'){const d=cs.slice().sort((a,b)=>b.date.localeCompare(a.date));o.push(...d.slice(0,3).map(c=>fmt(c.date)+' '+(c.artists[0]||c.name||'')));if(d.length>3)o.push('+'+(d.length-3))}});
+ return o.filter(Boolean)}
+function paintBase(){const base=renderMap(PWv*2),pc=$('pc');pc.width=base.width;pc.height=base.height;pc.getContext('2d').drawImage(base,0,0)}
+function yearText(){return yearLabel()}
+const topN=(a,n)=>{const m={};a.forEach(v=>v&&(m[v]=(m[v]||0)+1));return Object.keys(m).sort((x,y)=>m[y]-m[x]||x.localeCompare(y,'no')).slice(0,n)};
+function wrap(items,max=34){const o=[];let cur='';items.forEach(i=>{const t=cur?cur+' · '+i:i;if(cur&&t.length>max){o.push(cur);cur=i}else cur=t});if(cur)o.push(cur);return o}
+const HD=t=>({t,s:9,w:400,c:DIM,lh:1.8}),VL=(a,big)=>wrap(a).map(t=>({t,s:big?20:14,w:300,c:'#fff'}));
+function makeBlocks(){const nu=a=>new Set(a).size,B={},sel=(f,a,n)=>f.length?f:topN(a,n);
+ B.year={label:'Årstall',col:'r',lines:[{t:yearText(),s:110,w:100,c:'#fff',lh:1.05}]};
+ B.count={label:'Antall konserter',col:'r',lines:[{t:shown.length+' KONSERTER',s:13,w:300,c:'#fff'},{t:[nu(shown.flatMap(c=>c.artists))+' artister',nu(shown.map(c=>c.venue))+' lokasjoner',nu(shown.map(c=>c.country))+' land'].join(' · '),s:10,w:300,c:DIM}]};
+ B.artist=F.a.length?{label:'Artist',col:'r',lines:F.a.length==1?[{t:F.a[0],s:36,w:200,c:'#fff'}]:wrap(F.a,26).map(t=>({t,s:22,w:200,c:'#fff'}))}:{label:'Artister',col:'l',lines:[HD('ARTISTER'),...VL(topN(shown.flatMap(c=>c.artists),40))]};
+ B.city={label:'Sted',col:'l',lines:[HD('STED'),...VL(sel(F.s,shown.map(c=>c.city),24),!!F.s.length)]};
+ B.venue={label:'Lokasjon',col:'l',lines:[HD('LOKASJON'),...VL(sel(F.v,shown.map(c=>c.venue),20),!!F.v.length)]};
+ B.country={label:'Land',col:'l',lines:[HD('LAND'),...VL(sel(F.c,shown.map(c=>c.country),20),!!F.c.length)]};
+ const ls=shown.slice().sort((a,b)=>a.date.localeCompare(b.date)),tr=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t;
+ B.list={label:'Konsertliste',col:'l',lines:[HD('KONSERTER'),...ls.slice(0,16).map(c=>({t:tr(`${fmt(c.date)}  ${c.artists.join(' / ')||c.name} — ${c.venue}`,62),s:12,w:300,c:'#fff'})),...(ls.length>16?[{t:'+ '+(ls.length-16)+' flere',s:11,w:300,c:DIM}]:[])]};
+ return B}
+const mc=document.createElement('canvas').getContext('2d');
+const bw=b=>Math.max(...b.lines.map(l=>(mc.font=`${l.w} ${l.s}px ${FF}`,mc.measureText(l.t).width))),bh=b=>b.lines.reduce((s,l)=>s+l.s*(l.lh||1.35),0);
+let blocks,ON,POS,Hu;
+function place(id){const b=blocks[id],c=b.col;let y=c=='r'?15:30;
+ ORDER.forEach(o=>{if(o!=id&&ON[o]&&PL[o]!='s'&&POS[o]&&blocks[o].col==c)y=Math.max(y,POS[o].y*Hu+bh(blocks[o])+(c=='r'?2:16))});
+ const w=bw(b);POS[id]={x:c=='r'?(1000-30-w)/1000:.03,y:y/Hu}}
+function showBlocks(){const pv=$('pv');pv.querySelectorAll('.blk').forEach(e=>e.remove());
+ ORDER.filter(id=>ON[id]&&PL[id]!='s').forEach(id=>{if(!POS[id])place(id);const b=blocks[id],d=document.createElement('div');d.className='blk';d.style.left=POS[id].x*100+'%';d.style.top=POS[id].y*100+'%';
+  d.innerHTML=b.lines.map(l=>`<div style="font-size:calc(var(--u)*${l.s});font-weight:${l.w};color:${l.c};line-height:${l.lh||1.35}">${esc(l.t)}</div>`).join('')+'<span class="bx">✕</span>';
+  d.querySelector('.bx').onclick=e=>{e.stopPropagation();ON[id]=false;$('ichk').querySelector(`[data-id=${id}]`).checked=false;d.remove()};
+  d.onpointerdown=e=>{if(e.target.className=='bx')return;e.preventDefault();d.setPointerCapture(e.pointerId);const sx=e.clientX,sy=e.clientY,ox=POS[id].x,oy=POS[id].y,r=pv.getBoundingClientRect();
+   d.onpointermove=m=>{POS[id].x=Math.min(Math.max(ox+(m.clientX-sx)/r.width,0),Math.max(0,1-d.offsetWidth/r.width));POS[id].y=Math.min(Math.max(oy+(m.clientY-sy)/r.height,0),Math.max(0,1-d.offsetHeight/r.height));d.style.left=POS[id].x*100+'%';d.style.top=POS[id].y*100+'%'};
+   d.onpointerup=()=>{d.onpointermove=null}};
+  pv.appendChild(d)})}
+$('img').onclick=()=>{blocks=makeBlocks();ON={year:1,count:1,artist:!!F.a.length,city:!!F.s.length,venue:!!F.v.length,country:!!F.c.length,list:0};POS={};PL={};
+ const sz=map.getSize(),asp=sz.y/sz.x,mob=innerWidth<=700,PW=Math.max(200,Math.min(innerWidth-(mob?40:300),(innerHeight-(mob?260:40))/asp));Hu=1000*asp;
+ const pv=$('pv');pv.style.width=PW+'px';pv.style.height=PW*asp+'px';pv.style.setProperty('--u',PW/1000+'px');
+ PWv=PW*2;
+ $('ichk').innerHTML=ORDER.map(id=>`<div class="ck"><label class="cl"><input type="checkbox" data-id="${id}"${ON[id]?' checked':''}> ${blocks[id].label}</label>${PLACEABLE.includes(id)?`<button type="button" class="pl" data-p="${id}" title="Vis som bolk eller ved hvert sted">Bolk</button>`:''}</div>`).join('');
+ $('ichk').querySelectorAll('input').forEach(i=>i.onchange=()=>{ON[i.dataset.id]=i.checked;showBlocks();paintBase()});
+ $('ichk').querySelectorAll('.pl').forEach(b=>b.onclick=()=>{const id=b.dataset.p;PL[id]=PL[id]=='s'?'b':'s';b.textContent=PL[id]=='s'?'Sted':'Bolk';b.classList.toggle('on',PL[id]=='s');showBlocks();paintBase()});
+ paintBase();
+ $('imod').hidden=false;showBlocks()};
+$('icl').onclick=()=>$('imod').hidden=true;
+document.addEventListener('keydown',e=>{if(e.key=='Escape'){$('imod').hidden=true;$('modal').hidden=true}});
+$('igo').onclick=()=>{const sz=map.getSize(),cv=renderMap(Math.min(4,Math.max(2,3840/sz.x))*sz.x),x=cv.getContext('2d'),u=cv.width/1000;x.textBaseline='middle';x.textAlign='left';
+ ORDER.filter(id=>ON[id]&&PL[id]!='s').forEach(id=>{let y=POS[id].y*cv.height;const px=POS[id].x*cv.width;
+  blocks[id].lines.forEach(l=>{const lh=(l.lh||1.35)*l.s*u;x.font=`${l.w} ${l.s*u}px ${FF}`;x.fillStyle=l.c;x.shadowColor='#000';x.shadowBlur=8*u;x.fillText(l.t,px,y+lh/2);x.fillText(l.t,px,y+lh/2);y+=lh});x.shadowBlur=0});
+ cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='konsertkart'+(F.y.length==1?'_'+F.y[0]:'')+(F.a.length==1?'_'+F.a[0].replace(/[^\wæøåÆØÅ]+/g,'-'):'')+'.png';a.click()},'image/png')};
 
 // Nedlasting: index_concert.html + concert.json
 function save(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()}
