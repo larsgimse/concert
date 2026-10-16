@@ -62,8 +62,8 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 const $=id=>document.getElementById(id),STATIC=document.querySelector('meta[name=mode]').content==='static';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let all=[],F={q:'',y:'',c:'',s:'',v:'',a:''};
-const map=L.map('map',{minZoom:2,maxZoom:18,zoomSnap:.5,worldCopyJump:false,maxBounds:[[-85,-190],[85,190]],maxBoundsViscosity:1,zoomControl:false,attributionControl:true})
-L.control.zoom({position:'bottomright'}).addTo(map).setView([30,10],2);
+const map=L.map('map',{minZoom:2,maxZoom:18,zoomSnap:.5,worldCopyJump:false,maxBounds:[[-85,-190],[85,190]],maxBoundsViscosity:1,zoomControl:false,attributionControl:true}).setView([30,10],2);
+L.control.zoom({position:'bottomright'}).addTo(map);
 map.attributionControl.setPrefix(false).addAttribution('Natural Earth · Leaflet · Nominatim/OSM');
 const layer=L.layerGroup().addTo(map);
 fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json').then(r=>r.json()).then(t=>{
