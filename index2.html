@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="no"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="mode" content="upload">
+<title>Konsertkart</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--f:#fff;--d:rgba(255,255,255,.45);--l:rgba(255,255,255,.18)}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:#000;color:var(--f);font:300 12px/1.4 "Helvetica Neue",Arial,sans-serif;letter-spacing:.04em}
+#map{position:absolute;inset:0;background:#000}
+.leaflet-container{background:#000;font:inherit}
+.leaflet-control-attribution{background:transparent!important;color:var(--d)!important;font-size:9px}.leaflet-control-attribution a{color:var(--d)!important}
+.leaflet-bottom.leaflet-right .leaflet-control-zoom{margin-bottom:24px}.leaflet-control-zoom a{background:#000!important;color:#fff!important;border:1px solid var(--l)!important;border-radius:0!important}
+#panel{position:absolute;z-index:500;top:16px;left:16px;width:250px;max-height:calc(100% - 150px);overflow:auto;padding:16px;background:rgba(0,0,0,.82);border:1px solid var(--l)}
+h1{font-weight:200;font-size:15px;letter-spacing:.3em;text-transform:uppercase;margin:0 0 14px}
+button,select,input[type=text]{font:inherit;color:#fff;background:#000;border:1px solid var(--l);border-radius:0;padding:7px 8px;width:100%;margin:0 0 8px;letter-spacing:inherit}
+button{cursor:pointer;text-transform:uppercase;font-size:10px;letter-spacing:.15em}button:hover:not(:disabled),button.on{background:#fff;color:#000}button:disabled{opacity:.3;cursor:default}
+label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter-spacing:.2em;margin:4px 0 3px}
+#drop.over{background:#fff;color:#000}
+#stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:12px 0;text-align:center}#stats b{display:block;font-size:17px;font-weight:200}#stats span{color:var(--d);font-size:8px;text-transform:uppercase}
+#msg{color:var(--d);font-size:10px;min-height:14px;margin-bottom:8px}
+#bar{height:1px;background:var(--f);width:0;transition:width .3s;margin-bottom:6px}
+#year{position:absolute;z-index:400;right:24px;top:8px;font-weight:100;font-size:min(14vw,120px);line-height:1;letter-spacing:-.02em;pointer-events:none;text-align:right;text-shadow:0 0 30px #000}
+#year small{display:block;font-size:11px;letter-spacing:.3em;color:var(--d);font-weight:300;margin-top:6px;text-transform:uppercase}
+#tl{position:absolute;z-index:500;left:16px;right:16px;bottom:22px;display:flex;align-items:flex-end;gap:2px;height:96px;padding-left:266px;padding-right:56px}
+#tl div{flex:1;max-width:60px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;cursor:pointer;color:var(--d);font-size:9px}
+#tl i{display:block;width:100%;background:var(--l);border-top:1px solid var(--f);min-height:1px}
+#tl div:hover,#tl div.on{color:#fff}#tl div:hover i,#tl div.on i{background:#fff}
+.m{display:flex;align-items:center;justify-content:center;border:1px solid #fff;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;font-size:10px;font-weight:300;transition:all .15s;position:relative}
+.m:hover{background:#fff;color:#000}.m.one{background:#fff;border:0}
+.m em{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:6px;font-style:normal;white-space:nowrap;color:var(--d);font-size:10px;pointer-events:none;text-shadow:0 0 4px #000,0 0 4px #000}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#000;color:#fff;border:1px solid var(--l);border-radius:0;box-shadow:none}
+.leaflet-popup-content{margin:14px 16px;max-height:260px;overflow:auto;font-size:11px}.leaflet-popup-close-button{color:#fff!important}
+.pv{font-size:13px;font-weight:300;letter-spacing:.1em;text-transform:uppercase}.pl{color:var(--d);margin-bottom:10px}
+.pc{border-top:1px solid var(--l);padding:6px 0}.pd{color:var(--d);font-size:10px}.pn{color:var(--d);font-style:italic}
+.pc a{color:#fff;text-decoration:none;border-bottom:1px solid var(--l)}.pc a:hover{border-color:#fff}
+#modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px}#modal[hidden]{display:none}#mb{background:#000;border:1px solid var(--l);max-width:540px;max-height:90vh;overflow:auto;padding:24px;font-size:12px;line-height:1.6}#mb h2{font-weight:200;font-size:14px;letter-spacing:.3em;text-transform:uppercase;margin:0 0 14px}#mb h3{font-weight:300;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--d);margin:16px 0 4px}#mb p,#mb ol{margin:0;color:#ddd}#mb ol{padding-left:18px}#mb code{border:1px solid var(--l);padding:0 4px;color:#fff}#mb .r{display:flex;gap:8px;margin-top:20px}#mb button{margin:0}
+.leaflet-tooltip.tt{background:#000;color:#fff;border:1px solid var(--l);border-radius:0;box-shadow:none;padding:8px 10px;font-size:11px;letter-spacing:.04em}.tt:before{display:none}.tv+.tv{margin-top:6px}.tv b{font-weight:400;text-transform:uppercase;letter-spacing:.1em}.ta{color:var(--d);font-size:10px;white-space:normal;max-width:260px}
+.m em{line-height:1.3}
+@media(max-width:700px){#panel{width:200px}#tl{padding-left:0;height:60px}}
+</style></head><body>
+<div id="map"></div>
+<div id="year"></div>
+<div id="panel">
+<h1>Konsertkart</h1>
+<div id="up">
+<button id="drop">Last opp CSV</button><input id="file" type="file" accept=".csv" hidden>
+</div>
+<div id="msg">Last opp CSV-eksport fra Concert Archives.</div><div id="bar"></div>
+<div id="flt" hidden>
+<input type="text" id="q" placeholder="Søk …">
+<label>År</label><select id="fy"></select>
+<label>Land</label><select id="fc"></select>
+<label>Sted</label><select id="fs"></select>
+<label>Lokasjon</label><select id="fv"></select>
+<label>Artist</label><select id="fa"></select>
+<button id="reset">Nullstill</button>
+<button id="art">Vis artister: av</button>
+<div id="stats"></div>
+<button id="dl">Last ned nettside</button>
+</div></div>
+<div id="modal" hidden><div id="mb">
+<h2>Last ned nettside</h2>
+<h3>Dette lastes ned (2 filer)</h3>
+<p><code>index_concert.html</code> – selve kartsiden med filtre, tidslinje og klynger. Den har ingen opplasting, og laster dataene automatisk fra <code>concert.json</code>.</p>
+<p style="margin-top:8px"><code>concert.json</code> – alle konsertene dine med dato, artister, venue, sted, land og ferdig funnede koordinater. Lenker til Concert Archives og brukernavnet ditt er ikke med.</p>
+<h3>Slik bruker du filene</h3>
+<ol>
+<li>Legg begge filene i samme mappe.</li>
+<li><b>På nett / GitHub Pages:</b> last opp begge filene og åpne <code>index_concert.html</code> i nettleseren.</li>
+<li><b>Lokalt:</b> nettlesere blokkerer ofte lesing av <code>concert.json</code> fra en fil. Åpne en terminal i mappen, kjør <code>python3 -m http.server</code> og gå til <code>http://localhost:8000/index_concert.html</code>.</li>
+<li>Åpner du filen direkte uten server, vises en knapp der du velger <code>concert.json</code> manuelt.</li>
+</ol>
+<h3>Oppdatere data</h3>
+<p>Last opp en ny CSV i hovedsiden og last ned på nytt. Erstatt begge filene.</p>
+<p style="margin-top:8px;color:var(--d)">Nettleseren kan spørre om tillatelse til å laste ned flere filer.</p>
+<div class="r"><button id="mgo">Last ned</button><button id="mx">Avbryt</button></div>
+</div></div>
+<div id="tl"></div>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const $=id=>document.getElementById(id),STATIC=document.querySelector('meta[name=mode]').content==='static';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let all=[],F={q:'',y:'',c:'',s:'',v:'',a:''};
+const map=L.map('map',{minZoom:2,maxZoom:18,zoomSnap:.5,worldCopyJump:false,maxBounds:[[-85,-190],[85,190]],maxBoundsViscosity:1,zoomControl:false,attributionControl:true}).setView([30,10],2);
+L.control.zoom({position:'bottomright'}).addTo(map);
+map.attributionControl.setPrefix(false).addAttribution('Natural Earth · Leaflet · Nominatim/OSM');
+const layer=L.layerGroup().addTo(map);
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json').then(r=>r.json()).then(t=>{
+ const fc=topojson.feature(t,t.objects.countries).features.filter(f=>f.id!=='010'&&f.id!==10);
+ const lines=[];const ring=r=>{let cur=[r[0]];for(let i=1;i<r.length;i++){if(Math.abs(r[i][0]-r[i-1][0])>180){lines.push(cur);cur=[]}cur.push(r[i])}lines.push(cur)};
+ fc.forEach(f=>{const g=f.geometry;(g.type=='Polygon'?[g.coordinates]:g.coordinates).forEach(p=>p.forEach(ring))});
+ L.geoJSON({type:'MultiLineString',coordinates:lines.filter(l=>l.length>1)},{style:{color:'#fff',weight:.5,opacity:.9},interactive:false}).addTo(map).bringToBack()});
+
+// CSV
+function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
+ if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
+ else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);f='';if(row.length>1||row[0])r.push(row);row=[]}else f+=c}
+ if(f||row.length){row.push(f);r.push(row)}
+ const h=r.shift().map(x=>x.trim().replace(/^\uFEFF/,''));return r.map(a=>Object.fromEntries(h.map((k,i)=>[k,(a[i]||'').trim()])))}
+const iso=d=>{const m=/^(\d+)\/(\d+)\/(\d{4})$/.exec(d||'');return m?`${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`:''};
+const split=s=>(s||'').split(' / ').map(x=>x.trim()).filter(Boolean);
+function toConcerts(rows){return rows.filter(r=>r['Start Date']).map(r=>{const p=(r.Location||'').split(',').map(x=>x.trim()).filter(Boolean);
+ return{date:iso(r['Start Date']),end:iso(r['End Date']),name:r['Concert Name'],artists:split(r['Bands Seen']),notSeen:split(r['Bands Not Seen']),
+ venue:r.Venue,location:r.Location,city:p[0]||'',country:p[p.length-1]||'',type:r['Nonstandard Concert Type'],status:r.Status}})}
+
+// Geokoding (Nominatim, 1 kall/sek, bufres lokalt)
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));let cache={};try{cache=JSON.parse(localStorage.geo||'{}')}catch(e){}
+async function geo(q){if(q in cache)return cache[q];await sleep(1100);
+ try{const j=await(await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=en&q='+encodeURIComponent(q))).json();
+ cache[q]=j[0]?[+j[0].lat,+j[0].lon]:null}catch(e){return null}
+ try{localStorage.geo=JSON.stringify(cache)}catch(e){}return cache[q]}
+async function geocode(cs){const keys=[...new Set(cs.map(c=>c.venue+'|'+c.location))];let n=0;
+ for(const k of keys){const [v,l]=k.split('|');n++;$('msg').textContent=`Finner steder ${n}/${keys.length}: ${v}`;$('bar').style.width=n/keys.length*100+'%';
+  let p=(v+', '+l in cache)?cache[v+', '+l]:null;if(!p)p=await geo(v+', '+l);if(!p)p=await geo(l);
+  cs.filter(c=>c.venue+'|'+c.location===k).forEach(c=>{if(p){c.lat=p[0];c.lng=p[1]}});
+  if(n%4==0)refresh(false)}
+ $('msg').textContent='';$('bar').style.width=0}
+
+// Filter
+const val=(c,k)=>k=='y'?c.date.slice(0,4):k=='c'?c.country:k=='s'?c.city:k=='v'?c.venue:'';
+function match(c,skip){return(skip=='y'||!F.y||c.date.slice(0,4)==F.y)&&(skip=='c'||!F.c||c.country==F.c)&&(skip=='s'||!F.s||c.city==F.s)&&(skip=='v'||!F.v||c.venue==F.v)&&(skip=='a'||!F.a||c.artists.includes(F.a))&&
+ (!F.q||[c.name,c.venue,c.location,c.date,...c.artists,...c.notSeen].join(' ').toLowerCase().includes(F.q))}
+function fillSel(id,k,label,opts){const s=$(id),cur=F[k];s.innerHTML=`<option value="">${label}</option>`+opts.map(o=>`<option${o==cur?' selected':''}>${esc(o)}</option>`).join('')}
+function uniq(a){return[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'no'))}
+function buildFilters(){const pool=k=>all.filter(c=>match(c,k));
+ fillSel('fy','y','Alle år',uniq(pool('y').map(c=>c.date.slice(0,4))).reverse());
+ fillSel('fc','c','Alle land',uniq(pool('c').map(c=>c.country)));
+ fillSel('fs','s','Alle steder',uniq(pool('s').map(c=>c.city)));
+ fillSel('fv','v','Alle lokasjoner',uniq(pool('v').map(c=>c.venue)));
+ fillSel('fa','a','Alle artister',uniq(pool('a').flatMap(c=>c.artists)))}
+['y:fy','c:fc','s:fs','v:fv','a:fa'].forEach(p=>{const[k,id]=p.split(':');$(id).onchange=e=>{F[k]=e.target.value;refresh()}});
+$('q').oninput=e=>{F.q=e.target.value.toLowerCase();refresh()};
+$('art').onclick=e=>{showArt=!showArt;e.target.textContent='Vis artister: '+(showArt?'på':'av');e.target.classList.toggle('on',showArt);draw()};
+$('reset').onclick=()=>{F={q:'',y:'',c:'',s:'',v:'',a:''};$('q').value='';refresh()};
+
+let shown=[],venues=[],fitNext=false;
+function refresh(fit=true){buildFilters();shown=all.filter(c=>match(c));const m={};
+ shown.filter(c=>c.lat!=null).forEach(c=>{const k=c.venue+'|'+c.location;(m[k]=m[k]||{venue:c.venue,location:c.location,city:c.city,country:c.country,ll:[c.lat,c.lng],cs:[]}).cs.push(c)});
+ venues=Object.values(m);stats();timeline();if(fit&&venues.length)fitAll();draw()}
+function fitAll(){const b=L.latLngBounds(venues.map(v=>v.ll));map.fitBounds(b,{paddingTopLeft:[innerWidth>700?290:40,90],paddingBottomRight:[70,innerWidth>700?140:100],maxZoom:13})}
+function stats(){const s=(a)=>new Set(a).size;
+ $('stats').innerHTML=[[shown.length,'konserter'],[s(shown.flatMap(c=>c.artists)),'artister'],[s(shown.map(c=>c.venue)),'steder'],[s(shown.map(c=>c.country)),'land']].map(x=>`<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
+ const ys=shown.map(c=>c.date.slice(0,4)).filter(Boolean).sort();
+ $('year').innerHTML=(F.y||(ys.length?(ys[0]==ys.at(-1)?ys[0]:ys[0]+'–'+ys.at(-1).slice(2)):''))+`<small>${shown.length} konserter</small>`}
+function timeline(){const pool=all.filter(c=>match(c,'y')),n={};pool.forEach(c=>{const y=c.date.slice(0,4);n[y]=(n[y]||0)+1});
+ const ys=Object.keys(n).sort(),mx=Math.max(...Object.values(n),1);
+ $('tl').innerHTML=ys.map(y=>`<div class="${F.y==y?'on':''}" data-y="${y}" title="${n[y]}"><i style="height:${Math.max(2,n[y]/mx*60)}px"></i><span>${y}</span></div>`).join('');
+ $('tl').querySelectorAll('div').forEach(d=>d.onclick=()=>{F.y=F.y==d.dataset.y?'':d.dataset.y;refresh()})}
+
+// Klynger
+const fmt=d=>d?new Date(d+'T12:00').toLocaleDateString('no',{day:'numeric',month:'short',year:'numeric'}):'';
+const sp=a=>'https://open.spotify.com/search/'+encodeURIComponent(a);
+function popup(vs){const cs=vs.flatMap(v=>v.cs).sort((a,b)=>b.date.localeCompare(a.date));
+ return`<div class="pv">${vs.length==1?esc(vs[0].venue):vs.length+' lokasjoner'}</div><div class="pl">${vs.length==1?esc(vs[0].location):''}</div>`+
+ cs.map(c=>`<div class="pc"><div class="pd">${fmt(c.date)}${vs.length>1?' · '+esc(c.venue):''}</div>${c.artists.map(a=>`<a href="${sp(a)}" target="_blank" rel="noopener">${esc(a)}</a>`).join(' / ')}${c.name?`<div class="pn">${esc(c.name)}</div>`:''}${c.notSeen.length?`<div class="pd">+ ${esc(c.notSeen.join(', '))}</div>`:''}</div>`).join('')}
+let showArt=false;
+function tip(vs){const A=cs=>[...new Set(cs.flatMap(c=>c.artists))];
+ return vs.slice().sort((a,b)=>b.cs.length-a.cs.length).slice(0,8).map(v=>{const a=A(v.cs);return `<div class="tv"><b>${esc(v.venue)}</b> · ${v.cs.length}<div class="ta">${esc(a.slice(0,6).join(', '))}${a.length>6?' +'+(a.length-6):''}</div></div>`}).join('')+(vs.length>8?`<div class="ta">+ ${vs.length-8} lokasjoner til</div>`:'')}
+function draw(){layer.clearLayers();const z=map.getZoom(),R=z>=12?20:46,pts=venues.map(v=>({v,p:map.latLngToContainerPoint(v.ll),n:v.cs.length})).sort((a,b)=>b.n-a.n),used=new Set();
+ pts.forEach(a=>{if(used.has(a))return;used.add(a);const g=[a];pts.forEach(b=>{if(!used.has(b)&&a.p.distanceTo(b.p)<R){used.add(b);g.push(b)}});
+  const n=g.reduce((s,x)=>s+x.n,0),vs=g.map(x=>x.v),single=vs.length==1;
+  const ll=single?vs[0].ll:[g.reduce((s,x)=>s+x.v.ll[0]*x.n,0)/n,g.reduce((s,x)=>s+x.v.ll[1]*x.n,0)/n];
+  const sz=single&&n==1?9:Math.round(20+Math.min(26,Math.log2(n)*7));
+  const art=showArt&&single&&z>=5?(()=>{const a=[...new Set(vs[0].cs.flatMap(c=>c.artists))];return '<br>'+a.slice(0,5).map(esc).join('<br>')+(a.length>5?'<br>+'+(a.length-5):'')})():'';
+  const cities=new Set(vs.map(v=>v.city)),ctr=new Set(vs.map(v=>v.country));
+  let lab=single?(z>=8?vs[0].venue:(z>=5?vs[0].city:'')):(cities.size==1&&z>=4?vs[0].city:(ctr.size==1&&z>=3?vs[0].country:''));
+  const mk=L.marker(ll,{icon:L.divIcon({className:'',iconSize:[sz,sz],html:`<div class="m${single&&n==1?' one':''}" style="width:${sz}px;height:${sz}px">${single&&n==1?'':n}${(lab||art)?`<em>${esc(lab)}${art}</em>`:''}</div>`})}).addTo(layer);
+  mk.bindTooltip(tip(vs),{direction:'top',className:'tt',offset:[0,-sz/2],opacity:1});
+  mk.on('click',()=>{const fit=()=>map.fitBounds(L.latLngBounds(vs.map(v=>v.ll)),{padding:[100,100],maxZoom:16});
+   if(single||map.getZoom()>=15||(vs.length>1&&L.latLngBounds(vs.map(v=>v.ll)).getSouthWest().equals(L.latLngBounds(vs.map(v=>v.ll)).getNorthEast())))L.popup({offset:[0,-sz/2]}).setLatLng(ll).setContent(popup(vs)).openOn(map);else fit()})})}
+map.on('zoomend moveend',draw);
+
+// Last inn
+async function load(cs,geocoded){all=cs.sort((a,b)=>b.date.localeCompare(a.date));$('flt').hidden=false;refresh();
+ if(!geocoded){await geocode(all);refresh();}}
+function onCSV(f){const r=new FileReader();r.onload=()=>load(toConcerts(parseCSV(r.result)),false);r.readAsText(f)}
+$('drop').onclick=()=>$('file').click();$('file').onchange=e=>e.target.files[0]&&onCSV(e.target.files[0]);
+['dragover','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();if(ev=='drop'&&e.dataTransfer.files[0]&&!STATIC)onCSV(e.dataTransfer.files[0])}));
+
+// Nedlasting: index_concert.html + concert.json
+function save(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()}
+async function doDownload(){let html;try{html=await(await fetch(location.href)).text()}catch(e){$('msg').textContent='Kunne ikke hente sidekilden. Åpne siden via GitHub Pages / webserver.';return}
+ html=html.replace('name="mode" content="upload"','name="mode" content="static"');
+ save('concert.json',JSON.stringify({generated:new Date().toISOString(),concerts:all},null,1),'application/json');
+ setTimeout(()=>save('index_concert.html',html,'text/html'),400)}
+$('dl').onclick=()=>$('modal').hidden=false;$('mx').onclick=()=>$('modal').hidden=true;$('mgo').onclick=async()=>{await doDownload();$('modal').hidden=true};
+$('modal').onclick=e=>{if(e.target.id=='modal')$('modal').hidden=true};
+
+if(STATIC){$('up').innerHTML='';$('msg').textContent='Laster concert.json …';
+ fetch('concert.json').then(r=>r.json()).then(j=>{$('msg').textContent='';$('dl').hidden=true;load(j.concerts,true)}).catch(()=>{
+  $('msg').textContent='Kan ikke lese concert.json direkte fra fil. Velg filen manuelt, eller bruk en webserver.';
+  $('up').innerHTML='<button id="pick">Velg concert.json</button><input id="jf" type="file" accept=".json" hidden>';
+  $('pick').onclick=()=>$('jf').click();$('jf').onchange=e=>{const r=new FileReader();r.onload=()=>{$('msg').textContent='';load(JSON.parse(r.result).concerts,true);$('dl').hidden=true;$('up').innerHTML=''};r.readAsText(e.target.files[0])}})}
+</script></body></html>
