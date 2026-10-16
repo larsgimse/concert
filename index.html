@@ -12,9 +12,9 @@
 .leaflet-control-attribution{background:transparent!important;color:var(--d)!important;font-size:9px}.leaflet-control-attribution a{color:var(--d)!important}
 .leaflet-bottom.leaflet-right .leaflet-control-zoom{margin-bottom:24px}.leaflet-control-zoom a{background:#000!important;color:#fff!important;border:1px solid var(--l)!important;border-radius:0!important}
 #panel{position:absolute;z-index:500;top:16px;left:16px;width:250px;max-height:calc(100% - 150px);overflow:auto;padding:16px;background:rgba(0,0,0,.82);border:1px solid var(--l)}
-h1{font-weight:200;font-size:15px;letter-spacing:.3em;text-transform:uppercase;margin:0 0 14px}
+h1{font-weight:200;font-size:15px;letter-spacing:.3em;text-transform:uppercase;margin:0}#ph{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;margin-bottom:14px;user-select:none}#pt{font-size:18px;line-height:1;color:var(--d)}#ph:hover #pt{color:#fff}#panel.min{width:auto;padding:12px 16px}#panel.min #ph{margin:0}#panel.min>*:not(#ph){display:none}
 button,select,input[type=text]{font:inherit;color:#fff;background:#000;border:1px solid var(--l);border-radius:0;padding:7px 8px;width:100%;margin:0 0 8px;letter-spacing:inherit}
-button{cursor:pointer;text-transform:uppercase;font-size:10px;letter-spacing:.15em}button:hover:not(:disabled){background:#fff;color:#000}button:disabled{opacity:.3;cursor:default}
+button{cursor:pointer;text-transform:uppercase;font-size:10px;letter-spacing:.15em}button:hover:not(:disabled),button.on{background:#fff;color:#000}button:disabled{opacity:.3;cursor:default}
 label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter-spacing:.2em;margin:4px 0 3px}
 #drop.over{background:#fff;color:#000}
 #stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:12px 0;text-align:center}#stats b{display:block;font-size:17px;font-weight:200}#stats span{color:var(--d);font-size:8px;text-transform:uppercase}
@@ -35,12 +35,16 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 .pc{border-top:1px solid var(--l);padding:6px 0}.pd{color:var(--d);font-size:10px}.pn{color:var(--d);font-style:italic}
 .pc a{color:#fff;text-decoration:none;border-bottom:1px solid var(--l)}.pc a:hover{border-color:#fff}
 #modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px}#modal[hidden]{display:none}#mb{background:#000;border:1px solid var(--l);max-width:540px;max-height:90vh;overflow:auto;padding:24px;font-size:12px;line-height:1.6}#mb h2{font-weight:200;font-size:14px;letter-spacing:.3em;text-transform:uppercase;margin:0 0 14px}#mb h3{font-weight:300;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--d);margin:16px 0 4px}#mb p,#mb ol{margin:0;color:#ddd}#mb ol{padding-left:18px}#mb code{border:1px solid var(--l);padding:0 4px;color:#fff}#mb .r{display:flex;gap:8px;margin-top:20px}#mb button{margin:0}
+.leaflet-tooltip.tt{background:#000;color:#fff;border:1px solid var(--l);border-radius:0;box-shadow:none;padding:8px 10px;font-size:11px;letter-spacing:.04em}.tt:before{display:none}.tv+.tv{margin-top:6px}.tv b{font-weight:400;text-transform:uppercase;letter-spacing:.1em}.ta{color:var(--d);font-size:10px;white-space:normal;max-width:260px}
+.m em{line-height:1.3}
+#list{position:absolute;z-index:450;right:16px;top:170px;bottom:130px;width:280px;overflow:auto;background:rgba(0,0,0,.82);border:1px solid var(--l);padding:12px 14px}.lh{display:flex;justify-content:space-between;font-weight:200;font-size:13px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:8px}.lh a{cursor:pointer;color:var(--d)}.lh a:hover{color:#fff}.li{border-top:1px solid var(--l);padding:7px 0;cursor:pointer}.li:hover{background:rgba(255,255,255,.1)}.li .pd{font-size:10px}
+@media(max-width:700px){#list{top:auto;bottom:110px;left:16px;width:auto;max-height:35%}}
 @media(max-width:700px){#panel{width:200px}#tl{padding-left:0;height:60px}}
 </style></head><body>
 <div id="map"></div>
 <div id="year"></div>
 <div id="panel">
-<h1>Konsertkart</h1>
+<div id="ph"><h1>Konsertkart</h1><span id="pt" title="Lukk/åpne meny">−</span></div>
 <div id="up">
 <button id="drop">Last opp CSV</button><input id="file" type="file" accept=".csv" hidden>
 </div>
@@ -73,6 +77,7 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 <p style="margin-top:8px;color:var(--d)">Nettleseren kan spørre om tillatelse til å laste ned flere filer.</p>
 <div class="r"><button id="mgo">Last ned</button><button id="mx">Avbryt</button></div>
 </div></div>
+<div id="list" hidden></div>
 <div id="tl"></div>
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
@@ -129,17 +134,23 @@ function buildFilters(){const pool=k=>all.filter(c=>match(c,k));
  fillSel('fa','a','Alle artister',uniq(pool('a').flatMap(c=>c.artists)))}
 ['y:fy','c:fc','s:fs','v:fv','a:fa'].forEach(p=>{const[k,id]=p.split(':');$(id).onchange=e=>{F[k]=e.target.value;refresh()}});
 $('q').oninput=e=>{F.q=e.target.value.toLowerCase();refresh()};
+$('ph').onclick=()=>{const m=$('panel').classList.toggle('min');$('pt').textContent=m?'+':'−'};
 $('reset').onclick=()=>{F={q:'',y:'',c:'',s:'',v:'',a:''};$('q').value='';refresh()};
 
 let shown=[],venues=[],fitNext=false;
 function refresh(fit=true){buildFilters();shown=all.filter(c=>match(c));const m={};
  shown.filter(c=>c.lat!=null).forEach(c=>{const k=c.venue+'|'+c.location;(m[k]=m[k]||{venue:c.venue,location:c.location,city:c.city,country:c.country,ll:[c.lat,c.lng],cs:[]}).cs.push(c)});
- venues=Object.values(m);stats();timeline();if(fit&&venues.length)fitAll();draw()}
-function fitAll(){const b=L.latLngBounds(venues.map(v=>v.ll));map.fitBounds(b,{padding:[80,80],maxZoom:10})}
+ venues=Object.values(m);stats();timeline();renderList();if(fit&&venues.length)fitAll();draw()}
+function fitAll(){const b=L.latLngBounds(venues.map(v=>v.ll));map.fitBounds(b,{paddingTopLeft:[innerWidth>700?290:40,90],paddingBottomRight:[70,innerWidth>700?140:100],maxZoom:13})}
 function stats(){const s=(a)=>new Set(a).size;
  $('stats').innerHTML=[[shown.length,'konserter'],[s(shown.flatMap(c=>c.artists)),'artister'],[s(shown.map(c=>c.venue)),'steder'],[s(shown.map(c=>c.country)),'land']].map(x=>`<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
  const ys=shown.map(c=>c.date.slice(0,4)).filter(Boolean).sort();
  $('year').innerHTML=(F.y||(ys.length?(ys[0]==ys.at(-1)?ys[0]:ys[0]+'–'+ys.at(-1).slice(2)):''))+`<small>${shown.length} konserter</small>`}
+function renderList(){const el=$('list');if(!F.y){el.hidden=true;return}el.hidden=false;
+ el.innerHTML=`<div class="lh"><span>${F.y} · ${shown.length}</span><a id="lx">✕</a></div>`+shown.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(c=>`<div class="li" data-i="${all.indexOf(c)}"><div class="pd">${fmt(c.date)}</div><div>${esc(c.artists.join(' / ')||c.name)}</div><div class="pd">${esc(c.venue)}${c.city?', '+esc(c.city):''}</div></div>`).join('');
+ $('lx').onclick=()=>{F.y='';refresh()};
+ el.querySelectorAll('.li').forEach(d=>d.onclick=()=>{const c=all[d.dataset.i],v=venues.find(v=>v.venue==c.venue&&v.location==c.location);if(!v)return;
+  map.setView(v.ll,14,{animate:false});L.popup({offset:[0,-4]}).setLatLng(v.ll).setContent(popup([v])).openOn(map)})}
 function timeline(){const pool=all.filter(c=>match(c,'y')),n={};pool.forEach(c=>{const y=c.date.slice(0,4);n[y]=(n[y]||0)+1});
  const ys=Object.keys(n).sort(),mx=Math.max(...Object.values(n),1);
  $('tl').innerHTML=ys.map(y=>`<div class="${F.y==y?'on':''}" data-y="${y}" title="${n[y]}"><i style="height:${Math.max(2,n[y]/mx*60)}px"></i><span>${y}</span></div>`).join('');
@@ -151,6 +162,8 @@ const sp=a=>'https://open.spotify.com/search/'+encodeURIComponent(a);
 function popup(vs){const cs=vs.flatMap(v=>v.cs).sort((a,b)=>b.date.localeCompare(a.date));
  return`<div class="pv">${vs.length==1?esc(vs[0].venue):vs.length+' lokasjoner'}</div><div class="pl">${vs.length==1?esc(vs[0].location):''}</div>`+
  cs.map(c=>`<div class="pc"><div class="pd">${fmt(c.date)}${vs.length>1?' · '+esc(c.venue):''}</div>${c.artists.map(a=>`<a href="${sp(a)}" target="_blank" rel="noopener">${esc(a)}</a>`).join(' / ')}${c.name?`<div class="pn">${esc(c.name)}</div>`:''}${c.notSeen.length?`<div class="pd">+ ${esc(c.notSeen.join(', '))}</div>`:''}</div>`).join('')}
+function tip(vs){const A=cs=>[...new Set(cs.flatMap(c=>c.artists))];
+ return vs.slice().sort((a,b)=>b.cs.length-a.cs.length).slice(0,8).map(v=>{const a=A(v.cs);return `<div class="tv"><b>${esc(v.venue)}</b> · ${v.cs.length}<div class="ta">${esc(a.slice(0,6).join(', '))}${a.length>6?' +'+(a.length-6):''}</div></div>`}).join('')+(vs.length>8?`<div class="ta">+ ${vs.length-8} lokasjoner til</div>`:'')}
 function draw(){layer.clearLayers();const z=map.getZoom(),R=z>=12?20:46,pts=venues.map(v=>({v,p:map.latLngToContainerPoint(v.ll),n:v.cs.length})).sort((a,b)=>b.n-a.n),used=new Set();
  pts.forEach(a=>{if(used.has(a))return;used.add(a);const g=[a];pts.forEach(b=>{if(!used.has(b)&&a.p.distanceTo(b.p)<R){used.add(b);g.push(b)}});
   const n=g.reduce((s,x)=>s+x.n,0),vs=g.map(x=>x.v),single=vs.length==1;
@@ -159,6 +172,7 @@ function draw(){layer.clearLayers();const z=map.getZoom(),R=z>=12?20:46,pts=venu
   const cities=new Set(vs.map(v=>v.city)),ctr=new Set(vs.map(v=>v.country));
   let lab=single?(z>=8?vs[0].venue:(z>=5?vs[0].city:'')):(cities.size==1&&z>=4?vs[0].city:(ctr.size==1&&z>=3?vs[0].country:''));
   const mk=L.marker(ll,{icon:L.divIcon({className:'',iconSize:[sz,sz],html:`<div class="m${single&&n==1?' one':''}" style="width:${sz}px;height:${sz}px">${single&&n==1?'':n}${lab?`<em>${esc(lab)}</em>`:''}</div>`})}).addTo(layer);
+  mk.bindTooltip(tip(vs),{direction:'top',className:'tt',offset:[0,-sz/2],opacity:1});
   mk.on('click',()=>{const fit=()=>map.fitBounds(L.latLngBounds(vs.map(v=>v.ll)),{padding:[100,100],maxZoom:16});
    if(single||map.getZoom()>=15||(vs.length>1&&L.latLngBounds(vs.map(v=>v.ll)).getSouthWest().equals(L.latLngBounds(vs.map(v=>v.ll)).getNorthEast())))L.popup({offset:[0,-sz/2]}).setLatLng(ll).setContent(popup(vs)).openOn(map);else fit()})})}
 map.on('zoomend moveend',draw);
