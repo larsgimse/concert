@@ -1,0 +1,2365 @@
+{
+ "generated": "2026-10-16T21:36:39.492Z",
+ "concerts": [
+  {
+   "date": "2026-09-24",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Lars Vaular"
+   ],
+   "notSeen": [],
+   "venue": "Bryggeriet Tromsø",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6460873,
+   "lng": 18.9509961
+  },
+  {
+   "date": "2026-07-02",
+   "end": "",
+   "name": "Karpe world",
+   "artists": [
+    "Karpe Diem"
+   ],
+   "notSeen": [],
+   "venue": "Ekebergsletta",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.894188,
+   "lng": 10.7802207
+  },
+  {
+   "date": "2026-06-10",
+   "end": "",
+   "name": "Foo Fighters - Take Cover",
+   "artists": [
+    "Foo Fighters"
+   ],
+   "notSeen": [
+    "Royel Otis",
+    "Otoboke Beaver"
+   ],
+   "venue": "Unity Arena",
+   "location": "Fornebu, Bærum, Norway",
+   "city": "Fornebu",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9031054,
+   "lng": 10.6238672
+  },
+  {
+   "date": "2026-06-04",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Yesterdaze"
+   ],
+   "notSeen": [],
+   "venue": "Parkteatret Scene",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9236202,
+   "lng": 10.7583527
+  },
+  {
+   "date": "2026-01-21",
+   "end": "",
+   "name": "Memoirs from a dream",
+   "artists": [
+    "Hangface (NO)",
+    "Englebarn",
+    "Diamond (NO)"
+   ],
+   "notSeen": [],
+   "venue": "Bryggeriet Scene",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6460873,
+   "lng": 18.9509961
+  },
+  {
+   "date": "2025-12-03",
+   "end": "",
+   "name": "Mew - Farewell",
+   "artists": [
+    "Mew"
+   ],
+   "notSeen": [
+    "Snuggle"
+   ],
+   "venue": "Sentrum Scene",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9154765,
+   "lng": 10.7517805
+  },
+  {
+   "date": "2025-10-29",
+   "end": "",
+   "name": "40 år - Mere for flere",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Bryggeriet Scene",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6460873,
+   "lng": 18.9509961
+  },
+  {
+   "date": "2025-10-22",
+   "end": "",
+   "name": "Hjem til Stig",
+   "artists": [
+    "Stig Brenner"
+   ],
+   "notSeen": [],
+   "venue": "Betong, Chateau Neuf",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9723975,
+   "lng": 10.7757292
+  },
+  {
+   "date": "2025-10-15",
+   "end": "",
+   "name": "The MAYHEM Ball",
+   "artists": [
+    "Lady Gaga"
+   ],
+   "notSeen": [],
+   "venue": "Avicii Arena",
+   "location": "Stockholm, Stockholm, Sweden",
+   "city": "Stockholm",
+   "country": "Sweden",
+   "type": "",
+   "status": "Past",
+   "lat": 59.2936201,
+   "lng": 18.0832132
+  },
+  {
+   "date": "2025-09-12",
+   "end": "",
+   "name": "Music of the Spheres World Tour",
+   "artists": [
+    "Coldplay",
+    "Elyanna",
+    "Chloe Qisha",
+    "Simón Bolívar Symphony Orchestra of Venezuela"
+   ],
+   "notSeen": [],
+   "venue": "Wembley Stadium",
+   "location": "London, England, United Kingdom",
+   "city": "London",
+   "country": "United Kingdom",
+   "type": "",
+   "status": "Past",
+   "lat": 51.5560695,
+   "lng": -0.2796034
+  },
+  {
+   "date": "2025-09-08",
+   "end": "",
+   "name": "Music of the Spheres World Tour",
+   "artists": [],
+   "notSeen": [
+    "Coldplay",
+    "Tems",
+    "Elyanna",
+    "Simón Bolívar Symphony Orchestra of Venezuela"
+   ],
+   "venue": "Wembley Stadium",
+   "location": "London, England, United Kingdom",
+   "city": "London",
+   "country": "United Kingdom",
+   "type": "",
+   "status": "Rescheduled",
+   "lat": 51.5560695,
+   "lng": -0.2796034
+  },
+  {
+   "date": "2025-08-27",
+   "end": "",
+   "name": "Can We Please Have Fun Tour",
+   "artists": [
+    "Kings Of Leon"
+   ],
+   "notSeen": [
+    "Cliffords"
+   ],
+   "venue": "Unity Arena",
+   "location": "Fornebu, Bærum, Norway",
+   "city": "Fornebu",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9031054,
+   "lng": 10.6238672
+  },
+  {
+   "date": "2025-08-05",
+   "end": "",
+   "name": "PWR/UP Tour",
+   "artists": [
+    "AC/DC"
+   ],
+   "notSeen": [
+    "The Pretty Reckless"
+   ],
+   "venue": "Bjerke Travbane",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9403457,
+   "lng": 10.8098699
+  },
+  {
+   "date": "2025-07-27",
+   "end": "",
+   "name": "+−=÷× Tour",
+   "artists": [
+    "Ed Sheeran"
+   ],
+   "notSeen": [
+    "Myles Smith",
+    "Tori Kelly"
+   ],
+   "venue": "Ullevaal Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.949136,
+   "lng": 10.7343487
+  },
+  {
+   "date": "2025-06-07",
+   "end": "",
+   "name": "40 år på Frøyas have",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Frøyas have",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9156734,
+   "lng": 10.6970912
+  },
+  {
+   "date": "2025-05-03",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Gabrielle (NO)"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2025-05-02",
+   "end": "",
+   "name": "The Overview Tour",
+   "artists": [
+    "Steven Wilson"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Konserthus",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9130986,
+   "lng": 10.7298225
+  },
+  {
+   "date": "2025-04-05",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Motorpsycho"
+   ],
+   "notSeen": [],
+   "venue": "Sentrum Scene",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9154765,
+   "lng": 10.7517805
+  },
+  {
+   "date": "2025-03-28",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Kjartan Lauritzen"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2025-03-27",
+   "end": "",
+   "name": "”återvändare” 10 år senare",
+   "artists": [
+    "Kent"
+   ],
+   "notSeen": [],
+   "venue": "Tele2 Arena",
+   "location": "Stockholm, Stockholm, Sweden",
+   "city": "Stockholm",
+   "country": "Sweden",
+   "type": "",
+   "status": "Past",
+   "lat": 59.2910328,
+   "lng": 18.0845427
+  },
+  {
+   "date": "2024-12-07",
+   "end": "",
+   "name": "Live 2024",
+   "artists": [
+    "Bigbang (NO)"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2024-11-09",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Dream Theater"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2024-11-08",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Dumdum Boys"
+   ],
+   "notSeen": [],
+   "venue": "Bruket",
+   "location": "Lørenskog, Norway",
+   "city": "Lørenskog",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.8970034,
+   "lng": 10.9669148
+  },
+  {
+   "date": "2024-10-29",
+   "end": "",
+   "name": "Rising from the North 2024 Tour",
+   "artists": [
+    "In Flames",
+    "Arch Enemy"
+   ],
+   "notSeen": [
+    "Soilwork"
+   ],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2024-10-26",
+   "end": "",
+   "name": "HuggerMugger 30",
+   "artists": [
+    "The September When"
+   ],
+   "notSeen": [],
+   "venue": "Dnb Arena",
+   "location": "Stavanger, Rogaland, Norway",
+   "city": "Stavanger",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 58.9534966,
+   "lng": 5.6903328
+  },
+  {
+   "date": "2024-10-08",
+   "end": "",
+   "name": "Bleed out 2024 Tour",
+   "artists": [
+    "Within Temptation",
+    "Annisokay"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2024-08-30",
+   "end": "",
+   "name": "Music of the Spheres World Tour",
+   "artists": [
+    "Coldplay",
+    "Maggie Rogers",
+    "Aby Coulibaly"
+   ],
+   "notSeen": [],
+   "venue": "Croke Park",
+   "location": "Dublin, Leinster, Ireland",
+   "city": "Dublin",
+   "country": "Ireland",
+   "type": "",
+   "status": "Past",
+   "lat": 53.3603576,
+   "lng": -6.2509812
+  },
+  {
+   "date": "2024-08-16",
+   "end": "",
+   "name": "We Love The 90's",
+   "artists": [
+    "Hanson",
+    "Dina",
+    "Kate Ryan",
+    "Vengaboys"
+   ],
+   "notSeen": [
+    "Cascada",
+    "Atomic Kitten",
+    "Günther",
+    "Rednex"
+   ],
+   "venue": "",
+   "location": "",
+   "city": "",
+   "country": "",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2024-05-19",
+   "end": "",
+   "name": "The Eras Tour",
+   "artists": [
+    "Taylor Swift",
+    "Paramore"
+   ],
+   "notSeen": [],
+   "venue": "Friends Arena",
+   "location": "Solna, Stockholm, Sweden",
+   "city": "Solna",
+   "country": "Sweden",
+   "type": "",
+   "status": "Past",
+   "lat": 59.3725039,
+   "lng": 18.0016672
+  },
+  {
+   "date": "2024-04-17",
+   "end": "",
+   "name": "Vakreste",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Rockefeller Music Hall",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9161025,
+   "lng": 10.7502771
+  },
+  {
+   "date": "2024-03-24",
+   "end": "",
+   "name": "Get who´s back tour",
+   "artists": [
+    "Danko Jones"
+   ],
+   "notSeen": [],
+   "venue": "Blårock",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2024-02-01",
+   "end": "",
+   "name": "30 years tour",
+   "artists": [
+    "Jaga Jazzist"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2023-11-18",
+   "end": "",
+   "name": "Seine natt desember",
+   "artists": [
+    "Trygve Skaug"
+   ],
+   "notSeen": [],
+   "venue": "Tromsø domkirke",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.648749,
+   "lng": 18.9568202
+  },
+  {
+   "date": "2023-11-13",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Claudia Scott"
+   ],
+   "notSeen": [],
+   "venue": "Quality hotel Oslo Airport",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9723975,
+   "lng": 10.7757292
+  },
+  {
+   "date": "2023-11-10",
+   "end": "",
+   "name": "Neutronstjärnan",
+   "artists": [
+    "Lars Winnerbäck"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2023-10-18",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Sigrid"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2023-09-22",
+   "end": "",
+   "name": "Yay!",
+   "artists": [
+    "Motorpsycho"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2023-09-16",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Blårock",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2023-08-24",
+   "end": "2023-08-26",
+   "name": "Rakettnatt 2023",
+   "artists": [
+    "Ballinciaga",
+    "Sondre Justad",
+    "Virkelig",
+    "Ramón",
+    "Chris Holsten",
+    "ISÁK",
+    "Kygo",
+    "Michelle Ullestad"
+   ],
+   "notSeen": [
+    "Skaar",
+    "Victoria Nadine",
+    "Hannah Storm",
+    "Feber",
+    "Halvdan Sivertsen",
+    "Ruben",
+    "Anne-Marie",
+    "Broiler",
+    "Lisa Skoglund",
+    "Kamelen",
+    "Sirkus Eliassen",
+    "Veps",
+    "Roc Boyz"
+   ],
+   "venue": "Prostneset",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.647971,
+   "lng": 18.9596742
+  },
+  {
+   "date": "2023-08-18",
+   "end": "2023-08-19",
+   "name": "Parkenfestivalen 2023",
+   "artists": [
+    "Leftfield",
+    "Karpe Diem",
+    "Highasakite",
+    "DAGNY",
+    "Lukas Graham",
+    "AURORA",
+    "D-A-D",
+    "Delillos",
+    "Undergrunn",
+    "Barrikade"
+   ],
+   "notSeen": [
+    "The Struts",
+    "CC Cowboys",
+    "bbno$",
+    "Protomartyr",
+    "Hurray For The Riffraff",
+    "Still Corners",
+    "Israel",
+    "Nash",
+    "SKAAR (NO)",
+    "Joshua Ray Walker",
+    "ISÁK"
+   ],
+   "venue": "Rensåsparken",
+   "location": "Bodø, Nordland, Norway",
+   "city": "Bodø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 67.283749,
+   "lng": 14.4023471
+  },
+  {
+   "date": "2023-07-08",
+   "end": "",
+   "name": "Music of the Spheres World Tour",
+   "artists": [
+    "Coldplay",
+    "Griff"
+   ],
+   "notSeen": [
+    "LUCIIA"
+   ],
+   "venue": "Ullevi",
+   "location": "Gothenburg, Västra Götaland, Sweden",
+   "city": "Gothenburg",
+   "country": "Sweden",
+   "type": "",
+   "status": "Past",
+   "lat": 57.7059197,
+   "lng": 11.9873276
+  },
+  {
+   "date": "2023-05-02",
+   "end": "",
+   "name": "Diaspora European Tour",
+   "artists": [
+    "Karpe Diem"
+   ],
+   "notSeen": [],
+   "venue": "Sala But",
+   "location": "Madrid, Madrid, Spain",
+   "city": "Madrid",
+   "country": "Spain",
+   "type": "",
+   "status": "Past",
+   "lat": 40.4269857,
+   "lng": -3.6995918
+  },
+  {
+   "date": "2022-12-02",
+   "end": "",
+   "name": "",
+   "artists": [
+    "BIGBANG"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Driv, Tromsø, Norway",
+   "city": "Driv",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2022-11-19",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Sondre Justad"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2022-10-12",
+   "end": "",
+   "name": "The Cure - Euro 22",
+   "artists": [
+    "The Cure"
+   ],
+   "notSeen": [
+    "The Twilight Sad"
+   ],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2022-09-24",
+   "end": "",
+   "name": "Glød 2023",
+   "artists": [
+    "RSP & Thomax",
+    "ISÁK",
+    "Karpe Diem",
+    "DAGNY"
+   ],
+   "notSeen": [],
+   "venue": "Prostneset",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.647971,
+   "lng": 18.9596742
+  },
+  {
+   "date": "2022-08-27",
+   "end": "",
+   "name": "SAS Spektrum x10",
+   "artists": [
+    "Karpe Diem"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2022-07-08",
+   "end": "",
+   "name": "Music of the Spheres World Tour",
+   "artists": [
+    "Coldplay",
+    "H.E.R.",
+    "Mery Spolsky",
+    "Romario Punch"
+   ],
+   "notSeen": [],
+   "venue": "PGE Narodowy",
+   "location": "Warsaw, Mazovia, Poland",
+   "city": "Warsaw",
+   "country": "Poland",
+   "type": "",
+   "status": "Past",
+   "lat": 52.2397726,
+   "lng": 21.0454432
+  },
+  {
+   "date": "2022-06-04",
+   "end": "",
+   "name": "«Warmup» to Yesterdaze",
+   "artists": [
+    "Mother Vulture"
+   ],
+   "notSeen": [],
+   "venue": "Parkteateret",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9235291,
+   "lng": 10.7583204
+  },
+  {
+   "date": "2022-04-07",
+   "end": "",
+   "name": "Kingdom of Oblivion",
+   "artists": [
+    "Motorpsycho"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Driv, Tromsø, Norway",
+   "city": "Driv",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2021-11-23",
+   "end": "",
+   "name": "Kingdom of Oblivion",
+   "artists": [
+    "Motorpsycho"
+   ],
+   "notSeen": [],
+   "venue": "Blitz",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9185107,
+   "lng": 10.7374722
+  },
+  {
+   "date": "2021-06-24",
+   "end": "",
+   "name": "HAIK - Norwegian Broadcasting Corporation - NRK",
+   "artists": [
+    "Sondre Justad"
+   ],
+   "notSeen": [],
+   "venue": "",
+   "location": "Hov, Lofoten, Norway",
+   "city": "Hov",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2021-05-28",
+   "end": "",
+   "name": "Strangers/Lovers Tour",
+   "artists": [
+    "DAGNY"
+   ],
+   "notSeen": [],
+   "venue": "Clarion Hotel The Edge",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.647357,
+   "lng": 18.956874
+  },
+  {
+   "date": "2020-06-05",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "Bangsundbrygga",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6521551,
+   "lng": 18.9620041
+  },
+  {
+   "date": "2019-09-28",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Ohmwork"
+   ],
+   "notSeen": [],
+   "venue": "Verkstedet, Tromsø Kulturhus",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2019-08-31",
+   "end": "",
+   "name": "",
+   "artists": [
+    "AURORA"
+   ],
+   "notSeen": [],
+   "venue": "Fjellheisen",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6385231,
+   "lng": 18.990838
+  },
+  {
+   "date": "2019-08-05",
+   "end": "",
+   "name": "Beautiful Trauma World Tour",
+   "artists": [
+    "P!nk",
+    "Vance Joy",
+    "KidCutUp",
+    "Bang Bang Romeo"
+   ],
+   "notSeen": [],
+   "venue": "Unity Arena",
+   "location": "Fornebu, Bærum, Norway",
+   "city": "Fornebu",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9031054,
+   "lng": 10.6238672
+  },
+  {
+   "date": "2019-04-23",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Karpe Diem"
+   ],
+   "notSeen": [],
+   "venue": "Clarion Hotel The Edge",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.647357,
+   "lng": 18.956874
+  },
+  {
+   "date": "2018-12-15",
+   "end": "",
+   "name": "",
+   "artists": [
+    "BIGBANG"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Driv, Tromsø, Norway",
+   "city": "Driv",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2018-07-21",
+   "end": "",
+   "name": "Bukta-Tromso Open Air Festival",
+   "artists": [
+    "Metz",
+    "RUST",
+    "Moddi",
+    "Arabrot",
+    "Sivert Høyem",
+    "Barren Womb",
+    "Sondre Justad"
+   ],
+   "notSeen": [],
+   "venue": "Telegrafbukta",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6325275,
+   "lng": 18.9062274
+  },
+  {
+   "date": "2018-06-19",
+   "end": "",
+   "name": "OTRII",
+   "artists": [
+    "Beyoncé",
+    "Jay-Z"
+   ],
+   "notSeen": [
+    "DeeJay Abstract"
+   ],
+   "venue": "Amsterdam ArenA",
+   "location": "Amsterdam, North Holland, Netherlands",
+   "city": "Amsterdam",
+   "country": "Netherlands",
+   "type": "",
+   "status": "Past",
+   "lat": 52.3159898,
+   "lng": 4.9429305
+  },
+  {
+   "date": "2018-04-06",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Sondre Justad"
+   ],
+   "notSeen": [],
+   "venue": "Clarion Hotel The Edge",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.647357,
+   "lng": 18.956874
+  },
+  {
+   "date": "2017-11-10",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Verkstedet, Tromsø Kulturhus",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2017-11-05",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Anathema"
+   ],
+   "notSeen": [],
+   "venue": "Rockefeller",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9161025,
+   "lng": 10.7502771
+  },
+  {
+   "date": "2016-09-22",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Seigmen"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Driv, Tromsø, Norway",
+   "city": "Driv",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2016-07-23",
+   "end": "",
+   "name": "Bukta 2016 Day 3",
+   "artists": [
+    "Cancer Bats",
+    "Raga Rockers",
+    "Monolord",
+    "Jacco Gardner",
+    "Valentourettes",
+    "Black Debbath",
+    "Cancer Bats"
+   ],
+   "notSeen": [
+    "The Auto Pilots",
+    "The Late Band",
+    "The Northern Lies",
+    "Mama Said No",
+    "Martine B & The Classy Llamas",
+    "Gebhardt",
+    "Senjahopen",
+    "Ondt Blod",
+    "There Will Be Blood",
+    "Dumdum Boys"
+   ],
+   "venue": "Telegrafbukta",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6325275,
+   "lng": 18.9062274
+  },
+  {
+   "date": "2016-07-22",
+   "end": "",
+   "name": "Bukta 2016 Day 2",
+   "artists": [
+    "Gojira",
+    "Dweezil Zappa",
+    "Graveyard",
+    "Sugarfoot",
+    "Greenleaf (SE)",
+    "Sondre Justad"
+   ],
+   "notSeen": [
+    "Sunshine Reverberation",
+    "Robaat",
+    "Kumle og Raspeball"
+   ],
+   "venue": "Telegrafbukta",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6325275,
+   "lng": 18.9062274
+  },
+  {
+   "date": "2016-07-21",
+   "end": "",
+   "name": "Bukta 2016 Day 1",
+   "artists": [
+    "Bendik",
+    "Kvelertak",
+    "Ohmwork"
+   ],
+   "notSeen": [
+    "Gogol Bordello",
+    "Cosmic Psychos",
+    "Hubro",
+    "Iggy Pop"
+   ],
+   "venue": "Telegrafbukta",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6325275,
+   "lng": 18.9062274
+  },
+  {
+   "date": "2016-07-05",
+   "end": "",
+   "name": "Coldplay: A Head Full of Dreams",
+   "artists": [
+    "Coldplay",
+    "Lianne La Havas",
+    "Alessia Cara"
+   ],
+   "notSeen": [],
+   "venue": "Telia Parken",
+   "location": "Copenhagen, Capital Region, Denmark",
+   "city": "Copenhagen",
+   "country": "Denmark",
+   "type": "",
+   "status": "Past",
+   "lat": 55.6867243,
+   "lng": 12.5700724
+  },
+  {
+   "date": "2016-04-30",
+   "end": "",
+   "name": "We Are The Love Tour",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "Clarion Hotel The Edge",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.647357,
+   "lng": 18.956874
+  },
+  {
+   "date": "2014-10-15",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Lars Winnerbäck"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Driv, Tromsø, Norway",
+   "city": "Driv",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2014-04-30",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Driv, Tromsø, Norway",
+   "city": "Driv",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2014-02-14",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Ohmwork"
+   ],
+   "notSeen": [],
+   "venue": "Verkstedet, Tromsø Kulturhus",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2013-10-05",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2013-08-29",
+   "end": "2013-08-31",
+   "name": "Døgnvill 2013",
+   "artists": [
+    "50 Cent",
+    "Dum Dum Boys",
+    "Ole Paus",
+    "Sirkus Eliassen",
+    "Band of Horses",
+    "Jerry Lee Lewis",
+    "Faithless",
+    "Envy",
+    "Zara Larsson",
+    "Vishnu",
+    "Avicii",
+    "Kurt Nilsen",
+    "Violet Road",
+    "Insense",
+    "Haddaway",
+    "The United",
+    "Tone Damli"
+   ],
+   "notSeen": [],
+   "venue": "",
+   "location": "",
+   "city": "",
+   "country": "",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2013-01-11",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "Kulturhuset",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.651139,
+   "lng": 18.9564338
+  },
+  {
+   "date": "2012-10-19",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Kulturhuset",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.651139,
+   "lng": 18.9564338
+  },
+  {
+   "date": "2012-08-23",
+   "end": "2012-08-25",
+   "name": "Døgnvill 2012",
+   "artists": [
+    "LMFAO",
+    "Shaggy",
+    "First Aid Kit",
+    "Pet Shop Boys",
+    "Katie Melua",
+    "Kent",
+    "Bernhoft",
+    "Marit Larsen",
+    "LidoLido",
+    "Cazadores",
+    "Hålogalandslaget",
+    "Alina Devercerski",
+    "Bo Kapsers Orkester"
+   ],
+   "notSeen": [],
+   "venue": "Døgnvill 2012",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2012-03-30",
+   "end": "2012-03-31",
+   "name": "Døgnvill Vinter 2012",
+   "artists": [
+    "Simple Minds",
+    "Elton John",
+    "Hellbillies",
+    "Halvdan Sivertsen",
+    "Jan Eggum",
+    "Violet Road",
+    "DAGNY",
+    "Vinni",
+    "DJ Ralph Myerz",
+    "Dreamon"
+   ],
+   "notSeen": [],
+   "venue": "Skarphallen",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.674437,
+   "lng": 18.9288609
+  },
+  {
+   "date": "2011-11-24",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Danko Jones"
+   ],
+   "notSeen": [],
+   "venue": "Byscenen",
+   "location": "Trondheim, Trøndelag, Norway",
+   "city": "Trondheim",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 63.4301303,
+   "lng": 10.3916877
+  },
+  {
+   "date": "2011-11-14",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Bel Canto"
+   ],
+   "notSeen": [],
+   "venue": "Stortorget",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6513555,
+   "lng": 18.9586034
+  },
+  {
+   "date": "2011-09-09",
+   "end": "",
+   "name": "Gyldne Tider",
+   "artists": [
+    "Pristine",
+    "Jørn Hoel",
+    "Steinar Albrigtsen",
+    "Kirsti Sparboe",
+    "Violet Road",
+    "Bel Canto",
+    "Frost",
+    "Sivert Høyem",
+    "Röyksopp"
+   ],
+   "notSeen": [],
+   "venue": "Valhall Arena",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2011-09-01",
+   "end": "",
+   "name": "Døgnvill 2011",
+   "artists": [
+    "Robyn",
+    "Kelis",
+    "Pendulum",
+    "Europe",
+    "Roxette",
+    "John Fogerty",
+    "Veronica Maggio",
+    "Thomas Dybdahl",
+    "Enslaved",
+    "Kaizers Orchestra",
+    "Admiral P",
+    "Face (US)",
+    "Vamp",
+    "rOlfFa"
+   ],
+   "notSeen": [],
+   "venue": "",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2011-03-18",
+   "end": "",
+   "name": "",
+   "artists": [
+    "BIGBANG"
+   ],
+   "notSeen": [],
+   "venue": "Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2010-10-08",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2010-03-27",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Kent"
+   ],
+   "notSeen": [],
+   "venue": "Bodø Spektrum",
+   "location": "Bodø, Nordland, Norway",
+   "city": "Bodø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 67.2781745,
+   "lng": 14.4160256
+  },
+  {
+   "date": "2009-10-09",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Violet Road"
+   ],
+   "notSeen": [],
+   "venue": "Studenthuset Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2009-07-31",
+   "end": "",
+   "name": "U2 360° Tour",
+   "artists": [
+    "Snow Patrol",
+    "U2"
+   ],
+   "notSeen": [],
+   "venue": "Ullevi",
+   "location": "Gothenburg, Västra Götaland, Sweden",
+   "city": "Gothenburg",
+   "country": "Sweden",
+   "type": "",
+   "status": "Past",
+   "lat": 57.7059197,
+   "lng": 11.9873276
+  },
+  {
+   "date": "2009-07-28",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Madonna",
+    "Paul Oakenfold"
+   ],
+   "notSeen": [],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "2008-11-03",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Madrugada"
+   ],
+   "notSeen": [],
+   "venue": "Kulturhuset Tromsø",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.651139,
+   "lng": 18.9564338
+  },
+  {
+   "date": "2008-08-29",
+   "end": "2008-08-30",
+   "name": "Døgnvill 2008",
+   "artists": [
+    "50 Cent",
+    "Travis",
+    "Madcon",
+    "Amy Macdonald",
+    "Boney M.",
+    "Ane Brun",
+    "Ida Maria",
+    "Samantha Fox",
+    "Kaizers Orchestra",
+    "Limahl",
+    "Sex Pistols",
+    "Halvdan Sivertsen Og Steinar Albrigtsen"
+   ],
+   "notSeen": [],
+   "venue": "Valhall",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.660181,
+   "lng": 18.9550294
+  },
+  {
+   "date": "2007-08-24",
+   "end": "2007-08-25",
+   "name": "Døgnvill 2007",
+   "artists": [
+    "The Lionheart Brothers",
+    "Marit Larsen",
+    "Mira Craig",
+    "Knutsen & Ludvigsen",
+    "Kurt Nilsen",
+    "Chris Cornell",
+    "Washington",
+    "Brett Anderson",
+    "Lene Marlin",
+    "Timbuktu",
+    "a-ha"
+   ],
+   "notSeen": [],
+   "venue": "Alfheim Stadium",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6489185,
+   "lng": 18.9343489
+  },
+  {
+   "date": "2007-03-05",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Sivert Høyem"
+   ],
+   "notSeen": [],
+   "venue": "",
+   "location": "",
+   "city": "",
+   "country": "",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "2006-07-04",
+   "end": "2006-07-08",
+   "name": "Quart Festival 2006",
+   "artists": [
+    "Pharrell Williams",
+    "Coheed and Cambria",
+    "Johnossi",
+    "Burst",
+    "Atmosphere",
+    "Flogging Molly",
+    "Torch",
+    "Clap Your Hands Say Yeah",
+    "Kanye West",
+    "Ye",
+    "Rufus Wainwright",
+    "Placebo",
+    "Marit Larsen",
+    "Gogol Bordello",
+    "The Like",
+    "Arctic Monkeys",
+    "Damian \"Jr. Gong\" Marley",
+    "Depeche Mode",
+    "Wolfmother",
+    "Opeth",
+    "Satyricon",
+    "Muse",
+    "Tool",
+    "Silver Jews",
+    "The Raconteurs",
+    "The School",
+    "Richard Hawley"
+   ],
+   "notSeen": [],
+   "venue": "Unknown venue",
+   "location": "Kristiansand, Norway",
+   "city": "Kristiansand",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 58.0856276,
+   "lng": 7.931858
+  },
+  {
+   "date": "2006-07-01",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Robbie Williams",
+    "Basement Jaxx",
+    "Orson",
+    "Chris Coco"
+   ],
+   "notSeen": [],
+   "venue": "Ullevi",
+   "location": "Gothenburg, Västra Götaland, Sweden",
+   "city": "Gothenburg",
+   "country": "Sweden",
+   "type": "",
+   "status": "Past",
+   "lat": 57.7059197,
+   "lng": 11.9873276
+  },
+  {
+   "date": "2006-06-28",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Guns N' Roses",
+    "Bullet for My Valentine"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "2005-09-09",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Studentsamfunnet Driv",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2005-08-17",
+   "end": "",
+   "name": "Tromsø ØL-festival",
+   "artists": [
+    "Di Derre"
+   ],
+   "notSeen": [],
+   "venue": "",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6516345,
+   "lng": 18.9558585
+  },
+  {
+   "date": "2005-07-27",
+   "end": "",
+   "name": "Vertigo",
+   "artists": [
+    "U2"
+   ],
+   "notSeen": [
+    "Razorlight",
+    "Paddy Casey"
+   ],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "2005-06-11",
+   "end": "",
+   "name": "46664 Arctic Concert",
+   "artists": [
+    "Anneli Drecker",
+    "Razorlight",
+    "Kaizers Orchestra",
+    "Bongo Maffin",
+    "Samsaya",
+    "Noora Noor",
+    "Thomas Dybdahl",
+    "Saybia",
+    "Angélique Kidjo",
+    "Peter Gabriel",
+    "Robert Plant and The Strange Sensation",
+    "Mafikizolo",
+    "Madrugada",
+    "Ane Brun",
+    "Jivan Gasparyan",
+    "Annie Lennox",
+    "Brian May",
+    "Sharon corr",
+    "Zuccero",
+    "Johnny Clegg"
+   ],
+   "notSeen": [],
+   "venue": "Mandelasletta",
+   "location": "Tromsø, Norway",
+   "city": "Tromsø",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.6509317,
+   "lng": 18.9913226
+  },
+  {
+   "date": "1995-03-11",
+   "end": "",
+   "name": "UKA",
+   "artists": [
+    "Weld"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1995-03-10",
+   "end": "",
+   "name": "UKA",
+   "artists": [
+    "Bare Egil Band"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1995-03-09",
+   "end": "",
+   "name": "UKA",
+   "artists": [
+    "Gartnerlosjen"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1995-03-06",
+   "end": "",
+   "name": "UKA",
+   "artists": [
+    "Irie Darlings"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1995-03-03",
+   "end": "",
+   "name": "UKA",
+   "artists": [
+    "Tre Sma Kinesere"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1995-01-27",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Raga Rockers"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1994-11-08",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Anne Grete Preus"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1994-10-21",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Gartnerlosjen"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 69.9666046,
+   "lng": 23.2733282
+  },
+  {
+   "date": "1994-08-29",
+   "end": "",
+   "name": "The Division Bell tour",
+   "artists": [
+    "Pink Floyd"
+   ],
+   "notSeen": [],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "1994-03-17",
+   "end": "",
+   "name": "UKA",
+   "artists": [
+    "Kung Fu Girls"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1994-03-09",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Tim Scott"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1994-03-04",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Kultursalen",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1994-01-29",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Jørn Hoel"
+   ],
+   "notSeen": [],
+   "venue": "Høgskolen i Finnmark",
+   "location": "Alta, Troms og Finnmark, Norway",
+   "city": "Alta",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  },
+  {
+   "date": "1993-12-17",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Delillos"
+   ],
+   "notSeen": [],
+   "venue": "Rockefeller",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9161025,
+   "lng": 10.7502771
+  },
+  {
+   "date": "1993-07-29",
+   "end": "",
+   "name": "Zooropo '93",
+   "artists": [
+    "PJ Harvey",
+    "Stereo MCs",
+    "U2"
+   ],
+   "notSeen": [],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "1993-06-10",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Guns N' Roses"
+   ],
+   "notSeen": [],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "1993-04-14",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Peter Gabriel"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "1992-09-21",
+   "end": "",
+   "name": "",
+   "artists": [
+    "The Cure"
+   ],
+   "notSeen": [],
+   "venue": "Oslo Spektrum",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9129638,
+   "lng": 10.7546593
+  },
+  {
+   "date": "1992-07-30",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Dire Straits"
+   ],
+   "notSeen": [],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "1992-06-28",
+   "end": "",
+   "name": "Kalvøyafestivalen 1992",
+   "artists": [
+    "Bryan Adams",
+    "Violent Femmes",
+    "Crowded House",
+    "Extreme",
+    "Nirvana",
+    "Teenage Fanclub",
+    "Bel Canto",
+    "Little Village",
+    "The Blues Brothers Band",
+    "Marius Müller’s Funhouse"
+   ],
+   "notSeen": [],
+   "venue": "Kalvøya",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9723975,
+   "lng": 10.7757292
+  },
+  {
+   "date": "1990-08-22",
+   "end": "",
+   "name": "",
+   "artists": [
+    "David Bowie"
+   ],
+   "notSeen": [],
+   "venue": "Jordal Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9111739,
+   "lng": 10.7839671
+  },
+  {
+   "date": "1989-11-09",
+   "end": "",
+   "name": "An Evening Of Yes Music Plus",
+   "artists": [
+    "Anderson Bruford Wakeman Howe"
+   ],
+   "notSeen": [],
+   "venue": "Skedsmohallen",
+   "location": "Skedsmo, Norway",
+   "city": "Skedsmo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.7830858,
+   "lng": 11.4626292
+  },
+  {
+   "date": "1989-11-09",
+   "end": "",
+   "name": "An Evening Of Yes Music Plus",
+   "artists": [
+    "Anderson Bruford Wakeman Howe"
+   ],
+   "notSeen": [],
+   "venue": "Skedsmohallen",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9723975,
+   "lng": 10.7757292
+  },
+  {
+   "date": "1988-08-02",
+   "end": "",
+   "name": "A Momentary Lapse of Reason tour",
+   "artists": [
+    "Pink Floyd"
+   ],
+   "notSeen": [],
+   "venue": "Valle Hovin Stadion",
+   "location": "Oslo, Oslo, Norway",
+   "city": "Oslo",
+   "country": "Norway",
+   "type": "",
+   "status": "Past",
+   "lat": 59.9184716,
+   "lng": 10.8043415
+  },
+  {
+   "date": "1982-10-18",
+   "end": "",
+   "name": "",
+   "artists": [
+    "Cliff Richards"
+   ],
+   "notSeen": [],
+   "venue": "Drammenshallen",
+   "location": "Drammen, Viken, Norway",
+   "city": "Drammen",
+   "country": "Norway",
+   "type": "",
+   "status": "Past"
+  }
+ ]
+}
