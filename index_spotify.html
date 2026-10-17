@@ -97,8 +97,8 @@ label{display:block;color:var(--d);font-size:9px;text-transform:uppercase;letter
 <select id="sx"><option value="">Aksent: ingen</option><option value="gold">Aksent: gull</option><option value="red">Aksent: rød</option><option value="blue">Aksent: blå</option><option value="green">Aksent: grønn</option></select>
 <div class="sck"><label class="mo"><input type="checkbox" id="sk_title" checked> Tittel</label><label class="mo"><input type="checkbox" id="sk_year" checked> Årstall</label><label class="mo"><input type="checkbox" id="sk_list" checked> Liste</label><label class="mo"><input type="checkbox" id="sk_top"> Artist</label><label class="mo"><input type="checkbox" id="sk_stats" checked> Antall show</label><label class="mo"><input type="checkbox" id="sk_big"> Stort tall</label><label class="mo"><input type="checkbox" id="sk_line"> Strek</label><label class="mo"><input type="checkbox" id="sk_frame"> Ramme</label><label class="mo"><input type="checkbox" id="sk_up" checked> Store bokst.</label><label class="mo"><input type="checkbox" id="sk_only" checked> Kun valgt artist</label></div></div>
 <div id="lnopt" hidden><input type="text" id="lt" maxlength="30" placeholder="Tittel (f.eks. LINEUP)"><input type="text" id="lsub" maxlength="40" placeholder="Undertittel">
-<select id="lr" style="grid-column:1/-1"><option value="count">Rangering: mine konserter</option><option value="pop">Popularitet: Deezer-fans</option><option value="rank">Popularitet: Deezer toppsang</option><option value="wiki">Popularitet: Wikipedia-visninger</option><option value="mix">Popularitet: kombinert</option><option value="albums">Størrelse: antall album (Deezer)</option><option value="spp">Spotify: popularitet (0–100)</option><option value="spf">Spotify: følgere</option></select>
-<div id="spbox" hidden style="grid-column:1/-1"><input type="text" id="spid" placeholder="Spotify Client ID"><button id="spcon" type="button">Koble til Spotify</button><div id="spinfo" class="dm" style="letter-spacing:.03em;line-height:1.5;margin:0 0 8px;font-size:9px;word-break:break-all"></div></div>
+<select id="lr" style="grid-column:1/-1"><option value="count">Rangering: mine konserter</option><option value="pop">Popularitet: Deezer-fans</option><option value="rank">Popularitet: Deezer toppsang</option><option value="wiki">Popularitet: Wikipedia-visninger</option><option value="mix">Popularitet: kombinert</option><option value="albums">Størrelse: antall album (Deezer)</option><!--SP-START--><option value="spp">Spotify: popularitet (0–100)</option><option value="spf">Spotify: følgere</option><!--SP-END--></select>
+<!--SP-START--><div id="spbox" hidden style="grid-column:1/-1"><input type="text" id="spid" placeholder="Spotify Client ID"><button id="spcon" type="button">Koble til Spotify</button><div id="spinfo" class="dm" style="letter-spacing:.03em;line-height:1.5;margin:0 0 8px;font-size:9px;word-break:break-all"></div><button id="spclr" type="button">Fjern Client ID / logg ut</button></div><!--SP-END-->
 <select id="llv"><option value="4">Nivåer: 4</option><option value="3">Nivåer: 3</option><option value="2">Nivåer: 2</option><option value="1">Nivåer: 1</option></select>
 <select id="lm"><option value="20">Maks: 20</option><option value="40" selected>Maks: 40</option><option value="60">Maks: 60</option><option value="90">Maks: 90</option></select>
 <select id="lsep"><option value="·">Skille: ·</option><option value="/">Skille: /</option><option value="—">Skille: —</option><option value="br">Linjeskift</option></select>
@@ -346,8 +346,8 @@ let POPBUSY=false,POPT=0;
 const pv=n=>{const x=POP[n];return typeof x=='number'?{f:x}:(x||{})},FIELDS={pop:['f'],albums:['a'],rank:['r'],wiki:['w'],mix:['f','r','w'],spp:['sp'],spf:['sf']};
 async function dz(n){const j=await jsonp('https://api.deezer.com/search/artist?limit=5&q='+encodeURIComponent(n));if(!j||j.error)return null;const d=j.data||[],m=d.find(a=>a.name.toLowerCase()==n.toLowerCase())||d[0];return m?{id:m.id,f:m.nb_fan||0,a:m.nb_album||0}:{id:0,f:0,a:0}}
 async function wiki(n){try{const j=await(await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=1&prop=pageviews&pvipdays=60&gsrsearch='+encodeURIComponent(n+' musician OR band'))).json(),p=j.query&&Object.values(j.query.pages)[0];return p&&p.pageviews?Object.values(p.pageviews).reduce((a,b)=>a+(b||0),0):0}catch(e){return null}}
-const REDIR=()=>location.origin+location.pathname,spTok=()=>{try{const t=JSON.parse(localStorage.sptok||'null');return t&&t.exp>Date.now()?t.t:null}catch(e){return null}},b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-function spUI(){const on=['spp','spf'].includes($('lr').value);$('spbox').hidden=!on;if(!on)return;if(!$('spid').value)$('spid').value=localStorage.spid||'';$('spcon').textContent=spTok()?'Koblet til Spotify ✓ (koble til på nytt)':'Koble til Spotify';
+/*SP-A*/const REDIR=()=>location.origin+location.pathname,spTok=()=>{try{const t=JSON.parse(localStorage.sptok||'null');return t&&t.exp>Date.now()?t.t:null}catch(e){return null}},b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+function spUI(){const on=['spp','spf'].includes($('lr').value);$('spbox').hidden=!on;if(!on)return;if(!$('spid').dataset.i){$('spid').dataset.i=1;$('spid').value=localStorage.spid||''}$('spcon').textContent=spTok()?'Koblet til Spotify ✓ (koble til på nytt)':'Koble til Spotify';
  $('spinfo').textContent='Spotify gir ikke ut avspillinger. Her brukes Spotifys popularitet (0–100) og følgere. Krever gratis Client ID fra developer.spotify.com, og Redirect URI må være: '+REDIR()}
 async function spLogin(){const id=$('spid').value.trim();if(!id){$('lpmsg').textContent='Skriv inn Spotify Client ID først.';return}localStorage.spid=id;
  const v=b64u(crypto.getRandomValues(new Uint8Array(48))),ch=b64u(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)));sessionStorage.spv=v;sessionStorage.cc=JSON.stringify(all);sessionStorage.spr=$('lr').value;
@@ -364,7 +364,7 @@ async function spSearch(n){const t=spTok();if(!t)return 401;
   if(!r.ok){let m='';try{m=((await r.json()).error||{}).message||''}catch(e){}SPERR='HTTP '+r.status+(m?' – '+m:'');return null}
   const d=((await r.json()).artists||{}).items||[],m=d.find(a=>a.name.toLowerCase()==n.toLowerCase())||d[0];return m?{sp:m.popularity||0,sf:(m.followers||{}).total||0}:{sp:0,sf:0}}
  SPERR='429, for mange forespørsler';return null}
-async function pool(items,fn,k,dl=450){let i=0;await Promise.all(Array.from({length:k},async()=>{while(i<items.length){await fn(items[i++]);await sleep(dl)}}))}
+/*SP-B*/async function pool(items,fn,k,dl=450){let i=0;await Promise.all(Array.from({length:k},async()=>{while(i<items.length){await fn(items[i++]);await sleep(dl)}}))}
 function progress(d,t,failed){const on=d!=null,m=on?`Henter popularitet ${d}/${t} …`:(failed?(typeof failed=='string'?failed:'Kunne ikke hente alt (nett/kilde). Prøver igjen om litt.'):''),cur=$('msg').textContent,ok=!cur||/^(Henter popularitet|Kunne ikke hente)/.test(cur);$('lpbar').style.display=on?'block':'none';$('lpfill').style.width=on?d/t*100+'%':'0';$('lpmsg').textContent=m;if(ok){$('bar').style.width=on?d/t*100+'%':'0';$('msg').textContent=m}}
 async function ensurePop(v){if(POPBUSY||Date.now()-POPT<60000)return;const need=FIELDS[v],names=uniq(shown.flatMap(c=>c.artists)).filter(n=>need.some(k=>pv(n)[k]==null));if(!names.length){progress(null);return}
  if((need.includes('sp')||need.includes('sf'))&&!spTok()){$('lpmsg').textContent='Koble til Spotify først (se under).';spUI();return}
@@ -473,7 +473,7 @@ $('vb').innerHTML=Object.entries(VZS).map(([k,t])=>`<button data-k="${k}">${t}</
 $('vb').querySelectorAll('button').forEach(b=>b.onclick=()=>setViz(b.dataset.k));
 $('vc').onchange=vizRender;$('sar').addEventListener('change',()=>{if($('sar').value)$('sk_top').checked=true});$('vo').onchange=()=>{SORT=$('vo').value;vizRender()};['input','change'].forEach(e=>{$('cdopt').addEventListener(e,()=>VZ=='cloud'&&vizRender());$('stopt').addEventListener(e,()=>VZ=='stats'&&vizRender())});['input','change'].forEach(e=>$('lnopt').addEventListener(e,()=>{spUI();VZ=='lineup'&&vizRender()}));['input','change'].forEach(e=>$('shopt').addEventListener(e,()=>VZ=='shirt'&&vizRender()));$('vn').onclick=()=>setViz('');$('vr').onclick=()=>{if(VZ){VP[VZ]={};VD[VZ]={};vizRender()}};
 $('vw').onclick=()=>{WT=!WT;$('vw').textContent='Størrelse: '+(WT?'etter antall':'nøytral');vizRender()};
-$('spcon').onclick=spLogin;
+/*SP-C*/$('spcon').onclick=spLogin;$('spid').addEventListener('input',()=>{const v=$('spid').value.trim();v?localStorage.spid=v:localStorage.removeItem('spid')});$('spclr').onclick=()=>{localStorage.removeItem('spid');localStorage.removeItem('sptok');$('spid').value='';spUI();$('lpmsg').textContent='Client ID og Spotify-innlogging er fjernet.'};/*SP-D*/
 $('vh').onclick=()=>{const m=$('vm').classList.toggle('min');$('vt').textContent=m?'+':'−'};
 let VT={k:1,x:0,y:0};
 const applyVT=()=>$('vz').style.transform=`translate(${VT.x}px,${VT.y}px) scale(${VT.k})`;
@@ -532,14 +532,15 @@ $('mreset').onclick=()=>MN().forEach(m=>{m.style.position=m.style.left=m.style.t
 
 // Nedlasting: index_concert.html + concert.json
 function save(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()}
+const stripSp=h=>h.replace(new RegExp('/\\*SP-A\\*/[\\s\\S]*?/\\*SP-B\\*/'),"const spTok=()=>null,spUI=()=>{},spSearch=async()=>401;let SPERR='';").replace(new RegExp('/\\*SP-C\\*/[\\s\\S]*?/\\*SP-D\\*/'),'').replace(new RegExp('/\\*SP-E\\*/[\\s\\S]*?/\\*SP-F\\*/'),'').replace(new RegExp('<!--SP-'+'START-->[\\s\\S]*?<!--SP-'+'END-->','g'),'');
 async function doDownload(){let html;try{html=await(await fetch(location.href)).text()}catch(e){$('msg').textContent='Kunne ikke hente sidekilden. Åpne siden via GitHub Pages / webserver.';return}
- html=html.replace('name="mode" content="upload"','name="mode" content="static"');
- save('concert.json',JSON.stringify({generated:new Date().toISOString(),concerts:all,pop:POP},null,1),'application/json');
+ html=stripSp(html.replace('name="mode" content="upload"','name="mode" content="static"'));
+ save('concert.json',JSON.stringify({generated:new Date().toISOString(),concerts:all,pop:Object.fromEntries(Object.keys(POP).map(n=>{const{sp,sf,...r}=pv(n);return[n,r]}))},null,1),'application/json');
  setTimeout(()=>save('index_concert.html',html,'text/html'),400)}
 $('dl').onclick=()=>$('modal').hidden=false;$('mx').onclick=()=>$('modal').hidden=true;$('mgo').onclick=async()=>{await doDownload();$('modal').hidden=true};
 $('modal').onclick=e=>{if(e.target.id=='modal')$('modal').hidden=true};
 
-spReturn();
+/*SP-E*/spReturn();/*SP-F*/
 if(STATIC){$('up').innerHTML='';$('msg').textContent='Laster concert.json …';
  fetch('concert.json').then(r=>r.json()).then(j=>{$('msg').textContent='';$('dl').hidden=true;Object.assign(POP,j.pop||{});load(j.concerts,true)}).catch(()=>{
   $('msg').textContent='Kan ikke lese concert.json direkte fra fil. Velg filen manuelt, eller bruk en webserver.';
