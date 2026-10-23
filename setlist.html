@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="no" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setlist Finder - Finn Konsertsetlister</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            accent: '#a855f7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f17;
+            color: #f3f4f6;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(34, 197, 94, 0.25);
+        }
+        .glow-accent {
+            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.25);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(31, 41, 55, 0.5);
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(75, 85, 99, 0.8);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-black">
+
+    <!-- Bakgrunnsdekorasjon -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Hovedinnhold -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 py-8 w-full">
+        
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-gray-800/80 border border-gray-700/60 mb-4 text-xs font-semibold text-brand-500 tracking-wide uppercase">
+                <i class="fa-solid fa-music"></i> Live Music Archive
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                Finn Konsertsetlister
+            </h1>
+            <p class="mt-3 text-gray-400 text-sm md:text-base max-w-lg mx-auto">
+                Søk opp historiske konsertsetlister fra setlist.fm. Fyll inn artist og dato for å finne sanglisten.
+            </p>
+        </header>
+
+        <!-- API-Nøkkel Innstillinger (Fremhevet Boks) -->
+        <div class="mb-8 bg-gray-900/90 border-2 border-brand-500/40 rounded-2xl p-5 shadow-2xl backdrop-blur-md relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-500 shrink-0 mt-0.5">
+                    <i class="fa-solid fa-key text-base"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h3 class="text-sm font-bold text-gray-100 flex items-center gap-2">
+                            Setlist.fm API-Nøkkel
+                            <span id="api-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Anbefalt</span>
+                        </h3>
+                        <button id="api-toggle-btn" class="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1 font-medium">
+                            <span id="api-toggle-text">Vis veiledning</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200" id="api-chevron"></i>
+                        </button>
+                    </div>
+                    
+                    <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+                        Setlist.fm krever en personlig API-nøkkel. Hent en gratis nøkkel på din profil hos 
+                        <a href="https://www.setlist.fm/settings/api" target="_blank" rel="noopener noreferrer" class="text-brand-500 hover:underline font-semibold inline-flex items-center gap-1">
+                            setlist.fm/settings/api <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                        </a>
+                    </p>
+
+                    <div id="api-panel" class="hidden mt-4 pt-3 border-t border-gray-800">
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="password" id="api-key-input" placeholder="Lim inn din x-api-key her..." 
+                                   class="flex-1 bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-brand-500 transition-colors font-mono">
+                            <button id="save-api-key-btn" class="bg-brand-500 hover:bg-brand-600 text-gray-950 text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shrink-0">
+                                <i class="fa-solid fa-floppy-disk"></i> Lagre Nøkkel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Søkeskjema -->
+        <div class="bg-gray-900/90 border border-gray-800 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-xl mb-8 glow-effect">
+            <form id="search-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Artist Navn -->
+                    <div>
+                        <label for="artist-input" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-user-ninja mr-1.5 text-brand-500"></i> Artist / Bånd
+                        </label>
+                        <input type="text" id="artist-input" placeholder="f.eks. Kent, Coldplay, Rammstein" required
+                            class="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-3.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all font-medium">
+                    </div>
+
+                    <!-- Dato Input -->
+                    <div>
+                        <label for="date-input" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-calendar-days mr-1.5 text-brand-500"></i> Dato for konserten
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="date-input" placeholder="f.eks. 27.03.2010 eller 27. mars 2010" required
+                                class="w-full bg-gray-950/80 border border-gray-800 rounded-xl pl-4 pr-12 py-3.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all font-medium">
+                            <input type="date" id="native-date-picker" class="sr-only">
+                            <button type="button" id="picker-btn" title="Velg i kalender" 
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white transition-colors bg-gray-800/60 rounded-lg">
+                                <i class="fa-regular fa-calendar-check"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Handlingsknapper -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button type="submit" id="search-btn" class="sm:col-span-2 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-gray-950 font-bold py-3.5 px-5 rounded-xl shadow-lg transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-magnifying-glass"></i> Søk på Setlist.fm
+                    </button>
+                    
+                    <button type="button" id="demo-btn" class="bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/40 font-bold py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Test Demo (Kent 2010)
+                    </button>
+                </div>
+            </form>
+
+            <!-- Quick Links -->
+            <div class="mt-6 pt-5 border-t border-gray-800/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <p class="text-xs text-gray-400 font-medium">Prøv hurtigsøk:</p>
+                    <button class="example-btn bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700/50 text-gray-300 text-xs py-1 px-2.5 rounded-lg transition-all" data-artist="Kent" data-date="27.03.2010">
+                        Kent (27.03.2010)
+                    </button>
+                    <button class="example-btn bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700/50 text-gray-300 text-xs py-1 px-2.5 rounded-lg transition-all" data-artist="Coldplay" data-date="01.06.2012">
+                        Coldplay (01.06.2012)
+                    </button>
+                </div>
+
+                <button id="direct-search-top-btn" class="text-xs text-brand-500 hover:text-brand-400 font-semibold inline-flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-up-right-from-square"></i> Åpne direktesøk på Setlist.fm
+                </button>
+            </div>
+        </div>
+
+        <!-- Tidligere Søk (Søkshistorikk) -->
+        <div id="history-section" class="hidden mb-8">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Nylige søk
+                </h3>
+                <button id="clear-history-btn" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Slett historikk</button>
+            </div>
+            <div id="history-list" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Lasteindikator -->
+        <div id="loading-spinner" class="hidden py-16 text-center">
+            <div class="inline-block relative w-16 h-16">
+                <div class="w-16 h-16 rounded-full border-4 border-brand-500/20 border-t-brand-500 animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-brand-500">
+                    <i class="fa-solid fa-compact-disc animate-pulse text-lg"></i>
+                </div>
+            </div>
+            <p id="loading-status-text" class="mt-4 text-sm font-medium text-gray-300">Søker i konsertarkivet...</p>
+            <p class="text-xs text-gray-500 mt-1">Tester tilkobling via CORS-proxier</p>
+        </div>
+
+        <!-- Melding: Ingen resultater / Feil / CORS-Forklaring -->
+        <div id="error-box" class="hidden bg-gray-900/90 border border-amber-500/30 rounded-2xl p-6 text-center my-6 shadow-xl">
+            <div class="w-12 h-12 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+            </div>
+            <h3 id="error-title" class="text-lg font-bold text-gray-100">Klarte ikke hente fra API</h3>
+            <p id="error-desc" class="text-sm text-gray-300 mt-2 max-w-lg mx-auto leading-relaxed">
+                Nettlesere sperrer direkte API-kall til setlist.fm på grunn av sikkerhetsregler (CORS).
+            </p>
+
+            <div class="mt-4 p-3 bg-gray-950/80 rounded-xl border border-gray-800 text-xs text-gray-400 max-w-md mx-auto text-left space-y-1">
+                <p class="font-semibold text-gray-300">💡 Hva kan du gjøre?</p>
+                <p>1. Legg inn din egen API-nøkkel fra setlist.fm/settings/api øverst.</p>
+                <p>2. Trykk på knappen under for å se resultatet direkte på Setlist.fm sine nettsider!</p>
+                <p>3. Eller test <strong>Demo-modus</strong> for å se grensesnittet i aksjon.</p>
+            </div>
+
+            <div class="mt-6 flex flex-wrap justify-center gap-3">
+                <a id="direct-search-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-gray-950 text-xs font-bold px-5 py-3 rounded-xl transition-all shadow-lg">
+                    <i class="fa-solid fa-up-right-from-square"></i> Åpne direkte på Setlist.fm
+                </a>
+                <button type="button" id="trigger-demo-from-error" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-semibold px-4 py-3 rounded-xl border border-gray-700 transition-all">
+                    <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Vis Kent (2010) Demo
+                </button>
+            </div>
+        </div>
+
+        <!-- Resultatvisning -->
+        <div id="results-container" class="hidden space-y-6">
+            <div id="demo-banner" class="hidden bg-purple-950/60 border border-purple-500/40 rounded-xl p-3 flex items-center justify-between gap-3 text-xs text-purple-200">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-purple-400"></i>
+                    <strong>Demo-modus:</strong> Viser eksempeldata for Kent (27. mars 2010, Rockefeller / Oslo).
+                </span>
+                <span class="text-[10px] uppercase tracking-wider font-bold bg-purple-500/30 px-2 py-0.5 rounded">Simulering</span>
+            </div>
+
+            <!-- Konsertkort Info -->
+            <div class="bg-gray-900/90 border border-gray-800 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-gray-800">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span id="res-tour" class="hidden px-2.5 py-0.5 rounded-md bg-brand-accent/20 text-brand-accent text-xs font-semibold">
+                                Turné
+                            </span>
+                            <span id="res-date" class="px-2.5 py-0.5 rounded-md bg-gray-800 text-gray-300 text-xs font-medium">
+                                Dato
+                            </span>
+                        </div>
+                        <h2 id="res-artist" class="text-3xl md:text-4xl font-black text-white tracking-tight">Artist</h2>
+                        <p id="res-venue" class="text-gray-300 font-medium text-base mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-brand-500"></i> <span id="res-venue-text">Venue, By</span>
+                        </p>
+                    </div>
+
+                    <a id="res-external-link" href="#" target="_blank" rel="noopener noreferrer" 
+                       class="self-start md:self-center inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-semibold px-4 py-2.5 rounded-xl text-gray-200 transition-colors">
+                        <i class="fa-solid fa-up-right-from-square text-brand-500"></i> Åpne på Setlist.fm
+                    </a>
+                </div>
+
+                <!-- Sangliste / Setliste -->
+                <div class="mt-6">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-brand-500"></i> Sangliste
+                    </h3>
+
+                    <div id="res-song-list" class="space-y-3">
+                        <!-- Sanger fylles ut dynamisk -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-gray-900 py-6 text-center text-xs text-gray-600">
+        <p>Data leveres fra <a href="https://www.setlist.fm" target="_blank" class="hover:underline text-gray-400">setlist.fm</a> API</p>
+    </footer>
+
+    <!-- JavaScript Logikk -->
+    <script>
+        // Flere CORS proxies for robust fallback
+        const PROXIES = [
+            url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            url => `https://cors-anywhere.herokuapp.com/${url}`
+        ];
+
+        // Demo data for Kent 27. mars 2010
+        const DEMO_KENT_SETLIST = {
+            id: "demo123",
+            eventDate: "27-03-2010",
+            artist: { name: "Kent" },
+            venue: { 
+                name: "Rockefeller Music Hall", 
+                city: { name: "Oslo", country: { name: "Norge" } } 
+            },
+            tour: { name: "Rød Tour 2010" },
+            url: "https://www.setlist.fm/search?query=Kent+2010",
+            sets: {
+                set: [
+                    {
+                        song: [
+                            { name: "Socker" },
+                            { name: "Palace & Main" },
+                            { name: "Det finns inga ord" },
+                            { name: "Kärleken väntar" },
+                            { name: "Töntarna" },
+                            { name: "Ingenting" },
+                            { name: "FF" },
+                            { name: "Columbus" },
+                            { name: "Musik non stop" },
+                            { name: "Dom andra" }
+                        ]
+                    },
+                    {
+                        encore: 1,
+                        song: [
+                            { name: "747" },
+                            { name: "Mannen i den vita hatten (16 år senare)" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        const state = {
+            apiKey: localStorage.getItem('setlist_api_key') || '',
+            history: JSON.parse(localStorage.getItem('setlist_search_history') || '[]')
+        };
+
+        // DOM Elementer
+        const apiToggleBtn = document.getElementById('api-toggle-btn');
+        const apiToggleText = document.getElementById('api-toggle-text');
+        const apiPanel = document.getElementById('api-panel');
+        const apiChevron = document.getElementById('api-chevron');
+        const apiKeyInput = document.getElementById('api-key-input');
+        const saveApiKeyBtn = document.getElementById('save-api-key-btn');
+        const apiBadge = document.getElementById('api-badge');
+
+        const searchForm = document.getElementById('search-form');
+        const artistInput = document.getElementById('artist-input');
+        const dateInput = document.getElementById('date-input');
+        const nativeDatePicker = document.getElementById('native-date-picker');
+        const pickerBtn = document.getElementById('picker-btn');
+        const demoBtn = document.getElementById('demo-btn');
+        const triggerDemoFromError = document.getElementById('trigger-demo-from-error');
+        const directSearchTopBtn = document.getElementById('direct-search-top-btn');
+
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const loadingStatusText = document.getElementById('loading-status-text');
+        const errorBox = document.getElementById('error-box');
+        const errorTitle = document.getElementById('error-title');
+        const errorDesc = document.getElementById('error-desc');
+        const directSearchLink = document.getElementById('direct-search-link');
+
+        const resultsContainer = document.getElementById('results-container');
+        const demoBanner = document.getElementById('demo-banner');
+        const resArtist = document.getElementById('res-artist');
+        const resVenueText = document.getElementById('res-venue-text');
+        const resDate = document.getElementById('res-date');
+        const resTour = document.getElementById('res-tour');
+        const resExternalLink = document.getElementById('res-external-link');
+        const resSongList = document.getElementById('res-song-list');
+
+        const historySection = document.getElementById('history-section');
+        const historyList = document.getElementById('history-list');
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateApiStatusUI();
+            renderHistoryUI();
+
+            document.querySelectorAll('.example-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    artistInput.value = btn.getAttribute('data-artist');
+                    dateInput.value = btn.getAttribute('data-date');
+                    handleSearch();
+                });
+            });
+        });
+
+        // Toggle API panel
+        apiToggleBtn.addEventListener('click', () => {
+            const isHidden = apiPanel.classList.contains('hidden');
+            if (isHidden) {
+                apiPanel.classList.remove('hidden');
+                apiChevron.classList.add('rotate-180');
+                apiToggleText.textContent = "Skjul veiledning";
+            } else {
+                apiPanel.classList.add('hidden');
+                apiChevron.classList.remove('rotate-180');
+                apiToggleText.textContent = "Vis veiledning";
+            }
+        });
+
+        // Lagre API Key
+        saveApiKeyBtn.addEventListener('click', () => {
+            const val = apiKeyInput.value.trim();
+            if (val) {
+                state.apiKey = val;
+                localStorage.setItem('setlist_api_key', val);
+                showToast("API-nøkkel lagret!");
+            } else {
+                state.apiKey = '';
+                localStorage.removeItem('setlist_api_key');
+                showToast("API-nøkkel fjernet.");
+            }
+            updateApiStatusUI();
+        });
+
+        function updateApiStatusUI() {
+            if (state.apiKey) {
+                apiKeyInput.value = state.apiKey;
+                apiBadge.textContent = "Nøkkel Aktiv";
+                apiBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-brand-500/20 text-brand-400 border border-brand-500/30";
+            } else {
+                apiKeyInput.value = "";
+                apiBadge.textContent = "Ingen Nøkkel";
+                apiBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30";
+            }
+        }
+
+        // Kalender velger
+        pickerBtn.addEventListener('click', () => {
+            if (typeof nativeDatePicker.showPicker === 'function') {
+                nativeDatePicker.showPicker();
+            } else {
+                nativeDatePicker.focus();
+            }
+        });
+
+        nativeDatePicker.addEventListener('change', (e) => {
+            if (e.target.value) {
+                const parts = e.target.value.split('-');
+                if (parts.length === 3) {
+                    dateInput.value = `${parts[2]}.${parts[1]}.${parts[0]}`;
+                }
+            }
+        });
+
+        // Åpne direkte på setlist.fm fra toppen
+        directSearchTopBtn.addEventListener('click', () => {
+            const artist = artistInput.value.trim() || 'Kent';
+            const date = dateInput.value.trim() || '2010';
+            window.open(`https://www.setlist.fm/search?query=${encodeURIComponent(artist + ' ' + date)}`, '_blank');
+        });
+
+        // Demo Modus
+        demoBtn.addEventListener('click', runDemoMode);
+        triggerDemoFromError.addEventListener('click', runDemoMode);
+
+        function runDemoMode() {
+            artistInput.value = "Kent";
+            dateInput.value = "27.03.2010";
+            hideAllResults();
+            demoBanner.classList.remove('hidden');
+            renderSetlist(DEMO_KENT_SETLIST);
+            showToast("Viser demo for Kent!");
+        }
+
+        // Dato parsing
+        function parseToSetlistDateFormat(inputStr) {
+            let str = inputStr.trim().toLowerCase();
+            const months = {
+                'januar': '01', 'jan': '01',
+                'februar': '02', 'feb': '02',
+                'mars': '03', 'mar': '03',
+                'april': '04', 'apr': '04',
+                'mai': '05',
+                'juni': '06', 'jun': '06',
+                'juli': '07', 'jul': '07',
+                'august': '08', 'aug': '08',
+                'september': '09', 'sep': '09', 'sept': '09',
+                'oktober': '10', 'okt': '10',
+                'november': '11', 'nov': '11',
+                'desember': '12', 'des': '12'
+            };
+
+            for (const [mName, mNum] of Object.entries(months)) {
+                if (str.includes(mName)) {
+                    str = str.replace(mName, `.${mNum}.`);
+                    break;
+                }
+            }
+
+            str = str.replace(/[^0-9.\-\/]/g, ' ').trim();
+            const parts = str.split(/[\s.\-\/]+/).filter(Boolean);
+
+            if (parts.length === 3) {
+                let day = parts[0].padStart(2, '0');
+                let month = parts[1].padStart(2, '0');
+                let year = parts[2];
+
+                if (parts[0].length === 4) {
+                    year = parts[0];
+                    month = parts[1].padStart(2, '0');
+                    day = parts[2].padStart(2, '0');
+                }
+
+                if (year.length === 2) year = "20" + year;
+
+                return `${day}-${month}-${year}`;
+            }
+
+            return null;
+        }
+
+        // Søkebehandling
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleSearch();
+        });
+
+        async function handleSearch() {
+            const artist = artistInput.value.trim();
+            const rawDate = dateInput.value.trim();
+
+            if (!artist || !rawDate) return;
+
+            const formattedDate = parseToSetlistDateFormat(rawDate);
+            if (!formattedDate) {
+                showError("Ugyldig datoformat", "Vennligst skriv dato som f.eks. '27.03.2010' eller '27. mars 2010'.", artist, rawDate);
+                return;
+            }
+
+            hideAllResults();
+            loadingSpinner.classList.remove('hidden');
+            addToHistory(artist, rawDate);
+
+            try {
+                const data = await fetchSetlistWithFallback(artist, formattedDate);
+                loadingSpinner.classList.add('hidden');
+
+                if (data && data.setlist && data.setlist.length > 0) {
+                    demoBanner.classList.add('hidden');
+                    renderSetlist(data.setlist[0]);
+                } else {
+                    showError("Ingen setliste funnet", `Fant ingen registrert setliste for ${artist} den ${formattedDate}.`, artist, rawDate);
+                }
+            } catch (err) {
+                console.error("Fetch failure:", err);
+                loadingSpinner.classList.add('hidden');
+                showError(
+                    "API/CORS sperre oppstod",
+                    "Klarte ikke hente fra setlist.fm. Dette skyldes enten manglende API-nøkkel eller at nettleseren blokkerer proxyen.",
+                    artist,
+                    rawDate
+                );
+            }
+        }
+
+        // Fetch med fallback mellom proxyer
+        async function fetchSetlistWithFallback(artist, date) {
+            const apiKey = state.apiKey;
+            const targetUrl = `https://api.setlist.fm/rest/1.0/search/setlists?artistName=${encodeURIComponent(artist)}&date=${date}`;
+
+            const headers = {
+                'Accept': 'application/json'
+            };
+            if (apiKey) headers['x-api-key'] = apiKey;
+
+            for (let i = 0; i < PROXIES.length; i++) {
+                try {
+                    loadingStatusText.textContent = `Søker (Forsøk ${i + 1}/${PROXIES.length})...`;
+                    const proxyUrl = PROXIES[i](targetUrl);
+                    
+                    const res = await fetch(proxyUrl, { headers });
+                    if (res.status === 404) return null;
+                    if (res.ok) {
+                        return await res.json();
+                    }
+                } catch (e) {
+                    console.warn(`Proxy ${i} feilet, prøver neste...`);
+                }
+            }
+
+            throw new Error("Alle proxy-forsøk feilet.");
+        }
+
+        // Render resultat
+        function renderSetlist(setlist) {
+            resArtist.textContent = setlist.artist ? setlist.artist.name : artistInput.value;
+            
+            if (setlist.eventDate) {
+                const [d, m, y] = setlist.eventDate.split('-');
+                resDate.textContent = `${d}.${m}.${y}`;
+            }
+
+            const venueName = setlist.venue ? setlist.venue.name : 'Ukjent sted';
+            const city = setlist.venue && setlist.venue.city ? `${setlist.venue.city.name}, ${setlist.venue.city.country.name}` : '';
+            resVenueText.textContent = `${venueName}${city ? ' — ' + city : ''}`;
+
+            if (setlist.tour && setlist.tour.name) {
+                resTour.textContent = `Turné: ${setlist.tour.name}`;
+                resTour.classList.remove('hidden');
+            } else {
+                resTour.classList.add('hidden');
+            }
+
+            if (setlist.url) {
+                resExternalLink.href = setlist.url;
+            } else {
+                resExternalLink.href = `https://www.setlist.fm/search?query=${encodeURIComponent(resArtist.textContent)}`;
+            }
+
+            resSongList.innerHTML = '';
+            let songIndex = 1;
+            const sets = setlist.sets ? setlist.sets.set : [];
+
+            if (!sets || sets.length === 0) {
+                resSongList.innerHTML = `
+                    <div class="p-4 rounded-xl bg-gray-950/60 border border-gray-800 text-gray-400 text-sm italic">
+                        Setlisten er registrert på setlist.fm, men ingen enkeltlåter er tastet inn enda.
+                    </div>`;
+            } else {
+                sets.forEach((set, sIdx) => {
+                    if (set.encore) {
+                        const encoreHeader = document.createElement('div');
+                        encoreHeader.className = "text-xs font-bold text-brand-accent uppercase tracking-wider mt-4 mb-2 flex items-center gap-2";
+                        encoreHeader.innerHTML = `<i class="fa-solid fa-fire text-xs"></i> Ekstranummer ${set.encore > 1 ? set.encore : ''}`;
+                        resSongList.appendChild(encoreHeader);
+                    } else if (sIdx > 0) {
+                        const setHeader = document.createElement('div');
+                        setHeader.className = "text-xs font-bold text-gray-400 uppercase tracking-wider mt-4 mb-2";
+                        setHeader.textContent = `Del ${sIdx + 1}`;
+                        resSongList.appendChild(setHeader);
+                    }
+
+                    if (set.song && set.song.length > 0) {
+                        set.song.forEach(song => {
+                            const item = document.createElement('div');
+                            item.className = "flex items-center gap-4 p-3.5 rounded-xl bg-gray-950/60 border border-gray-800/80 hover:border-gray-700 transition-colors group";
+                            
+                            let infoDetails = [];
+                            if (song.info) infoDetails.push(`<span class="text-xs text-gray-500">(${song.info})</span>`);
+                            if (song.cover) infoDetails.push(`<span class="text-xs text-brand-accent/80">(${song.cover.name} cover)</span>`);
+
+                            item.innerHTML = `
+                                <span class="w-7 h-7 rounded-lg bg-gray-800/80 text-gray-400 group-hover:text-brand-500 group-hover:bg-brand-500/10 flex items-center justify-center text-xs font-bold transition-colors">
+                                    ${songIndex}
+                                </span>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-semibold text-gray-200 group-hover:text-white transition-colors truncate">
+                                        ${song.name} ${infoDetails.join(' ')}
+                                    </p>
+                                </div>
+                                ${song.tape ? '<span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Tape</span>' : ''}
+                            `;
+                            resSongList.appendChild(item);
+                            songIndex++;
+                        });
+                    }
+                });
+            }
+
+            resultsContainer.classList.remove('hidden');
+        }
+
+        // Feilhåndtering
+        function showError(title, desc, artist = '', date = '') {
+            errorTitle.textContent = title;
+            errorDesc.textContent = desc;
+
+            const searchQuery = encodeURIComponent(`${artist} ${date}`.trim() || 'Kent 2010');
+            directSearchLink.href = `https://www.setlist.fm/search?query=${searchQuery}`;
+
+            errorBox.classList.remove('hidden');
+        }
+
+        function hideAllResults() {
+            loadingSpinner.classList.add('hidden');
+            errorBox.classList.add('hidden');
+            resultsContainer.classList.add('hidden');
+        }
+
+        // Historikk
+        function addToHistory(artist, date) {
+            const newItem = { artist, date };
+            state.history = state.history.filter(h => !(h.artist.toLowerCase() === artist.toLowerCase() && h.date === date));
+            state.history.unshift(newItem);
+            if (state.history.length > 5) state.history.pop();
+
+            localStorage.setItem('setlist_search_history', JSON.stringify(state.history));
+            renderHistoryUI();
+        }
+
+        function renderHistoryUI() {
+            if (state.history.length === 0) {
+                historySection.classList.add('hidden');
+                return;
+            }
+
+            historyList.innerHTML = '';
+            state.history.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = "bg-gray-900 hover:bg-gray-800 border border-gray-800 text-gray-300 hover:text-white text-xs px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5";
+                btn.innerHTML = `<i class="fa-solid fa-clock text-[10px] text-brand-500"></i> ${item.artist} (${item.date})`;
+                btn.addEventListener('click', () => {
+                    artistInput.value = item.artist;
+                    dateInput.value = item.date;
+                    handleSearch();
+                });
+                historyList.appendChild(btn);
+            });
+
+            historySection.classList.remove('hidden');
+        }
+
+        clearHistoryBtn.addEventListener('click', () => {
+            state.history = [];
+            localStorage.removeItem('setlist_search_history');
+            renderHistoryUI();
+        });
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 bg-brand-500 text-gray-950 px-4 py-2.5 rounded-xl font-bold text-xs shadow-2xl z-50 animate-bounce";
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
