@@ -836,7 +836,7 @@ $('slcopy').onclick=async()=>{try{await navigator.clipboard.writeText($('slcode'
 $('slsave').onclick=()=>{const v=$('slurl').value.trim().replace(/\/$/,'');$('slmsg').className='';if(v&&!/^https:\/\/[^\s'"<>]+$/.test(v)){$('slmsg').className='err';$('slmsg').textContent='Adressen må starte med https:// og kan ikke inneholde mellomrom.';return}
  try{if(v)localStorage.slproxy=v;else localStorage.removeItem('slproxy')}catch(e){}$('slmsg').textContent=v?'Lagret. Trykk ♪ ved en artist for å teste.':'Fjernet. ♪ åpner nå bare setlist.fm.'};
 document.addEventListener('keydown',e=>{if(e.key=='Escape')$('slmod').hidden=true});
-if(STATIC){$('slset').hidden=true;$('mylink').hidden=true}
+if(STATIC){for(const id of ['slset','mylink']){const e=$(id);if(e)e.hidden=true}}
 $('dl').onclick=()=>{$('dlmsg').textContent='';$('modal').hidden=false};$('mx').onclick=()=>$('modal').hidden=true;
 $('mgo').onclick=async()=>{let cfg=null;$('dlmsg').className='';$('dlmsg').textContent='';
  const slv=$('dlsl').value.trim();if(slv&&!/^https:\/\/[^\s'"<>]+$/.test(slv)){$('dlmsg').className='err';$('dlmsg').textContent='Adressen til setlist-proxyen må starte med https:// og kan ikke inneholde mellomrom.';return}
@@ -870,7 +870,7 @@ if(STATIC){$('up').innerHTML='';$('msg').textContent='Laster concert.json …';
 (function(){
 if(window.__wmpop)return;
 var CLIENT_ID='6fccd4b8af81479c966e58939c458486';
-var REDIRECT='https://larsgimse.github.io/concert/gimse';
+var REDIRECT='https://larsgimse.github.io/concert/gimse/';
 var SCOPES='streaming user-read-email user-read-private user-modify-playback-state user-read-playback-state';
 var $=function(i){return document.getElementById(i)};
 var LS={g:function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},d:function(k){try{localStorage.removeItem(k)}catch(e){}}};
