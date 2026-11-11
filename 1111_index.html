@@ -2,7 +2,6 @@
 <html lang="no"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="mode" content="upload">
-<meta name="default-ui" content="dark,yellow">
 <title>Konsertkart</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <style>
@@ -154,122 +153,9 @@ body.pvm #list{visibility:hidden}.lh a{cursor:pointer;color:var(--d);margin-left
 #wmw .mb.mp{background:linear-gradient(180deg,#ff6b6b,var(--ac));color:#fff}
 #wmw.emb .mbt .mc{display:none}
 #wmw .wst{margin:12px 2px 0;font-size:12px;line-height:1.45;color:#1b1b1d;min-height:1em;font-weight:700}
-/*WM:E*/
-/* Utseende: alle nye innstillinger har egne navn og påvirker ikke eksisterende kontroller. */
-#ui-gear{position:fixed;right:16px;top:16px;z-index:1550;display:grid;place-items:center;width:34px;height:34px;padding:0;margin:0;background:#000;color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:0;box-shadow:0 3px 16px rgba(0,0,0,.25);cursor:pointer}
-#year:not([hidden]){right:65px}#ui-gear svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
-#ui-gear:hover,#ui-gear[aria-expanded="true"]{background:#fff;color:#000}
-#ui-settings{position:fixed;z-index:1551;right:16px;top:58px;width:min(310px,calc(100vw - 32px));max-height:calc(100dvh - 76px);overflow:auto;padding:18px;background:#000;color:#fff;border:1px solid rgba(255,255,255,.32);box-shadow:0 20px 60px rgba(0,0,0,.4);font:300 12px/1.45 "Helvetica Neue",Arial,sans-serif;letter-spacing:.04em}
-#ui-settings[hidden]{display:none!important}
-#ui-settings .ui-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
-#ui-settings h2{font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:300;margin:0}
-#ui-settings .ui-close{all:unset;cursor:pointer;display:grid;place-items:center;width:24px;height:24px;color:inherit;border:1px solid rgba(127,127,127,.45);font-size:15px}
-#ui-settings p{font-size:10px;line-height:1.5;color:#aaa;margin:0 0 14px}
-#ui-settings fieldset{border:0;padding:0;margin:0 0 18px;min-width:0}
-#ui-settings legend{padding:0;margin:0 0 7px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#aaa}
-#ui-settings .ui-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#ui-settings .ui-option{cursor:pointer;display:flex;flex-direction:column;align-items:stretch;gap:8px;border:1px solid rgba(255,255,255,.22);margin:0;padding:9px;min-height:100px;color:inherit;text-transform:none;letter-spacing:.03em}
-#ui-settings .ui-option:has(input:checked){border-color:currentColor;box-shadow:inset 0 0 0 1px currentColor}
-#ui-settings .ui-option:focus-within{outline:1px dashed currentColor;outline-offset:2px}
-#ui-settings .ui-option input{accent-color:currentColor;width:auto;margin:0;flex:none}
-#ui-settings .ui-label{display:flex;gap:7px;align-items:center;font-size:11px;letter-spacing:0;line-height:1.3}
-#ui-settings .ui-preview{height:47px;position:relative;display:flex;align-items:center;justify-content:center;border:1px solid #aaa;overflow:hidden}
-#ui-settings .ui-preview.dark{background:#000;color:#fff}
-#ui-settings .ui-preview.light{background:#fff;color:#000}
-#ui-settings .ui-preview>span{display:block;width:76%;height:1px;background:currentColor;transform:rotate(-19deg);box-shadow:0 -12px currentColor,0 13px currentColor}
-#ui-settings .ui-preview.yellow{background:linear-gradient(135deg,#ffc82d,#ea870e);border-color:#da8e0c}
-#ui-settings .ui-preview.yellow:after{content:'●      ●';display:block;border-radius:3px;background:#181818;color:#e4e2de;letter-spacing:.1em;font-size:15px;padding:5px 11px;border:4px solid #d2d4d4}
-#ui-settings .ui-preview.mono{background:#080808;color:#f7f7f7;border-color:#555}
-#ui-settings .ui-preview.mono:after{content:'◯   ─   ◯';font-size:16px;letter-spacing:.06em;border:1px solid #ddd;width:77%;height:24px;display:grid;place-items:center}
-#ui-settings .ui-note{padding-top:10px;border-top:1px solid rgba(255,255,255,.15);font-size:9px;letter-spacing:.04em;line-height:1.5;color:#aaa}
-/* Lys modus inverterer den eksisterende kartgrafikken og alt grensesnittet,
-   også visualiseringene. Walkman ekskluderes slik at gul utgave beholder fargene. */
-html.theme-light body{background:#fff}
-html.theme-light #map,html.theme-light #panel,html.theme-light #vm,html.theme-light #year,html.theme-light #list,html.theme-light #tl,html.theme-light #zc,html.theme-light #viz,html.theme-light #modal,html.theme-light #slmod,html.theme-light #imod,html.theme-light #intro,html.theme-light #srcm,html.theme-light #pvb,html.theme-light #pvk,html.theme-light #sel,html.theme-light #bl button{filter:invert(1)}
-html.theme-light #ui-gear{background:#fff;color:#000;border-color:rgba(0,0,0,.4)}
-html.theme-light #ui-gear:hover,html.theme-light #ui-gear[aria-expanded="true"]{background:#000;color:#fff}
-html.theme-light #ui-settings{background:#fff;color:#000;border-color:rgba(0,0,0,.3);box-shadow:0 20px 60px rgba(0,0,0,.13)}
-html.theme-light #ui-settings p,html.theme-light #ui-settings legend{color:#666}
-html.theme-light #ui-settings .ui-option{border-color:rgba(0,0,0,.2)}
-html.theme-light #ui-settings .ui-option:has(input:checked){border-color:#000}
-html.theme-light #ui-settings .ui-note{color:#666;border-color:rgba(0,0,0,.2)}
-@media(max-width:700px){#ui-gear{top:12px;right:12px}#ui-settings{top:54px;right:12px}}
-
-/* Alternativ Walkman, utelukkende CSS. De originale spillerne, knappene og
-   Spotify-integrasjonen bruker samme DOM og JavaScript som den gule varianten. */
-html.wm-minimal #wmw{--ui-wm-bg:#080808;--ui-wm-ink:#f7f7f7;--ui-wm-secondary:#999;--ui-wm-border:rgba(255,255,255,.34);--g:#f7f7f7;--ac:#f7f7f7;background:rgba(0,0,0,.76);color:var(--ui-wm-ink)}
-html.wm-minimal.theme-light #wmw{--ui-wm-bg:#fff;--ui-wm-ink:#111;--ui-wm-secondary:#666;--ui-wm-border:rgba(0,0,0,.32);--g:#111;--ac:#111;background:rgba(255,255,255,.8)}
-html.wm-minimal #wmw.min{background:none}
-html.wm-minimal #wmw .wmb{background:var(--ui-wm-bg);color:var(--ui-wm-ink);border-radius:2px;border:1px solid var(--ui-wm-border);box-shadow:0 22px 55px rgba(0,0,0,.32);padding:19px;max-width:400px}
-html.wm-minimal #wmw .wtop{margin-bottom:15px}
-html.wm-minimal #wmw .wbrand{color:var(--ui-wm-ink);font:300 16px/1.1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.27em;font-style:normal}
-html.wm-minimal #wmw .wbrand small{font:300 8px/1.4 "Helvetica Neue",Arial,sans-serif;letter-spacing:.23em;margin-top:7px;opacity:.62}
-html.wm-minimal #wmw .wlogin,html.wm-minimal #wmw .wx{border:1px solid var(--ui-wm-border);border-radius:0;background:transparent;color:var(--ui-wm-ink);font:400 10px/1.3 "Helvetica Neue",Arial,sans-serif;letter-spacing:.05em;box-shadow:none}
-html.wm-minimal #wmw .wx{width:27px;height:27px;display:grid;place-items:center;line-height:1;padding:0}
-html.wm-minimal #wmw .wlogin{padding:7px 8px}
-html.wm-minimal #wmw .wled,html.wm-minimal #wmw .mled{background:var(--ui-wm-secondary);box-shadow:none}
-html.wm-minimal #wmw.on .wled,html.wm-minimal #wmw.on .mled{background:var(--ui-wm-ink);box-shadow:0 0 0 2px var(--ui-wm-border)}
-html.wm-minimal #wmw .wdeck{background:transparent;box-shadow:none;border-top:1px solid var(--ui-wm-border);border-bottom:1px solid var(--ui-wm-border);border-radius:0;padding:14px 0}
-html.wm-minimal #wmw .wwin{background:transparent;border-radius:0;padding:10px;border:1px solid var(--ui-wm-border);box-shadow:none}
-html.wm-minimal #wmw .wcass{background:transparent;border-radius:0;padding:9px;border:1px solid var(--ui-wm-border)}
-html.wm-minimal #wmw .wlabel{background:transparent;border-radius:0;border:0;border-bottom:1px solid var(--ui-wm-border);padding:4px 2px 7px;color:var(--ui-wm-ink);font:400 11px/1.35 "Helvetica Neue",Arial,sans-serif;letter-spacing:.08em}
-html.wm-minimal #wmw .wreels{background:transparent;border-radius:0;border:0;margin-top:6px;padding:7px}
-html.wm-minimal #wmw .wreel circle:first-child,html.wm-minimal #wmw .mreel circle:first-child{fill:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wreel circle:nth-child(2),html.wm-minimal #wmw .mreel circle:nth-child(2){fill:var(--ui-wm-bg)}
-html.wm-minimal #wmw .wreel circle:last-child,html.wm-minimal #wmw .mreel circle:last-child{fill:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wreel g,html.wm-minimal #wmw .mreel g{stroke:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wtape{background:var(--ui-wm-border);height:1px}
-html.wm-minimal #wmw .wlcd{background:var(--ui-wm-bg);border-radius:0;border:1px solid var(--ui-wm-border);box-shadow:none;padding:9px;margin:14px 0 0}
-html.wm-minimal #wmw .wlcd iframe{border-radius:0}
-html.wm-minimal #wmw .wempty,html.wm-minimal #wmw .wnp{color:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wnp img{border-radius:0;filter:grayscale(1)}
-html.wm-minimal #wmw .wbar,html.wm-minimal #wmw .mbar{background:var(--ui-wm-border);border-radius:0}
-html.wm-minimal #wmw .wbar i,html.wm-minimal #wmw .mbar i{background:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wbtns{gap:7px;margin-top:13px}
-html.wm-minimal #wmw .wbtn{height:46px;line-height:46px;border-radius:0;border:1px solid var(--ui-wm-border);background:transparent;box-shadow:none;color:var(--ui-wm-ink);font-size:17px}
-html.wm-minimal #wmw .wbtn.wplay{background:var(--ui-wm-ink);color:var(--ui-wm-bg)}
-html.wm-minimal #wmw .wbtn:active{transform:translateY(1px);box-shadow:none}
-html.wm-minimal #wmw .wrow2{gap:7px}
-html.wm-minimal #wmw .wsm{border-radius:0;background:transparent;color:var(--ui-wm-ink);border:1px solid var(--ui-wm-border);box-shadow:none;font:400 10px "Helvetica Neue",Arial,sans-serif;letter-spacing:.14em;padding:11px 7px}
-html.wm-minimal #wmw .wsm:active{transform:translateY(1px);box-shadow:none}
-html.wm-minimal #wmw .wst{color:var(--ui-wm-secondary);font-weight:300;font-size:10px}
-html.wm-minimal #wmw .wvol{color:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wvol input{accent-color:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wshelf{background:var(--ui-wm-bg);border:1px solid var(--ui-wm-border);border-radius:2px;box-shadow:0 20px 50px rgba(0,0,0,.25);color:var(--ui-wm-ink)}
-html.wm-minimal #wmw .wsh{color:var(--ui-wm-ink);font:400 10px "Helvetica Neue",Arial,sans-serif;letter-spacing:.17em}
-html.wm-minimal #wmw .wshx{border-radius:0;background:transparent;color:var(--ui-wm-ink);border:1px solid var(--ui-wm-border)}
-html.wm-minimal #wmw .wrack{background:repeating-linear-gradient(180deg,transparent 0,transparent 153px,var(--ui-wm-border) 154px,var(--ui-wm-bg) 159px);scrollbar-color:var(--ui-wm-secondary) var(--ui-wm-bg)}
-html.wm-minimal #wmw .wmsg{color:var(--ui-wm-secondary)}
-html.wm-minimal #wmw .wmini{background:var(--ui-wm-bg);color:var(--ui-wm-ink);border:1px solid var(--ui-wm-border);border-radius:2px;box-shadow:0 12px 30px rgba(0,0,0,.27);padding:10px}
-html.wm-minimal #wmw .mwin{background:transparent;border-radius:0;border:1px solid var(--ui-wm-border)}
-html.wm-minimal #wmw .mtx{color:var(--ui-wm-ink);font:400 10px/1.3 "Helvetica Neue",Arial,sans-serif}
-html.wm-minimal #wmw .mgrip{background:radial-gradient(circle,var(--ui-wm-secondary) 1px,transparent 1.8px) 0 0/4px 5px}
-html.wm-minimal #wmw .mbt{gap:4px}
-html.wm-minimal #wmw .mb{background:transparent;border:1px solid var(--ui-wm-border);border-radius:0;box-shadow:none;color:var(--ui-wm-ink)}
-html.wm-minimal #wmw .mb.mp{background:var(--ui-wm-ink);color:var(--ui-wm-bg)}
-html.wm-minimal #wmw .mb:active{transform:translateY(1px);box-shadow:none}
-html.wm-minimal #wmw .wcs{background:var(--ui-wm-ink);border-radius:2px}
-html.wm-minimal #wmw .wsp{filter:grayscale(1)}
-@media(max-width:420px){html.wm-minimal #wmw .wmb{padding:12px}html.wm-minimal #wmw .wright{gap:5px}html.wm-minimal #wmw .wbrand{font-size:14px;letter-spacing:.17em}}
-</style>
+/*WM:E*/</style>
 <!--WM:S--><script>(function(){try{var c=new URLSearchParams(location.search).get('code');if(c&&localStorage.getItem('wm-pop')){localStorage.setItem('wm-code',c);localStorage.removeItem('wm-pop');window.__wmpop=1;document.documentElement.style.visibility='hidden';window.close()}}catch(e){}})()</script><!--WM:E-->
 </head><body>
-
-<!-- Brukervalg: uavhengig av kart, filtre og Spotify-avspilling -->
-<button id="ui-gear" type="button" aria-label="Innstillinger for utseende" title="Innstillinger" aria-controls="ui-settings" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.2 2.5h3.6l.5 2.4c.5.2 1 .4 1.5.7l2.1-1.3 2.5 2.5-1.3 2.1c.3.5.5 1 .7 1.5l2.4.5v3.6l-2.4.5c-.2.5-.4 1-.7 1.5l1.3 2.1-2.5 2.5-2.1-1.3c-.5.3-1 .5-1.5.7l-.5 2.4h-3.6l-.5-2.4c-.5-.2-1-.4-1.5-.7l-2.1 1.3-2.5-2.5 1.3-2.1c-.3-.5-.5-1-.7-1.5l-2.4-.5v-3.6l2.4-.5c.2-.5.4-1 .7-1.5L3.6 6.8l2.5-2.5 2.1 1.3c.5-.3 1-.5 1.5-.7z"/><circle cx="12" cy="12" r="3.2"/></svg></button>
-<div id="ui-settings" role="dialog" aria-label="Innstillinger for utseende" hidden>
- <div class="ui-head"><h2>Innstillinger</h2><button class="ui-close" id="ui-close" type="button" aria-label="Lukk innstillinger">✕</button></div>
- <p>Endre utseendet uten å påvirke kartdata eller avspilling. Valgene lagres i nettleseren.</p>
- <fieldset><legend>Kart og nettside</legend><div class="ui-choices">
-  <label class="ui-option"><span class="ui-preview dark" aria-hidden="true"><span></span></span><span class="ui-label"><input type="radio" name="ui-theme" value="dark" checked> Svart med hvite streker</span></label>
-  <label class="ui-option"><span class="ui-preview light" aria-hidden="true"><span></span></span><span class="ui-label"><input type="radio" name="ui-theme" value="light"> Hvitt med svarte streker</span></label>
- </div></fieldset>
- <fieldset><legend>Walkman-design</legend><div class="ui-choices">
-  <label class="ui-option"><span class="ui-preview yellow" aria-hidden="true"></span><span class="ui-label"><input type="radio" name="ui-walkman" value="yellow" checked> Gul · original</span></label>
-  <label class="ui-option"><span class="ui-preview mono" aria-hidden="true"></span><span class="ui-label"><input type="radio" name="ui-walkman" value="minimal"> Minimalistisk</span></label>
- </div></fieldset>
- <div class="ui-note">Den minimalistiske Walkmanen følger lyst/mørkt tema. Begge har samme knapper, kassetter, Spotify-funksjoner og minispiller.</div>
-</div>
 <div id="map"></div>
 <div id="year"><div id="yt"></div><span class="bx">✕</span></div>
 <div id="list" hidden></div>
@@ -429,45 +315,6 @@ html.wm-minimal #wmw .wsp{filter:grayscale(1)}
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
-
-/* Brukarval: lagring og direkte byting utan å byggje opp spelaren på nytt. */
-(function(){
- const key='konsertkart_ui_v1', root=document.documentElement;
- const meta=document.querySelector('meta[name="default-ui"]');
- const parts=(meta&&meta.content||'dark,yellow').split(',');
- let opts={theme:parts[0]==='light'?'light':'dark',walkman:parts[1]==='minimal'?'minimal':'yellow'};
- try{const prev=JSON.parse(localStorage.getItem(key)||'null');if(prev&&typeof prev==='object'){
-   if(prev.theme==='light'||prev.theme==='dark')opts.theme=prev.theme;
-   if(prev.walkman==='minimal'||prev.walkman==='yellow')opts.walkman=prev.walkman;
- }}catch(e){}
- function apply(){
-   root.classList.toggle('theme-light',opts.theme==='light');
-   root.classList.toggle('wm-minimal',opts.walkman==='minimal');
-   document.querySelectorAll('input[name="ui-theme"],input[name="ui-walkman"]').forEach(x=>{
-     x.checked=x.value===(x.name==='ui-theme'?opts.theme:opts.walkman);
-   });
- }
- window.concertUI={get:()=>({...opts}),set:(o)=>{opts={...opts,...o};apply();try{localStorage.setItem(key,JSON.stringify(opts))}catch(e){}}};
- const gear=document.getElementById('ui-gear'),panel=document.getElementById('ui-settings');
- const open=on=>{panel.hidden=!on;gear.setAttribute('aria-expanded',String(!!on));};
- gear.addEventListener('click',e=>{e.stopPropagation();open(panel.hidden)});
- document.getElementById('ui-close').addEventListener('click',()=>{open(false);gear.focus()});
- panel.addEventListener('change',e=>{
-   if(e.target.name==='ui-theme')window.concertUI.set({theme:e.target.value});
-   if(e.target.name==='ui-walkman')window.concertUI.set({walkman:e.target.value});
- });
- document.addEventListener('pointerdown',e=>{if(!panel.hidden&&!panel.contains(e.target)&&!gear.contains(e.target))open(false)});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.stopPropagation();open(false);gear.focus()}});
- apply();
-})();
-/* Kart- og visualiseringsbilete får same inverterte fargar som visinga. */
-function concertCanvasTheme(canvas){
- if(!document.documentElement.classList.contains('theme-light'))return canvas;
- const out=document.createElement('canvas');out.width=canvas.width;out.height=canvas.height;
- const ctx=out.getContext('2d');
- try{ctx.filter='invert(1)';ctx.drawImage(canvas,0,0)}catch(e){ctx.filter='none';ctx.drawImage(canvas,0,0)}
- return out;
-}
 const $=id=>document.getElementById(id),STATIC=document.querySelector('meta[name=mode]').content==='static';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let WORLDF=[],OUTD={},worldLines=[],all=[],F={q:'',y:[],c:[],s:[],v:[],a:[]};
@@ -683,7 +530,7 @@ document.addEventListener('keydown',e=>{if(e.key=='Escape'){$('srcm').hidden=tru
 $('igo').onclick=()=>{const sz=map.getSize(),cv=renderMap(Math.min(4,Math.max(2,3840/sz.x))*sz.x),x=cv.getContext('2d'),u=cv.width/1000;x.textBaseline='middle';x.textAlign='left';
  ORDER.filter(id=>ON[id]&&PL[id]!='s').forEach(id=>{let y=POS[id].y*cv.height;const px=POS[id].x*cv.width;
   blocks[id].lines.forEach(l=>{const lh=(l.lh||1.35)*l.s*u;x.font=`${l.w} ${l.s*u}px ${FF}`;x.fillStyle=l.c;x.shadowColor='#000';x.shadowBlur=8*u;x.fillText(l.t,px,y+lh/2);x.fillText(l.t,px,y+lh/2);y+=lh});x.shadowBlur=0});
- concertCanvasTheme(cv).toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='konsertkart'+(F.y.length==1?'_'+F.y[0]:'')+(F.a.length==1?'_'+F.a[0].replace(/[^\wæøåÆØÅ]+/g,'-'):'')+'.png';a.click()},'image/png')};
+ cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='konsertkart'+(F.y.length==1?'_'+F.y[0]:'')+(F.a.length==1?'_'+F.a[0].replace(/[^\wæøåÆØÅ]+/g,'-'):'')+'.png';a.click()},'image/png')};
 
 // Visualiseringer (følger filtrering og årstall, sentreres på nytt ved endring)
 const VZS={cloud:'Ordsky',stats:'Statistikk',shirt:'T-skjorte',lineup:'Lineup-plakat',ticks:'Årsstreker',land:'Land'};
@@ -919,8 +766,8 @@ function pickArea(){return new Promise(res=>{const o=document.createElement('div
 async function vizShot(r){if(!r)centerContent();if(!window.html2canvas){$('msg').textContent='Bildebiblioteket ble ikke lastet (sjekk nettforbindelsen).';return}
  let yc=null;const ye=$('year');if(!ye.hidden){const q=ye.getBoundingClientRect();yc=document.createElement('div');yc.style.cssText=`position:absolute;right:${innerWidth-q.right}px;top:${q.top}px;text-align:right;color:#fff;font-weight:100;line-height:1;letter-spacing:-.02em;font-size:${getComputedStyle(ye).fontSize}`;
   yc.innerHTML=$('yt').innerHTML.replace('<small>','<div style="font-size:11px;letter-spacing:.3em;color:rgba(255,255,255,.45);font-weight:300;margin-top:6px;text-transform:uppercase">').replace('</small>','</div>');$('viz').appendChild(yc)}
- let c;try{c=await html2canvas($('viz'),{backgroundColor:'#000',scale:Math.min(4,Math.max(2,3840/(r?Math.max(r.width,400):innerWidth))),logging:false,onclone:doc=>doc.documentElement.classList.remove('theme-light'),ignoreElements:e=>!!(e.classList&&e.classList.contains('wmk')),...(r||{})})}finally{if(yc)yc.remove()}
- concertCanvasTheme(c).toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='visualisering_'+VZS[VZ].toLowerCase().replace(/[^a-zæøå]+/g,'-')+(F.y.length==1?'_'+F.y[0]:'')+'.png';a.click()},'image/png')}
+ let c;try{c=await html2canvas($('viz'),{backgroundColor:'#000',scale:Math.min(4,Math.max(2,3840/(r?Math.max(r.width,400):innerWidth))),logging:false,ignoreElements:e=>!!(e.classList&&e.classList.contains('wmk')),...(r||{})})}finally{if(yc)yc.remove()}
+ c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='visualisering_'+VZS[VZ].toLowerCase().replace(/[^a-zæøå]+/g,'-')+(F.y.length==1?'_'+F.y[0]:'')+'.png';a.click()},'image/png')}
 let PVR=null,PVon=false;
 function pvMask(){let k=$('pvk');if(!k){k=document.createElement('div');k.id='pvk';document.body.appendChild(k)}const r=PVR||{x:3,y:3,width:innerWidth-6,height:innerHeight-6};Object.assign(k.style,{left:r.x+'px',top:r.y+'px',width:r.width+'px',height:r.height+'px'});k.hidden=false}
 function centerContent(){const els=[...document.querySelectorAll('#vz>.vi,#vz>.sbg')];if(!els.length)return;let l=1e9,t=1e9,r=-1e9,b=-1e9;els.forEach(e=>{const q=e.getBoundingClientRect();l=Math.min(l,q.left);t=Math.min(t,q.top);r=Math.max(r,q.right);b=Math.max(b,q.bottom)});VT.x+=innerWidth/2-(l+r)/2;VT.y+=innerHeight/2-(t+b)/2;applyVT()}
@@ -951,7 +798,7 @@ function untangle(trig){cancelAnimationFrame(UT);UT=requestAnimationFrame(()=>{f
  for(const a of ms)for(const b of ms)if(a!=b&&!mv&&ov(a.getBoundingClientRect(),b.getBoundingClientRect())){const f=[a,b].filter(x=>x.style.position=='fixed');mv=f.filter(x=>x!=trig)[0]||f[0]}
  if(!mv)break;putMenu(mv)}})}
 const ro=new ResizeObserver(es=>untangle(es[0].target));MN().forEach(m=>ro.observe(m));addEventListener('resize',()=>untangle());
-function placeList(){const el=$('list');if(!el||el.hidden||el._moved)return;const y=$('year'),q=y.hidden?null:y.getBoundingClientRect(),top=q?q.bottom+10:56;
+function placeList(){const el=$('list');if(!el||el.hidden||el._moved)return;const y=$('year'),q=y.hidden?null:y.getBoundingClientRect(),top=q?q.bottom+10:16;
  el.style.position='fixed';el.style.left='auto';el.style.right=(q?Math.max(8,innerWidth-q.right):24)+'px';el.style.top=top+'px';el.style.maxHeight=Math.max(150,innerHeight-top-150)+'px'}
 addEventListener('resize',placeList);
 $('mreset').onclick=()=>{MN().forEach(m=>{m.style.position=m.style.left=m.style.top=m.style.zIndex=''});$('list')._moved=0;placeList()};
@@ -972,8 +819,6 @@ function wmCfg(){
  u.hash='';u.search='';return{id,url:u.href}}
 async function doDownload(cfg){let html;try{html=await(await fetch(location.href)).text()}catch(e){$('msg').textContent='Kunne ikke hente sidekilden. Åpne siden via GitHub Pages / webserver.';return}
  html=html.replace('name="mode" content="upload"','name="mode" content="static"');
- const savedUI=window.concertUI?window.concertUI.get():{theme:'dark',walkman:'yellow'};
- html=html.replace(/name="default-ui" content="(?:dark|light),(?:yellow|minimal)"/, 'name="default-ui" content="'+savedUI.theme+','+savedUI.walkman+'"');
  html=html.replace(new RegExp('<!--MY'+':S-->[\\s\\S]*?<!--MY'+':E-->'),'');
  if(cfg)html=html.replace(new RegExp('var CLIENT_ID'+"='[^']*';"),()=>"var CLIENT_ID"+"='"+cfg.id+"';").replace(new RegExp('var REDIRECT'+'=[^;]*;'),()=>"var REDIRECT"+"='"+cfg.url+"';");
  else html=wmStrip(html);
